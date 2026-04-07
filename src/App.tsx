@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./components/Home";
-import LoginPage from "./components/LoginPage";
+import Home from "./pages/Home";
+import LoginPage from "./pages/LoginPage";
 import PageNotFound from "./components/PageNotFound";
 
 function App() {
