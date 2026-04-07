@@ -1,73 +1,81 @@
-# React + TypeScript + Vite
+# Sell4Impact 🌎🌐
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sell4Impact is a UMD student marketplace platform that helps users to buy and sell dorm decor in a sustainable way with much more affordable prices! 
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Project Overview
 
-## React Compiler
+The goal of Sell4Impact is to:
+- Help students buy affordable second-hand dorm items
+- Allow students to sell dorm decor
+- Promote sustainability through reuse
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Core Features
+- Item search functionality
+- Filtering by category, price
+- User authentication (Client / Vendor roles)
+- Client dashboard (Cart, Ordered, Past)
+- Vendor dashboard (Items, Drafts, Sold)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Additional Features (Planned)
+- Ratings for sellers 
+- Trending items, "for you"
+- Bargaining system
+- Dark mode/Light mode
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Tech Stack
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Frontend: React + TypeScript + Vite
+- Styling: Tailwind CSS
+- Routing: React Router
+- Backend: Firebase (Authentication + Firestore)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Project Structure
+
+src/
+components/ // reusable UI components (Navbar, ItemCard, etc.)
+pages/ // application pages (Home, Login, Profiles, etc.)
+App.tsx // routing configuration
+
+---
+
+## Current Pages
+
+- Home
+- Login Page
+- Signup Page
+- Client Profile
+- Vendor Profile
+- Item Page
+
+---
+
+## Development Guidelines
+
+- Use blueprint comments in each page file as guidance!
+- Focus on frontend UI using mock data for the current sprint
+- Do not connect Firebase unless specified
+- Follow the provided figma design closely!
+
+---
+
+## Git Workflow
+
+- Create a new branch for each feature:
+
+feature/<feature-name>
+
+- Make commits with descriptive messages
+- Open a Pull Request before merging into `main`!
+
+
+
