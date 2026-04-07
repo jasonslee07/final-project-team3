@@ -1,11 +1,13 @@
 import Navbar from "../components/Navbar";
 
 const SignUpPage = () => {
+
   return (
     <>
       <Navbar />
 
-      {/*
+      {
+      /*
         PAGE GOAL
 
         This page should allow a new user to create an account!
@@ -31,13 +33,14 @@ const SignUpPage = () => {
         - Role buttons do not need full logic yet, but should look selectable
         - No need to connect Firebase Auth yet 
         - Styling should follow the figma pretty closely!
+        - we are using Tailwind CSS
 
         LATER:
         - This page should connect to Firebase Auth
         - Backend should create user accounts with the selected role
         - Add validation for empty fields and invalid input
-      */}
-
+      */
+      }
 
       <h1 className="text-2xl font-bold flex justify-center">Sign Up Page!</h1>
     </>
