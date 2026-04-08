@@ -1,10 +1,13 @@
 import Navbar from "../components/Navbar";
+
 const LoginPage = () => {
+
   return (
     <>
       <Navbar />
 
-      {/*
+      {
+      /*
         PAGE GOAL:
         This page should allow an existing user to log into their account.
 
@@ -28,11 +31,13 @@ const LoginPage = () => {
         NOTES:
         - Focus on frontend and UI only!
         - Do not connect Firebase Auth yet 
+        - we are using Tailwind CSS
 
         LATER:
         - This page should connect to Firebase Auth sign in
         - Add validation and error handling
-      */}
+      */
+      }
 
       <h1 className="text-2xl font-bold flex justify-center">Login Page!</h1>
     </>
