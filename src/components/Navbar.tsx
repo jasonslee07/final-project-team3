@@ -27,7 +27,6 @@ const Navbar = () => {
         2. Navigation links
           - Home
           - Login
-          - Cart icon 
           - Profile icon (to dashboard)
           - These can be placeholders for now!
 
