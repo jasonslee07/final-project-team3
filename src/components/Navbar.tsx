@@ -1,19 +1,17 @@
 const Navbar = () => {
   return (
-    <nav className="flex justify-between ">
-      <a href="/" className="p-3 hover:bg-neutral-700 hover:text-white">
-        Home Page
+    <nav className="flex justify-between bg-linear-to-b from-[#AABA99] to-[#9EAF8C]">
+      <a href="/" className="text-xl text-[#E2725B] bg-white m-2 px-8 py-2 rounded-lg">
+        Sell4Impact
       </a>
-      <div className="flex flex-row ">
-        <a href="/login" className="p-3 hover:bg-neutral-700 hover:text-white">
+      {/* <div className="flex flex-row ">
+        <a href="/login" className="p- hover:text-white">
           Login Page
         </a>
-
-        {/* change /error-page to anything and it will still lead to error page */}
-        <a href="/error-page" className="p-3 hover:bg-neutral-700 hover:text-white">
+        <a href="/error-page" className="p-3 hover:text-white">
           Error Page
         </a>
-      </div>
+      </div> */}
     </nav>
   );
 };
