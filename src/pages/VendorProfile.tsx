@@ -35,7 +35,8 @@ const VendorProfile = () => {
         price={24.99}
         date={dummyData}
         img={"../assests/throw-blanket.png"}
-        vendor={true}
+        role={"Vendor"}
+        category={"Desk"}
       />
 
       {
@@ -83,7 +84,7 @@ const VendorProfile = () => {
             - date text
               example: "Added 7 April 2026"
             - button for editing item details
-          - for the vendor page, vendor should be true
+          - for the vendor page, role should be "Vendor"
           - multiple item cards can be rendered using mock data
 
         TODO:
