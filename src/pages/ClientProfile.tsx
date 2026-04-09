@@ -34,7 +34,8 @@ const ClientProfile = () => {
         price={24.99}
         date={dummyData}
         img={"../assests/throw-blanket.png"}
-        vendor={false}
+        role={"Client"}
+        category={"Desk"}
       />
 
       {
@@ -79,7 +80,7 @@ const ClientProfile = () => {
             - date text
               example: "Added 7 April 2026"
             - button for viewing product details
-          - for the client page, vendor should be false!
+          - for the client page, role should be "Client"
           - multiple item cards can be rendered using mock data
 
         TODO:
