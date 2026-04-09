@@ -21,7 +21,7 @@ const VendorProfile = () => {
         name = {"sponge bob"}
         role = {"Vendor"}
         desc = {"5 items sold"}
-        img = {"../assests/profile-pic.png"}
+        img = {"../assets/profile-pic.png"}
       />
 
       <ProfileTab // you can delete this, i just put it here so it would stop giving error
@@ -41,49 +41,75 @@ const VendorProfile = () => {
       {
       /*
         PAGE GOAL:
-        This page is the vendor profile page. It should show the vendor's
-        information and the items they are selling or managing.
+        This page represents the vendor profile page. It should display the
+        vendor's profile information, navigation tabs, and item cards based on
+        the updated design.
 
-        Based on the design, this page should include:
-        1. A profile header section
-           - profile picture placeholder
-           - vendor name
-           - role label (Vendor)
-           - seller rating / seller info text
+        Based on the updated design, this page should include:
 
-        2. A navigation/tab section
-           - Items
-           - Drafts
-           - Sold
+        1. Navbar component
+          - appears at the top of the page
+          - should include:
+            - Sell4Impact logo/title on the left
+            - home icon on the right
+            - profile icon on the right
 
-        3. A product display section
-           - show listed items
-           - each item card should eventually show:
-             * image
-             * price
-             * item title
+        2. ProfileHeader component
+          - should display:
+            - profile picture/initials placeholder
+            - vendor name
+            - role label ("Vendor")
+            - short seller summary text
+              example: "4.6 avg rating | 5 items sold"
+          - the profile image can be a real image or initials placeholder for now
+
+        3. ProfileTab component
+          - should display three tabs:
+            - Items
+            - Drafts
+            - Sold
+          - Items should appear as the active tab for now
+          - active tab styling can be static for now
+
+        4. ItemCard component(s)
+          - this section should display the vendor's items in the selected tab
+          - based on the updated design, each card should include:
+            - item image on the left
+            - delete/trash icon in the top-left area of the item image
+            - item title
+            - item price
+            - category/tag labels
+              example: "Desk"
+            - date text
+              example: "Added 7 April 2026"
+            - button for editing item details
+          - for the vendor page, vendor should be true
+          - multiple item cards can be rendered using mock data
 
         TODO:
-        - Build the header section based on the figma
-        - Add placeholder seller image/profile circle
-        - Add tabs for Items, Drafts, and Sold
-        - Highlight the active tab (can be static for now)
-        - Add a listings section underneath the tabs
-        - Can use mock data for now!
+        - Arrange the page vertically in this order:
+          Navbar -> ProfileHeader -> ProfileTab -> ItemCard section
+        - Match spacing, colors, and proportions from the updated figma design
+        - Use mock data for now
+        - Render multiple ItemCard components if needed to better reflect the design
+        - Keep Items as the default highlighted tab
 
         NOTES:
-        - Focus on frontend and the UI only!
-        - Do not implement full edit/delete functionality yet
-        - Do not connect to Firestore yet
-        - Tabs can be static for now if needed
-        - You can find types for everything in types.ts, if needed
-        - we are using Tailwind CSS
+        - Focus on frontend and UI only
+        - No backend or Firebase logic is needed yet
+        - Do not implement functional tab switching yet
+        - Do not implement delete/edit button functionality yet
+        - You can assume props are passed in correctly
+        - Types for everything can be found in types.ts
+        - We are using Tailwind CSS!
 
         LATER:
-        - Items tab should show active listings
-        - Drafts tab should show unpublished listings
-        - Sold tab should show sold items
-        - Vendor information can be pulled from Firebase Auth / Firestore
+        - Tab switching should update which item list is shown
+        - Data should come from Firebase
+        - Delete icon should remove items from the relevant section
+        - "Edit Item Details" should allow vendors to update their listings
+        - Drafts tab should show unpublished items
+        - Sold tab should show sold items  
       */
       }
 
