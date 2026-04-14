@@ -19,6 +19,19 @@ const SignUpPage = () => {
 
   const navigate = useNavigate();
 
+  // TODO
+
+  /*
+  const handleSignUp = async (e: React.FormEvent) => {
+ 
+    try {
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  */
+
   function handleClick() {
     setIsClient(!isClient);
     setIsVendor(!isVendor);
