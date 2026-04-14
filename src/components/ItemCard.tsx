@@ -1,72 +1,41 @@
-import { type Item } from "../types"; 
+import { type Item } from "../types";
 
-const ItemCard = ({title, price, date, img, role, category}: Item) => {
+import { FaTrash } from "react-icons/fa";
+import { FaChevronRight } from "react-icons/fa";
 
-	return (
-    <> 
-      
-      <h1>{title}{price}{date.day}{img}{role}{category}</h1> // you can delete this, I just put it here so it would stop giving error
-      {
-      
-      /*
-        COMPONENT GOAL:
-        This component represents each item card when previewing items in, for example,
-        the client or vendor profile. It should show the item price, picture of item,
-        item title, the date the item was put on sale, a category, and a button for 
-        either "View Product Details" or "Edit Item Details" (more on this later)
+const ItemCard = ({ title, price, date, img, role, category }: Item) => {
+  const isVendor = role === "Vendor";
 
-        Based on the design, this component should include:
-        1. Title of item
-          - title is type string
+  return (
+    <div className="flex items-stretch w-full bg-[#fffcf3] rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
 
-        2. Price of item
-          - price is type number
+      <div className="relative w-28 h-28 flex-shrink-0 self-center m-3 rounded-lg overflow-hidden bg-stone-100">
+        <img src={img} alt={title} className="w-full h-full object-cover" />
+        <button className="absolute top-1 left-1 w-5 h-5 flex items-center justify-center bg-white rounded-sm shadow" aria-label="Delete item">
+          <FaTrash size={10} color="#e2725b" />
+        </button>
+      </div>
 
-        3. Date that the item was put on sale
-          - date is an interface that has the following components
-            - day of type number
-            - month of type string
-            - year of type number
-        
-        4. Image of the item
-          - img is type string that represents the image path to the image
-          - I added a sample item image in the images folder so you can test it
-        
-        5. Category of item
-          - category is type string that represents the category of item (e.g. desk, bed, closet)
-          - note that on the Figma, it shows multiple categories for each item
-            we will for now just focus on ONE category. So no need to focus on having multiple
+      <div className="flex flex-col justify-center gap-1.5 flex-1 py-3 pr-2">
+        <p className="text-[#40532d] font-semibold text-sm leading-tight line-clamp-1">{title}</p>
 
-        6. a delete button
+        <div className="flex flex-wrap gap-1">
+          <span className="bg-[#e2725b] text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
+            ${price.toFixed(0)}
+          </span>
+          <span className="bg-[#eaecdc] text-[#7e9169] text-[10px] font-semibold px-2 py-0.5 rounded-md capitalize">
+            {category}
+          </span>
+        </div>
 
-        7. a button to view or edit details
-          - role is type UserRole. Use this to determine whether this ItemCard is being viewed
-            on the client side or vendor side. If it is being viewed on the client side, then the 
-            message should be "View Product Details". If viewed on vendor side, then "Edit Item Details"
-        
-        TODO:
-        - implement all the parts of this component, following the Figma design and color style
-        - everything can be static for now
-          - nothing needs to happen when trying to click on the item (for now...)
-          - nothing needs to happen when trying to click on the edit icon (for now...)
+        <p className="text-[#6b8f5e] text-[10px]">Added {date.day} {date.month} {date.year}</p>
 
-        NOTES:
-        - Focus on frontend and the UI only!
-        - Do not implement full edit/delete functionality yet
-        - Buttons can be static for now
-        - you can assume all the data given is in the correct format
-        - you can find the types for everything in types.ts
-        - we are using Tailwind CSS
-
-        LATER:
-        - users should be able to click on the edit/view buttons, redirecting them to the item page
-        - multiple tags/categories if we have time
-      */
-      
-      }
-
-  	</>
-
+        <button className="mt-0.5 self-start flex items-center gap-1 bg-[#8fac7f] hover:bg-[#7a9669] text-white text-[10px] font-semibold px-3 py-1 rounded-md">
+          {"Edit Item Details"}
+          <FaChevronRight size={8} />
+        </button>
+      </div>
+    </div>
   );
 };
 
