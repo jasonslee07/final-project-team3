@@ -8,6 +8,7 @@ export default function ForgotPassword() {
   const [email, setEmail] = useState<string>("");
   const [sent, setSent] = useState<boolean>(false);
 
+  // when a user resets the password, use firebase API to send an email
   const handleReset = async () => {
     try {
       await sendPasswordResetEmail(auth, email);

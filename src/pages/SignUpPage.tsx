@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase";
-import type { UserData, UserRole } from "../types/types";
+import type { User, UserRole } from "../types/backend-types";
 import { useNavigate } from "react-router";
 
 const SignUpPage = () => {
@@ -19,19 +19,6 @@ const SignUpPage = () => {
 
   const navigate = useNavigate();
 
-  // TODO
-
-  /*
-  const handleSignUp = async (e: React.FormEvent) => {
- 
-    try {
-      
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  */
-
   function handleClick() {
     setIsClient(!isClient);
     setIsVendor(!isVendor);
@@ -39,14 +26,16 @@ const SignUpPage = () => {
     setRole(role === "Client" ? "Vendor" : "Client");
   }
 
+  // Create a new user with all the data that is given through the form
   const handleAuth = async () => {
     try {
       const userCred = await createUserWithEmailAndPassword(auth, email, password);
-      const defaultData: UserData = {
+      const defaultData: User = {
         role: role,
         firstName: firstName,
         lastName: lastName,
         email: email,
+        profileImg: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
       };
       await setDoc(doc(db, "users", userCred.user.uid), defaultData);
       navigate("/");

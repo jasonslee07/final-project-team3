@@ -2,8 +2,7 @@ import { useState } from "react";
 import Navbar from "../components/Navbar";
 
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { setDoc, doc } from "firebase/firestore";
-import { auth, db } from "../firebase/firebase";
+import { auth } from "../firebase/firebase";
 import { useNavigate } from "react-router";
 
 const LoginPage = () => {
@@ -12,11 +11,12 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
 
+  // let the user log in and navigate to the page
   const handleAuth = async () => {
     try {
-      console.log("Trying to log in user");
+      // console.log("Trying to log in user"); // used for debugging
       await signInWithEmailAndPassword(auth, email, password);
-      console.log("Logged in!");
+      // console.log("Logged in!"); // used for debugging
       navigate("/");
     } catch (error: any) {
       alert(error.message);

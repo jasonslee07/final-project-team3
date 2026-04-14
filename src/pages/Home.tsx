@@ -1,21 +1,26 @@
 import Navbar from "../components/Navbar";
 
 import { useEffect, useState } from "react";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase";
-import type { UserData } from "../types/types";
+import type { User } from "../types/backend-types";
 import { signOut } from "firebase/auth";
 import { useAuth } from "../context/AuthContext";
-import { onAuthStateChanged } from "firebase/auth";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 
 const Home = () => {
+  /**
+   * Define the useState variables to get current users and store data
+   */
   const { currentUser } = useAuth();
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   /**
    * Taken from Dashboard.tsx on week09 examples
+   *
+   * if the user isn't defined, don't move forward
+   * if the user IS defined, get a reference to the user and set the data
    */
   useEffect(() => {
     if (!currentUser) {
@@ -28,7 +33,7 @@ const Home = () => {
         const ref = doc(db, "users", currentUser.uid);
         const snap = await getDoc(ref);
         if (snap.exists()) {
-          const data = snap.data() as UserData;
+          const data = snap.data() as User;
           setUserData(data);
         }
       } catch (error) {
@@ -41,6 +46,10 @@ const Home = () => {
     fetchUserData();
   }, [currentUser]);
 
+  /**
+   * if a user want's to log out, let them log out :)
+   * reload the page to re render the UI for the "/" page
+   */
   const handleLogout = async () => {
     try {
       await signOut(auth);
