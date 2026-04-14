@@ -2,7 +2,7 @@ import Navbar from "../components/Navbar";
 import ItemCard from "../components/ItemCard";
 import ProfileHeader from "../components/ProfileHeader"
 import ProfileTab from "../components/ProfileTab"
-import { type ItemDate } from "../types"; 
+import { type ItemDate } from "../types/frontend-types"; 
 
 const dummyData: ItemDate = {
   day: 7,

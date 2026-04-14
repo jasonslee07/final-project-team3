@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { type Tabs } from "../types";
+import { type Tabs } from "../types/frontend-types";
 
 const ProfileTab = ({ tab1, tab2, tab3 }: Tabs) => {
   const [active, setActive] = useState(0);

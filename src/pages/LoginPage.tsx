@@ -1,6 +1,39 @@
 import Navbar from "../components/Navbar";
 
+// TODO
+
+/*
+import { useState } from "react";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
+import { auth, db } from "../firebase/firebase";
+import type { UserData } from "../types/types";
+import { Link, useNavigate } from "react-router";
+*/
+
 const LoginPage = () => {
+
+  // TODO
+  
+  /*
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [signup, setSignup] = useState(false);
+  const navigate = useNavigate();
+
+  const handleAuth = async () => {
+    try {
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  */
+
+
   return (
     <>
       <div className="flex flex-col h-screen">
