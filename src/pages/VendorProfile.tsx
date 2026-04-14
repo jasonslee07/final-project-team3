@@ -13,41 +13,44 @@ const dummyData: ItemDate = {
 const VendorProfile = () => {
 
   return (
-    <div className="min-h-screen bg-[#d7d4dd] flex justify-center py-6">
-      <div className="w-[92%] max-w-6xl bg-[#dfe3cf] min-h-screen">
-        <Navbar />
+    <>
 
-        <div className="h-7 bg-[#f6f3eb]" />
+      <Navbar />
 
-        <section className="bg-[#d9dcc9] px-14 py-8">
-          <ProfileHeader
-            name={"Name"}
-            role={"Vendor"}
-            desc={"4.6 avg rating | 5 items sold"}
-            img={"../assets/profile-pic.png"}
-          />
-        </section>
+      <ProfileHeader
+        name = {"sponge bob"}
+        role = {"Vendor"}
+        desc = {"5 items sold"}
+        img = {"/src/assests/profile-pic.png"}
+      />
 
-        <section className="bg-[#f7f3eb] pt-8">
-          <ProfileTab tab1={"Items"} tab2={"Drafts"} tab3={"Sold"} />
-          <div className="mt-2 h-1 w-full bg-[#e6765b]" />
-        </section>
+      <ProfileTab
+        tab1 = {"Items"}
+        tab2 = {"Drafts"}
+        tab3 = {"Sold"}
+      />
 
-        <section className="bg-[#dfe3cf] px-20 py-8">
-          <div className="flex flex-col gap-8">
-            <ItemCard
-              title={"Salt lamp"}
-              price={18}
-              date={dummyData}
-              img={"../assets/throw-blanket.png"}
-              vendor={true}
-            />
-          </div>
-        </section>
+      <div className="min-h-screen bg-[#d3d6ba] flex flex-col gap-3 px-4 py-4">
+        <ItemCard
+          title={"Blanket"}
+          price={24.99}
+          date={dummyData}
+          img={"/src/assests/throw-blanket.png"}
+          role={"Vendor"}
+          category={"Desk"}
+        />
+        <ItemCard
+          title={"Salt Lamp"}
+          price={14.99}
+          date={dummyData}
+          img={"/src/assests/salt-lamp.png"}
+          role={"Vendor"}
+          category={"Bedroom"}
+        />
       </div>
-    </div>
-    
 
+      <h1 className="text-2xl font-bold flex justify-center">Vendor Profile!</h1>
+    </>
   );
 };
 
