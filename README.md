@@ -41,10 +41,6 @@ The goal of Sell4Impact is to:
 
 ## Project Structure
 
-src/
-components/ // reusable UI components (Navbar, ItemCard, etc.)
-pages/ // application pages (Home, Login, Profiles, etc.)
-App.tsx // routing configuration
 
 ---
 

@@ -1,0 +1,29 @@
+[
+  {
+    "title": "blanket",
+    "price": 15,
+    "desc": "cozy",
+    "category": "Bed",
+    "img": "path",
+    "vendorID": "id-1",
+    "status": "Draft"
+  },
+  {
+    "title": "lamp",
+    "price": 10,
+    "desc": "bright",
+    "category": "Desk",
+    "img": "path",
+    "vendorID": "id-2",
+    "status": "Active"
+  },
+  {
+    "title": "whiteboard",
+    "price": 30,
+    "desc": "big",
+    "category": "Wall",
+    "img": "path",
+    "vendorID": "id-3",
+    "status": "Sold"
+  }
+]

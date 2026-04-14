@@ -24,6 +24,7 @@ export interface ProfileInfo {
   img: string;   
 }
 
+
 export interface Tabs {
   tab1: string
   tab2: string
