@@ -1,14 +1,46 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
+import { auth, db } from "../firebase/firebase";
+import type { UserData, UserRole } from "../types/types";
+import { Link, useNavigate } from "react-router";
+
 const SignUpPage = () => {
   const [isClient, setIsClient] = useState<boolean>(true);
   const [isVendor, setIsVendor] = useState<boolean>(false);
+  const [role, setRole] = useState<UserRole>("Client");
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const navigate = useNavigate();
 
   function handleClick() {
     setIsClient(!isClient);
     setIsVendor(!isVendor);
+
+    setRole(role === "Client" ? "Vendor" : "Client");
   }
+
+  const handleAuth = async () => {
+    try {
+      const userCred = await createUserWithEmailAndPassword(auth, email, password);
+      const defaultData: UserData = {
+        role: role,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+      };
+      await setDoc(doc(db, "users", userCred.user.uid), defaultData);
+      navigate("/");
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
   return (
     <>
       <div className="flex flex-col h-screen">
@@ -26,11 +58,32 @@ const SignUpPage = () => {
                 </button>
               </div>
               <p className="text-xl text-[#40532D]">I want to join as a...</p>
-              <input type="text" placeholder="First Name" required className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA] focus:text-[#AABA99]" />
-              <input type="text" placeholder="Last Name" required className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA] focus:text-[#AABA99]" />
-              <input type="email" placeholder="Email" required className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA]" />
-              <input type="password" placeholder="Password" required className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA]" />
-              <button type="submit" className="py-3 bg-[#E2725C] text-white rounded-md w-full">
+              <input
+                type="text"
+                placeholder="First Name"
+                required
+                className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA] focus:text-[#AABA99]"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Last Name"
+                required
+                className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA] focus:text-[#AABA99]"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+              <input type="email" placeholder="Email" required className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA]" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input
+                type="password"
+                placeholder="Password"
+                required
+                className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA]"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button type="submit" className="py-3 bg-[#E2725C] text-white rounded-md w-full" onClick={handleAuth}>
                 Sign up
               </button>
             </form>
