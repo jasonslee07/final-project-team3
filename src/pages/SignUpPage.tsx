@@ -2,11 +2,11 @@ import { useState } from "react";
 import Navbar from "../components/Navbar";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase";
 import type { UserData, UserRole } from "../types/types";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 const SignUpPage = () => {
   const [isClient, setIsClient] = useState<boolean>(true);
@@ -83,7 +83,7 @@ const SignUpPage = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <button type="submit" className="py-3 bg-[#E2725C] text-white rounded-md w-full" onClick={handleAuth}>
+              <button type="button" className="py-3 bg-[#E2725C] text-white rounded-md w-full" onClick={handleAuth}>
                 Sign up
               </button>
             </form>
