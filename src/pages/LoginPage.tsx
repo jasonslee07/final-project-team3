@@ -12,8 +12,6 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
 
-  const sleep = (ms: any) => new Promise((resolve) => setTimeout(resolve, ms));
-
   const handleAuth = async () => {
     try {
       console.log("Trying to log in user");
