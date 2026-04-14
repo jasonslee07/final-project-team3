@@ -11,9 +11,7 @@ const ProfileTab = ({ tab1, tab2, tab3 }: Tabs) => {
         <button
           key={i}
           onClick={() => setActive(i)}
-          className={`flex-1 py-3 text-sm font-semibold transition-colors duration-150 ${
-            active === i ? "text-[#c0392b]" : "text-[#6b8f5e] hover:text-[#40532d]"
-          }`}
+          className={`flex-1 py-3 text-sm font-semibold transition-colors duration-150 ${active === i ? "text-[#c0392b]" : "text-[#6b8f5e] hover:text-[#40532d]"}`}
         >
           {tab}
         </button>

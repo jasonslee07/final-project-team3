@@ -1,38 +1,27 @@
+import { useState } from "react";
 import Navbar from "../components/Navbar";
 
-// TODO
-
-/*
-import { useState } from "react";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { setDoc, doc } from "firebase/firestore";
-import { auth, db } from "../firebase/firebase";
-import type { UserData } from "../types/types";
-import { Link, useNavigate } from "react-router";
-*/
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase/firebase";
+import { useNavigate } from "react-router";
 
 const LoginPage = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
-  // TODO
-  
-  /*
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [signup, setSignup] = useState(false);
   const navigate = useNavigate();
 
+  // let the user log in and navigate to the page
   const handleAuth = async () => {
     try {
-      
-    } catch (error) {
-      console.log(error);
+      // console.log("Trying to log in user"); // used for debugging
+      await signInWithEmailAndPassword(auth, email, password);
+      // console.log("Logged in!"); // used for debugging
+      navigate("/");
+    } catch (error: any) {
+      alert(error.message);
     }
   };
-  */
-
 
   return (
     <>
@@ -42,9 +31,16 @@ const LoginPage = () => {
           <h1 className="text-3xl text-[#E2725B] mt-8 mb-4 flex justify-center">Login Page!</h1>
           <div className="bg-linear-to-b from-[#EAECDC] to-[#D3D6BA] w-full border-t-8 flex-1 border-[#E2725B] flex flex-col pt-10 items-center">
             <form action="" className="flex flex-col justify-center items-center w-90 gap-8">
-              <input type="email" placeholder="Email" required className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA]" />
-              <input type="password" placeholder="Password" required className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA]" />
-              <button type="submit" className="py-3 bg-[#E2725C] text-white rounded-md w-full">
+              <input type="email" placeholder="Email" required className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA]" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input
+                type="password"
+                placeholder="Password"
+                required
+                className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA]"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button type="button" className="py-3 bg-[#E2725C] text-white rounded-md w-full" onClick={handleAuth}>
                 Log in
               </button>
             </form>
@@ -54,7 +50,6 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
-      
     </>
   );
 };
