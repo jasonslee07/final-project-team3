@@ -1,4 +1,4 @@
-import { type ProfileInfo } from "../types";
+import { type ProfileInfo } from "../types/frontend-types";
 
 const ProfileHeader = ({ name, role, desc }: ProfileInfo) => {
   const initials = name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);

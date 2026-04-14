@@ -1,6 +1,31 @@
 import Navbar from "../components/Navbar";
 
+// TODO
+
+/*
+import { useState } from "react";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "../firebase/firebase";
+import { Link } from "react-router";
+*/
+
 const ForgotPasswordPage = () => {
+
+  // TODO
+  
+  /*
+  const [email, setEmail] = useState("");
+  const [sent, setSent] = useState(false);
+
+  const handleReset = async () => {
+    try {
+      
+    } catch (error) {
+      console.log(error)
+    }
+  };
+  */
+
   return (
     <>
       <div className="flex flex-col h-screen">

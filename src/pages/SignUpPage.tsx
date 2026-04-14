@@ -1,14 +1,38 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 
+// TODO
+
+/*
+import { auth, db } from "../firebase/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { User } from "../types/backend-types";
+*/
+
 const SignUpPage = () => {
+  
   const [isClient, setIsClient] = useState<boolean>(true);
   const [isVendor, setIsVendor] = useState<boolean>(false);
+
+  // TODO
+
+  /*
+  const handleSignUp = async (e: React.FormEvent) => {
+ 
+    try {
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  */
 
   function handleClick() {
     setIsClient(!isClient);
     setIsVendor(!isVendor);
   }
+
   return (
     <>
       <div className="flex flex-col h-screen">

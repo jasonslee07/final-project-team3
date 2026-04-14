@@ -1,0 +1,21 @@
+[
+  {
+    "firstName": "Sponge",
+    "lastName": "Bob",
+    "email": "spongebob@gmail.com",
+    "profileImg": "path",
+    "role": "Client",
+    "cart": [
+      "item01",
+      "item02",
+      "item03"
+    ]
+  },
+  {
+    "firstName": "Patrick",
+    "lastName": "Star",
+    "email": "patrickstar@gmail.com",
+    "profileImg": "path",
+    "role": "Vendor"
+  }
+]

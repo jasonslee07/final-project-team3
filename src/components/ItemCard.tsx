@@ -1,4 +1,4 @@
-import { type Item } from "../types";
+import { type Item } from "../types/frontend-types";
 
 import { FaTrash } from "react-icons/fa";
 import { FaChevronRight } from "react-icons/fa";
