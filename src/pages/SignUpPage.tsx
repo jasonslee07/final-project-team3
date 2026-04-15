@@ -85,7 +85,7 @@ const SignUpPage = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <button type="button" className="py-3 bg-[#E2725C] text-white rounded-md w-full" onClick={handleAuth}>
+              <button type="button" className="py-3 bg-[#E2725C] text-white rounded-md w-full hover:bg-[#e05135] hover:-translate-y-1 ease-in-out duration-100" onClick={handleAuth}>
                 Sign up
               </button>
             </form>

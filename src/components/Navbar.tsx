@@ -1,27 +1,74 @@
+import { useEffect, useState } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "../firebase/firebase";
+import { signOut } from "firebase/auth";
+import type { User } from "../types/backend-types";
+import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router";
+
 const Navbar = () => {
+  /**
+   * if a user want's to log out, let them log out :)
+   * reload the page to re render the UI for the "/" page
+   */
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+
+  /**
+   * Define the useState variables to get current users and store data
+   */
+  const { currentUser } = useAuth();
+  const [userData, setUserData] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  /**
+   * Taken from Dashboard.tsx on week09 examples
+   *
+   * if the user isn't defined, don't move forward
+   * if the user IS defined, get a reference to the user and set the data
+   */
+  useEffect(() => {
+    if (!currentUser) {
+      setIsLoading(false);
+      return;
+    }
+
+    const fetchUserData = async () => {
+      try {
+        const ref = doc(db, "users", currentUser.uid);
+        const snap = await getDoc(ref);
+        if (snap.exists()) {
+          const data = snap.data() as User;
+          setUserData(data);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [currentUser]);
   return (
     <nav className="flex justify-between bg-linear-to-b from-[#AABA99] to-[#9EAF8C]">
       <a href="/" className="text-xl text-[#E2725B] bg-white m-2 px-8 py-2 rounded-lg">
         Sell4Impact
       </a>
-      {/*
-      For Future Reference: 
-
-      if user is logged in, add a few extra pieces to the login page on the other side
-      One button for home page
-      One button for User Profile
-      */}
-      {/* <div className="flex flex-row ">
-        <a href="/login" className="p- hover:text-white">
-          Login Page
-        </a>
-        <a href="/error-page" className="p-3 hover:text-white">
-          Error Page
-        </a>
-      </div> */}
+      {userData ? (
+        <button className="flex justify-center items-center m-2 px-8 py-2 bg-[#E2725C] hover:bg-[#e26047] hover:-translate-y-1 ease-in-out duration-100 text-white rounded-md" onClick={handleLogout}>
+          Log Out
+        </button>
+      ) : (
+        <></>
+      )}
     </nav>
-
-
   );
 };
 
