@@ -71,8 +71,8 @@ function App() {
           <Route path="/sign-up" element={<SignUpPage />}></Route>
           <Route path="/forgot-password" element={<ForgotPasswordPage />}></Route>
           <Route path="*" element={<PageNotFound />}></Route>
-          <Route path="/client-profile" element={<ClientProfile />}></Route>
-          <Route path="/vendor-profile" element={<VendorProfile />}></Route>
+          {/* <Route path="/client-profile" element={<ClientProfile />}></Route>
+          <Route path="/vendor-profile" element={<VendorProfile />}></Route> */}
           <Route path="/item-page" element={<ItemPage />}></Route>
         </Routes>
       </BrowserRouter>
