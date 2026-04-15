@@ -78,12 +78,15 @@ const Home = () => {
                 </button>
               </>
             ) : (
-              <button className="flex justify-center items-center py-4 bg-[#E2725C] text-white rounded-md">
-                <Link to="/login">{`Log In`}</Link>
-              </button>
+              <Link to="/login" className="flex justify-center items-center py-4 bg-[#E2725C] text-white rounded-md hover:bg-[#e05135] hover:-translate-y-1 ease-in-out duration-100">
+                Log In
+              </Link>
             )}
 
-            <Link to="/sign-up" className="flex justify-center items-center py-3 bg-white border-[#9DAF8B] border-4 rounded-md text-[#9DAF8B]">
+            <Link
+              to="/sign-up"
+              className="flex justify-center items-center py-3 bg-white border-[#9DAF8B] border-4 rounded-md text-[#9DAF8B] hover:bg-[#82a95b] hover:border-[#82a95b] hover:text-white hover:-translate-y-1 ease-in-out duration-100"
+            >
               Get Started
             </Link>
           </div>
