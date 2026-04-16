@@ -61,9 +61,13 @@ const Navbar = () => {
   }, [currentUser]);
   return (
     <nav className="flex justify-between bg-linear-to-b from-[#AABA99] to-[#9EAF8C]">
-      <a href="/" className="text-xl text-[#E2725B] bg-white m-2 px-8 py-2 rounded-lg">
-        Sell4Impact
-      </a>
+      {userData?.role === "Vendor" ? (
+        <div className="text-xl text-[#E2725B] bg-white m-2 px-8 py-2 rounded-lg">Sell4Impact</div>
+      ) : (
+        <a href="/" className="text-xl text-[#E2725B] bg-white m-2 px-8 py-2 rounded-lg">
+          Sell4Impact
+        </a>
+      )}
       {userData ? (
         <div className="flex items-center gap-2">
           <Link to="/" className="">
@@ -72,9 +76,12 @@ const Navbar = () => {
           <Link to="/settings" className="">
             <FontAwesomeIcon icon={faCircleUser} size="2x" fill="white" className="hover:-translate-y-1" />
           </Link>
-          <button className="flex justify-center items-center m-2 px-8 py-2 bg-[#E2725C] hover:bg-[#e26047] hover:-translate-y-1 ease-in-out duration-100 text-white rounded-md" onClick={handleLogout}>
-            Log Out
-          </button>
+          <Link to="/">
+            <div className="flex justify-center items-center m-2 px-8 py-2 bg-[#E2725C] hover:bg-[#e26047] hover:-translate-y-1 ease-in-out duration-100 text-white rounded-md" onClick={handleLogout}>
+              {" "}
+              Log Out{" "}
+            </div>
+          </Link>
         </div>
       ) : (
         <></>
