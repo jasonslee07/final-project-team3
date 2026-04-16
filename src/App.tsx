@@ -7,6 +7,7 @@ import VendorProfile from "./pages/VendorProfile";
 import ItemPage from "./pages/ItemPage";
 import SignUpPage from "./pages/SignUpPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import SettingsPage from "./pages/SettingsPage";
 
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
@@ -67,6 +68,7 @@ function App() {
           ) : (
             <Route path="/" element={<Home />}></Route>
           )}
+          <Route path="/settings" element={<SettingsPage />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/sign-up" element={<SignUpPage />}></Route>
           <Route path="/forgot-password" element={<ForgotPasswordPage />}></Route>

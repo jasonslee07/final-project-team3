@@ -53,7 +53,7 @@ const Home = () => {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      window.location.reload();
+      window.location.reload(); // refresh the page
     } catch (error) {
       console.error("Error signing out:", error);
     }
