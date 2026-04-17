@@ -5,6 +5,7 @@ import PageNotFound from "./components/PageNotFound";
 import ClientProfile from "./pages/ClientProfile";
 import VendorProfile from "./pages/VendorProfile";
 import ItemPage from "./pages/ItemPage";
+import ItemEditPage from "./pages/ItemEditPage";
 import SignUpPage from "./pages/SignUpPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 
@@ -74,6 +75,7 @@ function App() {
           {/* <Route path="/client-profile" element={<ClientProfile />}></Route>
           <Route path="/vendor-profile" element={<VendorProfile />}></Route> */}
           <Route path="/item-page" element={<ItemPage />}></Route>
+          <Route path="/edit-item" element={<ItemEditPage />}></Route>
         </Routes>
       </BrowserRouter>
     </>
