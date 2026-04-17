@@ -53,27 +53,33 @@ const SettingsPage = () => {
 
   return (
     <>
-      <Navbar />
-      <div className="min-h-screen bg-[#d3d6ba] flex flex-col gap-3 px-4 py-4">
-        <div>Settings Page</div>
-        <input
-          type="text"
-          placeholder="First Name"
-          className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA] focus:text-[#AABA99]"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Last Name"
-          className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA] focus:text-[#AABA99]"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
-        <input type="password" placeholder="Password" className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA]" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button type="button" className="py-3 bg-[#E2725C] text-white rounded-md w-full hover:bg-[#e05135] hover:-translate-y-1 ease-in-out duration-100" onClick={handleUpdate}>
-          Save Changes
-        </button>
+      <div className="flex flex-col h-screen">
+        <Navbar />
+        <div className="flex flex-col flex-1">
+          <h1 className="text-3xl text-[#E2725B] mt-8 mb-4 flex justify-center">Update Details</h1>
+          <div className="bg-linear-to-b from-[#EAECDC] to-[#D3D6BA] w-full border-t-8 flex-1 border-[#E2725B] flex flex-col pt-10 items-center">
+            <form action="" className="flex flex-col justify-center items-center w-90 gap-8">
+              <input
+                type="text"
+                placeholder="First Name"
+                className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA] focus:text-[#AABA99]"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Last Name"
+                className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA] focus:text-[#AABA99]"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+              <input type="password" placeholder="Password" className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA]" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <button type="button" className="py-3 bg-[#E2725C] text-white rounded-md w-full hover:bg-[#e05135] hover:-translate-y-1 ease-in-out duration-100" onClick={handleUpdate}>
+                Save Changes
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
     </>
   );
