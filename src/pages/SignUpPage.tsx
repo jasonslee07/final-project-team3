@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithGoogle } from "../firebase/firebase";
 import { setDoc, doc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase";
 import type { User, UserRole } from "../types/backend-types";
@@ -43,6 +44,29 @@ const SignUpPage = () => {
       alert(error.message);
     }
   };
+
+  const handleGoogleAuth = async () => {
+    try {
+      const user = await signInWithGoogle();
+      // assign a firstName as the first word
+      // assign last name as everything but the first word
+      const [firstName, ...rest] = (user.displayName ?? "").split(" ");
+      const lastName = rest.join(" ");
+
+      const defaultData: User = {
+        role: role, // uses whichever Client/Vendor toggle is selected
+        firstName: firstName,
+        lastName: lastName,
+        email: user.email ?? "",
+        profileImg: user.photoURL ?? "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+      };
+      await setDoc(doc(db, "users", user.uid), defaultData);
+      navigate("/");
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col h-screen">
@@ -85,6 +109,13 @@ const SignUpPage = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              <button
+                type="button"
+                className="py-3 bg-white border border-gray-300 text-gray-700 rounded-md w-full hover:bg-gray-50 hover:-translate-y-1 ease-in-out duration-100 flex items-center justify-center gap-2"
+                onClick={handleGoogleAuth}
+              >
+                Sign Up with Google
+              </button>
               <button type="button" className="py-3 bg-[#E2725C] text-white rounded-md w-full hover:bg-[#e05135] hover:-translate-y-1 ease-in-out duration-100" onClick={handleAuth}>
                 Sign up
               </button>

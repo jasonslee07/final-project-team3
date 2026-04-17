@@ -2,6 +2,7 @@ import { useState } from "react";
 import Navbar from "../components/Navbar";
 
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithGoogle } from "../firebase/firebase";
 import { auth } from "../firebase/firebase";
 import { useNavigate } from "react-router";
 
@@ -17,6 +18,15 @@ const LoginPage = () => {
       // console.log("Trying to log in user"); // used for debugging
       await signInWithEmailAndPassword(auth, email, password);
       // console.log("Logged in!"); // used for debugging
+      navigate("/");
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+
+  const handleGoogleAuth = async () => {
+    try {
+      await signInWithGoogle();
       navigate("/");
     } catch (error: any) {
       alert(error.message);
@@ -40,6 +50,13 @@ const LoginPage = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              <button
+                type="button"
+                className="py-3 bg-white border border-gray-300 text-gray-700 rounded-md w-full hover:bg-gray-50 hover:-translate-y-1 ease-in-out duration-100 flex items-center justify-center gap-2"
+                onClick={handleGoogleAuth}
+              >
+                Log in with Google
+              </button>
               <button type="button" className="py-3 bg-[#E2725C] text-white rounded-md w-full hover:bg-[#e05135] hover:-translate-y-1 ease-in-out duration-100" onClick={handleAuth}>
                 Log in
               </button>
