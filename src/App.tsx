@@ -62,7 +62,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           {userData ? <Route path="/" element={userData.role === "Client" ? <ClientProfile /> : <VendorProfile />}></Route> : <Route path="/" element={<Home />}></Route>}
-          {userData ? <Route path="/oboarding" element={<OnboardingPage />}></Route> : <Route path="/onboarding" element={<PageNotFound />}></Route>}
+          {currentUser ? <Route path="/onboarding" element={<OnboardingPage />}></Route> : <Route path="/onboarding" element={<PageNotFound />}></Route>}
           {userData ? <Route path="/client-dashboard" element={<ClientDashboard />}></Route> : <Route path="/client-dashboard" element={<PageNotFound />}></Route>}
           {userData ? <Route path="/settings" element={<SettingsPage />}></Route> : <Route path="/settings" element={<PageNotFound />}></Route>}
           {userData ? <Route path="/login" element={<PageNotFound />}></Route> : <Route path="/login" element={<LoginPage />}></Route>}

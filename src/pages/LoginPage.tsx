@@ -3,7 +3,8 @@ import Navbar from "../components/Navbar";
 
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { signInWithGoogle } from "../firebase/firebase";
-import { auth } from "../firebase/firebase";
+import { auth, db } from "../firebase/firebase";
+import { getDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router";
 
 const LoginPage = () => {
@@ -26,12 +27,20 @@ const LoginPage = () => {
 
   const handleGoogleAuth = async () => {
     try {
-      await signInWithGoogle();
-      navigate("/");
+      const userCred = await signInWithGoogle();
+      // Check if a Firestore user doc already exists
+      const userDoc = await getDoc(doc(db, "users", userCred.uid));
+      if (!userDoc.exists()) {
+        // New user — send to onboarding to fill in their details
+        navigate("/onboarding");
+      } else {
+        navigate("/");
+      }
     } catch (error: any) {
       alert(error.message);
     }
   };
+
   return (
     <>
       <div className="flex flex-col h-screen">

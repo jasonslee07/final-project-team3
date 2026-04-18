@@ -47,7 +47,7 @@ const SignUpPage = () => {
 
   const handleGoogleAuth = async () => {
     try {
-      const userCred = await signInWithGoogle();
+      await signInWithGoogle();
       navigate("/onboarding");
     } catch (error: any) {
       alert(error.message);
