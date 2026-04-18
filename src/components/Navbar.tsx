@@ -67,13 +67,13 @@ const Navbar = () => {
       {userData?.role === "Vendor" ? (
         <div className="text-xl text-[#E2725B] bg-white m-2 px-8 py-2 rounded-lg">Sell4Impact</div>
       ) : (
-        <a href="/" className="text-xl text-[#E2725B] bg-white m-2 px-8 py-2 rounded-lg">
+        <a href="/dashboard" className="text-xl text-[#E2725B] bg-white m-2 px-8 py-2 rounded-lg">
           Sell4Impact
         </a>
       )}
       {userData ? (
         <div className="flex items-center gap-2">
-          <Link to="/dashboard" className="">
+          <Link to="/" className="">
             <FontAwesomeIcon icon={faHouse} size="2x" fill="white" className="hover:-translate-y-1" />
           </Link>
           <Link to="/settings" className="">
