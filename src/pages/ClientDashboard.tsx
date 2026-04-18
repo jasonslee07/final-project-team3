@@ -13,7 +13,6 @@ const ClientDashboard = () => {
 
   return (
     <div className="min-h-screen bg-[#c5cfa8]">
-
       <Navbar />
 
       {/* Hero */}
@@ -26,8 +25,6 @@ const ClientDashboard = () => {
           <span className="text-stone-400 text-sm">Search</span>
           <span className="text-stone-300 text-sm">Wall | Floor | Bed | Desk | Other</span>
         </div>
-
-        
       </div>
 
       {/* Divider */}
@@ -39,9 +36,7 @@ const ClientDashboard = () => {
           <div key={i} onClick={() => navigate("/item-page")} className="bg-[#f5f0e8] rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer">
             <div className="w-full aspect-square overflow-hidden bg-stone-100 relative">
               <img src={item.img} alt={item.title} className="w-full h-full object-cover" />
-              <div className="absolute top-2 left-2 bg-white text-[#e2725b] text-[10px] font-bold px-2 py-0.5 rounded-md">
-                ${item.price.toFixed(2)}
-              </div>
+              <div className="absolute top-2 left-2 bg-white text-[#e2725b] text-[10px] font-bold px-2 py-0.5 rounded-md">${item.price.toFixed(2)}</div>
             </div>
             <div className="h-1 bg-[#e2725b]" />
             <div className="px-2 py-2 flex flex-col gap-1">
@@ -51,7 +46,6 @@ const ClientDashboard = () => {
           </div>
         ))}
       </div>
-
     </div>
   );
 };

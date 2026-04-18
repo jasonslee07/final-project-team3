@@ -59,6 +59,7 @@ const Navbar = () => {
 
     fetchUserData();
   }, [currentUser]);
+
   return (
     <nav className="flex justify-between bg-linear-to-b from-[#AABA99] to-[#9EAF8C]">
       {userData?.role === "Vendor" ? (
@@ -70,7 +71,7 @@ const Navbar = () => {
       )}
       {userData ? (
         <div className="flex items-center gap-2">
-          <Link to="/" className="">
+          <Link to="/dashboard" className="">
             <FontAwesomeIcon icon={faHouse} size="2x" fill="white" className="hover:-translate-y-1" />
           </Link>
           <Link to="/settings" className="">
