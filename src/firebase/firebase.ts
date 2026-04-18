@@ -17,13 +17,11 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Cloud Firestore and get a reference to the database
 const db = getFirestore(app);
-
 const auth = getAuth(app);
 
 /**
  * DOCS: https://firebase.google.com/docs/auth/web/google-signin
- *
- * TL;DR: create a new google auth provider and a function to create the user
+ * Create a new google auth provider and a function to create the user
  */
 const provider = new GoogleAuthProvider();
 
