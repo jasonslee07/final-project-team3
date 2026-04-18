@@ -81,8 +81,7 @@ const Navbar = () => {
           </Link>
           <Link to="/">
             <div className="flex justify-center items-center m-2 px-8 py-2 bg-[#E2725C] hover:bg-[#e26047] hover:-translate-y-1 ease-in-out duration-100 text-white rounded-md" onClick={handleLogout}>
-              {" "}
-              Log Out{" "}
+              Log Out
             </div>
           </Link>
         </div>
