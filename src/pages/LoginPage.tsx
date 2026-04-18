@@ -19,7 +19,8 @@ const LoginPage = () => {
       // console.log("Trying to log in user"); // used for debugging
       await signInWithEmailAndPassword(auth, email, password);
       // console.log("Logged in!"); // used for debugging
-      window.location.href = "/";
+      navigate("/");
+      window.location.reload();
     } catch (error: any) {
       alert(error.message);
     }
