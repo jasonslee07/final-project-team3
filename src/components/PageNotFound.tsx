@@ -1,8 +1,8 @@
 const PageNotFound = () => {
   return (
-    <>
-      <h1 className="text-2xl font-bold flex justify-center">Silly goose! This page doesn't exist.</h1>
-    </>
+    <div className="bg-linear-to-b from-[#EAECDC] to-[#D3D6BA] min-h-screen flex justify-center">
+      <h1 className="text-2xl font-bold">Silly goose! This page doesn't exist.</h1>
+    </div>
   );
 };
 
