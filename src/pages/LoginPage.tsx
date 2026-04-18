@@ -19,7 +19,7 @@ const LoginPage = () => {
       // console.log("Trying to log in user"); // used for debugging
       await signInWithEmailAndPassword(auth, email, password);
       // console.log("Logged in!"); // used for debugging
-      navigate("/");
+      window.location.href = "/";
     } catch (error: any) {
       alert(error.message);
     }
@@ -28,10 +28,11 @@ const LoginPage = () => {
   const handleGoogleAuth = async () => {
     try {
       const userCred = await signInWithGoogle();
-      // Check if a Firestore user doc already exists
+      // Check if a user already exists with the login
       const userDoc = await getDoc(doc(db, "users", userCred.uid));
+      // if the user doesn't exist, onboard the user, ohterwise display the data
       if (!userDoc.exists()) {
-        // New user — send to onboarding to fill in their details
+        // console.log("Onboarding User...") // used for debugging
         navigate("/onboarding");
       } else {
         navigate("/");

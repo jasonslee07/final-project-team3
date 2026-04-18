@@ -35,7 +35,7 @@ const OnboardingPage = () => {
         profileImg: user.photoURL ?? "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
       };
       await setDoc(doc(db, "users", user.uid), userData);
-      navigate("/");
+      window.location.href = "/";
     } catch (error: any) {
       alert(error.message);
     } finally {
