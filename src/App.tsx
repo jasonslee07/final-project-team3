@@ -7,6 +7,7 @@ import VendorProfile from "./pages/VendorProfile";
 import ItemPage from "./pages/ItemPage";
 import SignUpPage from "./pages/SignUpPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ClientDashboard from "./pages/ClientDashboard";
 
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
@@ -14,7 +15,7 @@ import { auth, db } from "./firebase/firebase";
 import type { User } from "./types/backend-types";
 import { signOut } from "firebase/auth";
 import { useAuth } from "./context/AuthContext";
-import { Link } from "react-router";
+// import { Link } from "react-router";
 
 function App() {
   /**
@@ -71,9 +72,10 @@ function App() {
           <Route path="/sign-up" element={<SignUpPage />}></Route>
           <Route path="/forgot-password" element={<ForgotPasswordPage />}></Route>
           <Route path="*" element={<PageNotFound />}></Route>
-          {/* <Route path="/client-profile" element={<ClientProfile />}></Route>
-          <Route path="/vendor-profile" element={<VendorProfile />}></Route> */}
+          <Route path="/client-profile" element={<ClientProfile />}></Route>
+          <Route path="/vendor-profile" element={<VendorProfile />}></Route> 
           <Route path="/item-page" element={<ItemPage />}></Route>
+          <Route path="/client-dashboard" element={<ClientDashboard />}></Route>
         </Routes>
       </BrowserRouter>
     </>
