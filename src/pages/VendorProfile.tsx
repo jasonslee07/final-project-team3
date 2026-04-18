@@ -3,6 +3,7 @@ import ItemCard from "../components/ItemCard";
 import ProfileHeader from "../components/ProfileHeader";
 import ProfileTab from "../components/ProfileTab";
 import { type ItemDate } from "../types/frontend-types";
+import { useState } from "react";
 
 const dummyData: ItemDate = {
   day: 7,
@@ -11,17 +12,29 @@ const dummyData: ItemDate = {
 };
 
 const VendorProfile = () => {
+  const [activeTab, setActiveTab] = useState(0);
+
   return (
     <>
       <Navbar />
+      <ProfileHeader
+        name="Sponge Bob"
+        role="Vendor"
+        desc="5 items sold"
+        img="/src/assets/profile-pic.png"
+      />
+      <ProfileTab tab1="Items" tab2="Drafts" tab3="Sold" activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      <ProfileHeader name={"sponge bob"} role={"Vendor"} desc={"5 items sold"} img={"/src/assests/profile-pic.png"} />
-
-      <ProfileTab tab1={"Items"} tab2={"Drafts"} tab3={"Sold"} />
-
-      <div className="min-h-screen bg-[#d3d6ba] flex flex-col gap-3 px-4 py-4">
-        <ItemCard title={"Blanket"} price={24.99} date={dummyData} img={"/src/assests/throw-blanket.png"} role={"Vendor"} category={"Desk"} />
-        <ItemCard title={"Salt Lamp"} price={14.99} date={dummyData} img={"/src/assests/salt-lamp.png"} role={"Vendor"} category={"Bedroom"} />
+      <div className="min-h-screen bg-[#c5cfa8] grid grid-cols-2 gap-3 px-4 py-4 items-start">
+        {activeTab === 0 && (
+          <ItemCard title="Blanket" price={24.99} date={dummyData} img="/src/assets/throw-blanket.png" role="Vendor" category="Desk" />
+        )}
+        {activeTab === 1 && (
+          <ItemCard title="Draft Item" price={9.99} date={dummyData} img="/src/assets/throw-blanket.png" role="Vendor" category="Wall" />
+        )}
+        {activeTab === 2 && (
+          <ItemCard title="Sold Item" price={14.99} date={dummyData} img="/src/assets/salt-lamp.png" role="Client" category="Bed" />
+        )}
       </div>
     </>
   );

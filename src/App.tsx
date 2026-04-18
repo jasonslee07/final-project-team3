@@ -8,14 +8,15 @@ import ItemPage from "./pages/ItemPage";
 import ItemEditPage from "./pages/ItemEditPage";
 import SignUpPage from "./pages/SignUpPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import SettingsPage from "./pages/SettingsPage";
+import OnboardingPage from "./pages/OnboardingPage";
+import ClientDashboard from "./pages/ClientDashboard";
 
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from "./firebase/firebase";
+import { db } from "./firebase/firebase";
 import type { User } from "./types/backend-types";
-import { signOut } from "firebase/auth";
 import { useAuth } from "./context/AuthContext";
-import { Link } from "react-router";
 
 function App() {
   /**
@@ -55,27 +56,21 @@ function App() {
     fetchUserData();
   }, [currentUser]);
 
-  return (
+  return isLoading ? (
+    <>Loading...</>
+  ) : (
     <>
       <BrowserRouter>
         <Routes>
-          {userData ? (
-            userData.role === "Client" ? (
-              <Route path="/" element={<ClientProfile />}></Route>
-            ) : (
-              <Route path="/" element={<VendorProfile />}></Route>
-            )
-          ) : (
-            <Route path="/" element={<Home />}></Route>
-          )}
-          <Route path="/login" element={<LoginPage />}></Route>
-          <Route path="/sign-up" element={<SignUpPage />}></Route>
-          <Route path="/forgot-password" element={<ForgotPasswordPage />}></Route>
+          {userData ? <Route path="/" element={userData.role === "Client" ? <ClientProfile /> : <VendorProfile />}></Route> : <Route path="/" element={<Home />}></Route>}
+          {currentUser ? <Route path="/onboarding" element={<OnboardingPage />}></Route> : <Route path="/onboarding" element={<PageNotFound />}></Route>}
+          {userData ? <Route path="/dashboard" element={<ClientDashboard />}></Route> : <Route path="/client-dashboard" element={<PageNotFound />}></Route>}
+          {userData ? <Route path="/settings" element={<SettingsPage />}></Route> : <Route path="/settings" element={<PageNotFound />}></Route>}
+          {userData ? <Route path="/login" element={<PageNotFound />}></Route> : <Route path="/login" element={<LoginPage />}></Route>}
+          {userData ? <Route path="/sign-up" element={<PageNotFound />}></Route> : <Route path="/sign-up" element={<SignUpPage />}></Route>}
+          {userData ? <Route path="/forgot-password" element={<PageNotFound />}></Route> : <Route path="/forgot-password" element={<ForgotPasswordPage />}></Route>}
+          {userData ? <Route path="/item-page" element={<ItemPage />}></Route> : <Route path="/item-page" element={<PageNotFound />}></Route>}
           <Route path="*" element={<PageNotFound />}></Route>
-          {/* <Route path="/client-profile" element={<ClientProfile />}></Route>
-          <Route path="/vendor-profile" element={<VendorProfile />}></Route> */}
-          <Route path="/item-page" element={<ItemPage />}></Route>
-          <Route path="/edit-item" element={<ItemEditPage />}></Route>
         </Routes>
       </BrowserRouter>
     </>

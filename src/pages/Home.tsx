@@ -53,7 +53,7 @@ const Home = () => {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      window.location.reload();
+      window.location.reload(); // refresh the page if the user logs out
     } catch (error) {
       console.error("Error signing out:", error);
     }
@@ -65,7 +65,7 @@ const Home = () => {
     <>
       <Navbar />
       <div className="mt-30 mb-10 flex flex-col gap-4">
-        <h1 className="text-5xl flex justify-center text-[#40532D]">Welcome to Sell4Impact{userData ? ` ${userData.firstName} ${userData.lastName}!` : "!"}</h1>
+        <h1 className="text-5xl flex justify-center text-[#40532D]">Welcome to Sell4Impact</h1>
         <h2 className="text-2xl flex justify-center text-[#40532D]">Insert brand slogan here</h2>
       </div>
       <div className="py-16 bg-linear-to-b from-[#EAECDC] to-[#D3D6BA] flex justify-center items-center">
