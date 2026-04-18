@@ -1,7 +1,13 @@
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { db } from "../firebase/firebase";
+import { collection, addDoc} from "firebase/firestore";
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 
 const ItemEditPage = () => {
+  const { currentUser } = useAuth();
+  const navigate = useNavigate(); //to redirect user after creating item
   const [itemName, setItemName] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
@@ -15,6 +21,49 @@ const ItemEditPage = () => {
 
     setImageFile(file);
     setPreviewUrl(URL.createObjectURL(file));
+  };
+
+  // save item into firestore
+  // status will be either "Draft" or "Active"
+  const handleSaveItem = async (status: "Draft" | "Active") => {
+
+    // validation so empty fields are not allowed n submitted
+    if (!itemName.trim() || !price.trim() || !category.trim() || !description.trim()) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
+    try {
+      // add a new document to the "items" collection
+      // for now img is just previewUrl or test
+      // later this can be replaced with a real firebase storage urll
+      await addDoc(collection(db, "items"), {
+        title: itemName,
+        price: Number(price),
+        desc: description,
+        category,
+        img: previewUrl || "test",
+        vendorID: currentUser.uid,
+        status,
+      });
+
+      // different message depending on which button user clicked
+      alert(status === "Draft" ? "Draft saved!" : "Item published!");
+
+      // clear form after successful save
+      setItemName("");
+      setPrice("");
+      setCategory("");
+      setDescription("");
+      setImageFile(null);
+      setPreviewUrl("");
+
+      // go back to home/profile page after saving
+      navigate("/");
+    } catch (error) {
+      console.error("Error saving item:", error);
+      alert("Something went wrong while saving the item.");
+    }
   };
 
   return (
@@ -97,13 +146,15 @@ const ItemEditPage = () => {
           </div>
         </div>
 
-        {/* buttons, no functionality for now */}
+        {/* buttons, added functionality */}
         <div className="flex justify-center gap-6 pb-10">
-          <button className="px-10 py-3 bg-[#9EAF8C] text-white rounded-md hover:bg-[#8e9f7c] transition">
-            Save draft
-          </button>
+        <button onClick={( ) => handleSaveItem("Draft") } 
+        className="px-10 py-3 bg-[#9EAF8C] text-white rounded-md hover:bg-[#8e9f7c] transition">
+          Save draft
+        </button>
 
-          <button className="px-10 py-3 bg-[#E2725B] text-white rounded-md hover:bg-[#d85f47] transition">
+          <button onClick={( ) => handleSaveItem("Active") } 
+          className="px-10 py-3 bg-[#E2725B] text-white rounded-md hover:bg-[#d85f47] transition">
             Publish item
           </button>
         </div>

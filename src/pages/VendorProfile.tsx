@@ -3,7 +3,10 @@ import ItemCard from "../components/ItemCard";
 import ProfileHeader from "../components/ProfileHeader";
 import ProfileTab from "../components/ProfileTab";
 import { type ItemDate } from "../types/frontend-types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
+import {db} from "../firebase/firebase";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 const dummyData: ItemDate = {
   day: 7,
