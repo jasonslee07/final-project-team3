@@ -16,12 +16,12 @@ const OnboardingPage = () => {
   const handleSubmit = async () => {
     const user = auth.currentUser;
     if (!user) {
-      alert("No authenticated user found. Please sign in again.");
+      console.log("No authenticated user found. Please sign in again.");
       navigate("/login");
       return;
     }
     if (!firstName.trim() || !lastName.trim()) {
-      alert("Please fill in both your first and last name.");
+      console.log("Please fill in both your first and last name.");
       return;
     }
 
@@ -35,7 +35,8 @@ const OnboardingPage = () => {
         profileImg: user.photoURL ?? "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
       };
       await setDoc(doc(db, "users", user.uid), userData);
-      window.location.href = "/";
+      navigate("/");
+      window.location.reload();
     } catch (error: any) {
       alert(error.message);
     } finally {
@@ -50,18 +51,16 @@ const OnboardingPage = () => {
         <h1 className="text-3xl text-[#E2725B] mt-8 mb-4 flex justify-center">Onboarding user...</h1>
         <div className="bg-linear-to-b from-[#EAECDC] to-[#D3D6BA] w-full border-t-8 flex-1 border-[#E2725B] flex flex-col pt-10 items-center">
           <div className="flex flex-col justify-center items-center w-90 gap-8">
-            {/* Role selector */}
             <p className="text-xl text-[#40532D]">I want to join as a...</p>
             <div className="flex gap-10">
-              <button type="button" className={`text-2xl px-8 py-2 rounded-2xl transition-colors ${role === "Client" ? "bg-[#A8B897]" : "bg-white"}`} onClick={() => setRole("Client")}>
+              <button type="button" className={`text-2xl px-8 py-2 rounded-2xl ${role === "Client" ? "bg-[#A8B897]" : "bg-white"}`} onClick={() => setRole("Client")}>
                 Client
               </button>
-              <button type="button" className={`text-2xl px-8 py-2 rounded-2xl transition-colors ${role === "Vendor" ? "bg-[#A8B897]" : "bg-white"}`} onClick={() => setRole("Vendor")}>
+              <button type="button" className={`text-2xl px-8 py-2 rounded-2xl ${role === "Vendor" ? "bg-[#A8B897]" : "bg-white"}`} onClick={() => setRole("Vendor")}>
                 Vendor
               </button>
             </div>
 
-            {/* Name fields */}
             <input
               type="text"
               placeholder="First Name"

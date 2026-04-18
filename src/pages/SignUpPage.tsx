@@ -20,13 +20,6 @@ const SignUpPage = () => {
 
   const navigate = useNavigate();
 
-  function handleClick() {
-    setIsClient(!isClient);
-    setIsVendor(!isVendor);
-
-    setRole(role === "Client" ? "Vendor" : "Client");
-  }
-
   // Create a new user with all the data that is given through the form
   const handleAuth = async () => {
     try {
@@ -63,10 +56,10 @@ const SignUpPage = () => {
           <div className="bg-linear-to-b from-[#EAECDC] to-[#D3D6BA] w-full border-t-8 flex-1 border-[#E2725B] flex flex-col pt-10 items-center">
             <form action="" className="flex flex-col justify-center items-center w-90 gap-8">
               <div className="flex gap-10">
-                <button type="button" className={`text-2xl px-8 py-2 rounded-2xl ${isClient ? "bg-[#A8B897]" : "bg-white"}`} onClick={handleClick}>
+                <button type="button" className={`text-2xl px-8 py-2 rounded-2xl ${isClient ? "bg-[#A8B897]" : "bg-white"}`} onClick={() => setRole("Client")}>
                   Client
                 </button>
-                <button type="button" className={`text-2xl px-8 py-2 rounded-2xl ${isVendor ? "bg-[#A8B897]" : "bg-white"}`} onClick={handleClick}>
+                <button type="button" className={`text-2xl px-8 py-2 rounded-2xl ${isVendor ? "bg-[#A8B897]" : "bg-white"}`} onClick={() => setRole("Vendor")}>
                   Vendor
                 </button>
               </div>
@@ -123,7 +116,7 @@ const SignUpPage = () => {
                 Sign Up with Google
               </button>
               <button type="button" className=" py-3 bg-[#E2725C] text-white rounded-md w-full hover:bg-[#e05135] hover:-translate-y-1 ease-in-out duration-100" onClick={handleAuth}>
-                Sign up
+                Sign Up
               </button>
             </form>
           </div>
