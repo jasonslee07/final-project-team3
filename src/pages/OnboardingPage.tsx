@@ -39,8 +39,6 @@ const OnboardingPage = () => {
       window.location.reload();
     } catch (error: any) {
       alert(error.message);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -77,16 +75,12 @@ const OnboardingPage = () => {
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
             />
-
-            {/* Submit */}
             <button
               type="button"
               disabled={loading}
               className="py-3 bg-[#E2725C] text-white rounded-md w-full hover:bg-[#e05135] hover:-translate-y-1 ease-in-out duration-100 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
               onClick={handleSubmit}
-            >
-              {loading ? "Saving..." : "Complete Sign Up"}
-            </button>
+            ></button>
           </div>
         </div>
       </div>
