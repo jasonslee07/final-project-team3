@@ -8,14 +8,13 @@ import ItemPage from "./pages/ItemPage";
 import SignUpPage from "./pages/SignUpPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import SettingsPage from "./pages/SettingsPage";
+import OnboardingPage from "./pages/OnboardingPage";
 
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from "./firebase/firebase";
+import { db } from "./firebase/firebase";
 import type { User } from "./types/backend-types";
-import { signOut } from "firebase/auth";
 import { useAuth } from "./context/AuthContext";
-import { Link } from "react-router";
 
 function App() {
   /**
@@ -55,11 +54,14 @@ function App() {
     fetchUserData();
   }, [currentUser]);
 
-  return (
+  return isLoading ? (
+    <>Loading...</>
+  ) : (
     <>
       <BrowserRouter>
         <Routes>
           {userData ? <Route path="/" element={userData.role === "Client" ? <ClientProfile /> : <VendorProfile />}></Route> : <Route path="/" element={<Home />}></Route>}
+          {userData ? <Route path="/oboarding" element={<OnboardingPage />}></Route> : <Route path="/onboarding" element={<PageNotFound />}></Route>}
           {userData ? <Route path="/settings" element={<SettingsPage />}></Route> : <Route path="/settings" element={<PageNotFound />}></Route>}
           {userData ? <Route path="/login" element={<PageNotFound />}></Route> : <Route path="/login" element={<LoginPage />}></Route>}
           {userData ? <Route path="/sign-up" element={<PageNotFound />}></Route> : <Route path="/sign-up" element={<SignUpPage />}></Route>}
