@@ -4,7 +4,7 @@ import { db } from "../../firebase/firebase";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-import { collection, onSnapshot, getDoc, addDoc, doc, deleteDoc, updateDoc } from "firebase/firestore";
+import { collection, onSnapshot, getDoc, addDoc, doc} from "firebase/firestore";
 
 import type { Item, ItemStatus, User } from "../../types/backend-types";
 import { useAuth } from "../../context/AuthContext";
