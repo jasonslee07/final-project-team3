@@ -25,7 +25,7 @@ const ItemEditPage = () => {
 
         {/* title section */}
         <div className="bg-[#f7f3eb] py-8 border-b-4 border-[#e6765b]">
-          <h1 className="text-4xl text-center text-[#e6765b]">Edit item</h1>
+          <h1 className="text-4xl text-center text-[#e6765b]">Create item</h1>
         </div>
 
         {/* main content stuff */}

@@ -17,6 +17,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "./firebase/firebase";
 import type { User } from "./types/backend-types";
 import { useAuth } from "./context/AuthContext";
+import CreateItemPage from "./pages/CreateItemPage";
 
 function App() {
   /**
@@ -63,6 +64,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           {userData ? <Route path="/" element={userData.role === "Client" ? <ClientProfile /> : <VendorProfile />}></Route> : <Route path="/" element={<Home />}></Route>}
+          {userData ? <Route path="/edit" element={userData.role === "Vendor" ? <ItemEditPage /> : <PageNotFound />}></Route> : <Route path="/edit" element={<PageNotFound />}></Route>}
+          {userData ? <Route path="/create-item" element={userData.role === "Vendor" ? <CreateItemPage /> : <PageNotFound />}></Route> : <Route path="/create-item" element={<PageNotFound />}></Route>}
           {currentUser ? <Route path="/onboarding" element={<OnboardingPage />}></Route> : <Route path="/onboarding" element={<PageNotFound />}></Route>}
           {userData ? <Route path="/dashboard" element={<ClientDashboard />}></Route> : <Route path="/client-dashboard" element={<PageNotFound />}></Route>}
           {userData ? <Route path="/settings" element={<SettingsPage />}></Route> : <Route path="/settings" element={<PageNotFound />}></Route>}
