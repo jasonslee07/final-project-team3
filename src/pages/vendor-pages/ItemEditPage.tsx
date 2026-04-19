@@ -1,5 +1,9 @@
-import { useState } from "react";
-import Navbar from "../components/Navbar";
+import { useEffect, useState } from "react";
+import Navbar from "../../components/Navbar";
+import { doc, getDoc, deleteDoc } from "firebase/firestore";
+import { db } from "../../firebase/firebase";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ItemEditPage = () => {
   const [itemName, setItemName] = useState("");
@@ -8,6 +12,37 @@ const ItemEditPage = () => {
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState("");
+
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!id) return;
+    const fetchItem = async () => {
+      const ref = doc(db, "items", id);
+      const snap = await getDoc(ref);
+      if (snap.exists()) {
+        const data = snap.data();
+        setItemName(data.title);
+        setPrice(String(data.price));
+        setCategory(data.category);
+        setDescription(data.desc);
+        setPreviewUrl(data.img);
+      }
+    };
+    fetchItem();
+  }, [id]);
+
+  const handleDelete = async () => {
+    if (!id) return;
+    try {
+      const reference = doc(db, "items", id);
+      await deleteDoc(reference);
+    } catch (error) {
+      console.error("Error deleting document:", error);
+    }
+    navigate("/");
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -22,13 +57,11 @@ const ItemEditPage = () => {
       <div className="w-full min-h-screen bg-[#dfe3cf]">
         {/* navbar */}
         <Navbar />
-
         {/* title section */}
         <div className="bg-[#f7f3eb] py-8 border-b-4 border-[#e6765b]">
-          <h1 className="text-4xl text-center text-[#e6765b]">Create item</h1>
+          <h1 className="text-4xl text-center text-[#e6765b]">Edit item</h1>
         </div>
-
-        {/* main content stuff */}
+        main content stuff
         <div className="grid grid-cols-2 gap-10 px-12 py-10">
           {/* image upload on the left, showing a ? for now */}
           <div className="flex flex-col items-center justify-center">
@@ -60,12 +93,15 @@ const ItemEditPage = () => {
             />
           </div>
         </div>
-
         {/* buttons, no functionality for now */}
         <div className="flex justify-center gap-6 pb-10">
-          <button className="px-10 py-3 bg-[#9EAF8C] text-white rounded-md hover:bg-[#8e9f7c] transition">Save draft</button>
+          <button className="px-10 py-3 bg-[#9EAF8C] text-white rounded-md hover:bg-[#8e9f7c] transition ">Save draft</button>
 
           <button className="px-10 py-3 bg-[#E2725B] text-white rounded-md hover:bg-[#d85f47] transition">Publish item</button>
+
+          <button className="px-10 py-3 bg-white text-zinc-500 rounded-md hover:bg-gray-200 transition" onClick={handleDelete}>
+            Delete item
+          </button>
         </div>
       </div>
     </div>

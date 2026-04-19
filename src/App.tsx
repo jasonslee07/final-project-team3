@@ -2,22 +2,22 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
 import PageNotFound from "./components/PageNotFound";
-import ClientProfile from "./pages/ClientProfile";
-import VendorProfile from "./pages/VendorProfile";
-import ItemPage from "./pages/ItemPage";
-import ItemEditPage from "./pages/ItemEditPage";
+import ClientProfile from "./pages/client-pages/ClientProfile";
+import VendorProfile from "./pages/vendor-pages/VendorProfile";
+import ItemPage from "./components/ItemPage";
+import ItemEditPage from "./pages/vendor-pages/ItemEditPage";
 import SignUpPage from "./pages/SignUpPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import SettingsPage from "./pages/SettingsPage";
 import OnboardingPage from "./pages/OnboardingPage";
-import ClientDashboard from "./pages/ClientDashboard";
+import ClientDashboard from "./pages/client-pages/ClientDashboard";
 
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "./firebase/firebase";
 import type { User } from "./types/backend-types";
 import { useAuth } from "./context/AuthContext";
-import CreateItemPage from "./pages/CreateItemPage";
+import CreateItemPage from "./pages/vendor-pages/CreateItemPage";
 
 function App() {
   /**

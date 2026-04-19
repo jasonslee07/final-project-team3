@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase/firebase";
+import Navbar from "../../components/Navbar";
+import { db } from "../../firebase/firebase";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+import { collection, onSnapshot, getDoc, addDoc, doc, deleteDoc, updateDoc } from "firebase/firestore";
+
+import type { Item, ItemStatus, User } from "../../types/backend-types";
+import { useAuth } from "../../context/AuthContext";
 
 const ItemEditPage = () => {
   const [itemName, setItemName] = useState("");
@@ -11,6 +16,8 @@ const ItemEditPage = () => {
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState("");
+
+  const navigate = useNavigate();
 
   const { id } = useParams();
 
@@ -31,6 +38,51 @@ const ItemEditPage = () => {
     fetchItem();
   }, [id]);
 
+  const { currentUser } = useAuth();
+
+  const handleAddItem = async (item: Omit<Item, "id">) => {
+    try {
+      const itemsCol = collection(db, "items");
+      await addDoc(itemsCol, item);
+    } catch (error) {
+      console.error("Error adding document:", error);
+    }
+  };
+
+  const onPublish = () => {
+    const status: ItemStatus = "Active";
+
+    const item = {
+      title: itemName,
+      price: parseInt(price),
+      desc: description,
+      category: category,
+      img: previewUrl,
+      vendorID: currentUser.uid,
+      status: status,
+    };
+
+    handleAddItem(item);
+    navigate("/");
+  };
+
+  const onSave = () => {
+    const status: ItemStatus = "Draft";
+
+    const item = {
+      title: itemName,
+      price: parseInt(price),
+      desc: description,
+      category: category,
+      img: previewUrl,
+      vendorID: currentUser.uid,
+      status: status,
+    };
+
+    handleAddItem(item);
+    navigate("/");
+  };
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -47,7 +99,7 @@ const ItemEditPage = () => {
 
         {/* title section */}
         <div className="bg-[#f7f3eb] py-8 border-b-4 border-[#e6765b]">
-          <h1 className="text-4xl text-center text-[#e6765b]">Edit item</h1>
+          <h1 className="text-4xl text-center text-[#e6765b]">Create item</h1>
         </div>
 
         {/* main content stuff */}
@@ -85,9 +137,13 @@ const ItemEditPage = () => {
 
         {/* buttons, no functionality for now */}
         <div className="flex justify-center gap-6 pb-10">
-          <button className="px-10 py-3 bg-[#9EAF8C] text-white rounded-md hover:bg-[#8e9f7c] transition">Save draft</button>
+          <button className="px-10 py-3 bg-[#9EAF8C] text-white rounded-md hover:bg-[#8e9f7c] transition" onClick={onSave}>
+            Save draft
+          </button>
 
-          <button className="px-10 py-3 bg-[#E2725B] text-white rounded-md hover:bg-[#d85f47] transition">Publish item</button>
+          <button className="px-10 py-3 bg-[#E2725B] text-white rounded-md hover:bg-[#d85f47] transition" onClick={onPublish}>
+            Publish item
+          </button>
         </div>
       </div>
     </div>
@@ -95,3 +151,6 @@ const ItemEditPage = () => {
 };
 
 export default ItemEditPage;
+function setIsLoading(arg0: boolean) {
+  throw new Error("Function not implemented.");
+}

@@ -33,9 +33,9 @@ const ItemCard = ({ title, price, date, img, role, category, itemId, showDelete,
           <span className="bg-[#eaecdc] text-[#7e9169] text-[10px] font-semibold px-2 py-0.5 rounded-md capitalize">{category}</span>
         </div>
 
-        <p className="text-[#6b8f5e] text-[10px]">
+        {/* <p className="text-[#6b8f5e] text-[10px]">
           Added {date.day} {date.month} {date.year}
-        </p>
+        </p> */}
 
         <button className="mt-0.5 self-start flex items-center gap-1 bg-[#8fac7f] hover:bg-[#7a9669] text-white text-[10px] font-semibold px-3 py-1 rounded-md" onClick={handleEdit}>
           {role === "Vendor" ? "Edit Item Details" : "View Item Details"}

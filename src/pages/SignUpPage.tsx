@@ -10,8 +10,6 @@ import type { User, UserRole } from "../types/backend-types";
 import { useNavigate } from "react-router";
 
 const SignUpPage = () => {
-  const [isClient, setIsClient] = useState<boolean>(true);
-  const [isVendor, setIsVendor] = useState<boolean>(false);
   const [role, setRole] = useState<UserRole>("Client");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
