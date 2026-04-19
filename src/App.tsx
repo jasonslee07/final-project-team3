@@ -63,16 +63,22 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
+          {/* Main Routes */}
           {userData ? <Route path="/" element={userData.role === "Client" ? <ClientProfile /> : <VendorProfile />}></Route> : <Route path="/" element={<Home />}></Route>}
-          {userData ? <Route path="/edit" element={userData.role === "Vendor" ? <ItemEditPage /> : <PageNotFound />}></Route> : <Route path="/edit" element={<PageNotFound />}></Route>}
-          {userData ? <Route path="/create-item" element={userData.role === "Vendor" ? <CreateItemPage /> : <PageNotFound />}></Route> : <Route path="/create-item" element={<PageNotFound />}></Route>}
-          {currentUser ? <Route path="/onboarding" element={<OnboardingPage />}></Route> : <Route path="/onboarding" element={<PageNotFound />}></Route>}
-          {userData ? <Route path="/dashboard" element={<ClientDashboard />}></Route> : <Route path="/client-dashboard" element={<PageNotFound />}></Route>}
-          {userData ? <Route path="/settings" element={<SettingsPage />}></Route> : <Route path="/settings" element={<PageNotFound />}></Route>}
           {userData ? <Route path="/login" element={<PageNotFound />}></Route> : <Route path="/login" element={<LoginPage />}></Route>}
           {userData ? <Route path="/sign-up" element={<PageNotFound />}></Route> : <Route path="/sign-up" element={<SignUpPage />}></Route>}
           {userData ? <Route path="/forgot-password" element={<PageNotFound />}></Route> : <Route path="/forgot-password" element={<ForgotPasswordPage />}></Route>}
-          {userData ? <Route path="/item-page" element={<ItemPage />}></Route> : <Route path="/item-page" element={<PageNotFound />}></Route>}
+          {currentUser && !userData ? <Route path="/onboarding" element={<OnboardingPage />}></Route> : <Route path="/onboarding" element={<PageNotFound />}></Route>}
+
+          {/* Item Routes */}
+          {userData ? <Route path="/create" element={userData.role === "Vendor" ? <CreateItemPage /> : <PageNotFound />}></Route> : <Route path="/create" element={<PageNotFound />}></Route>}
+          {userData ? <Route path="/edit/:id" element={userData.role === "Vendor" ? <ItemEditPage /> : <PageNotFound />}></Route> : <Route path="/edit" element={<PageNotFound />}></Route>}
+          {userData ? <Route path="/item/:id" element={<ItemPage />}></Route> : <Route path="/item" element={<PageNotFound />}></Route>}
+          {userData ? <Route path="/vendor/:id" element={userData.role === "Vendor" ? <VendorProfile /> : <PageNotFound />}></Route> : <Route path="/vendor" element={<PageNotFound />}></Route>}
+
+          {/* Navbar Routes */}
+          {userData ? <Route path="/dashboard" element={<ClientDashboard />}></Route> : <Route path="/client-dashboard" element={<PageNotFound />}></Route>}
+          {userData ? <Route path="/settings" element={<SettingsPage />}></Route> : <Route path="/settings" element={<PageNotFound />}></Route>}
           <Route path="*" element={<PageNotFound />}></Route>
         </Routes>
       </BrowserRouter>

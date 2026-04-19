@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase/firebase";
+import { useParams } from "react-router-dom";
 
 const ItemEditPage = () => {
   const [itemName, setItemName] = useState("");
@@ -8,6 +11,25 @@ const ItemEditPage = () => {
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState("");
+
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (!id) return;
+    const fetchItem = async () => {
+      const ref = doc(db, "items", id);
+      const snap = await getDoc(ref);
+      if (snap.exists()) {
+        const data = snap.data();
+        setItemName(data.title);
+        setPrice(String(data.price));
+        setCategory(data.category);
+        setDescription(data.desc);
+        setPreviewUrl(data.img);
+      }
+    };
+    fetchItem();
+  }, [id]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

@@ -3,11 +3,15 @@ import { FaChevronRight } from "react-icons/fa";
 import { type Item } from "../types/frontend-types";
 import { useNavigate } from "react-router-dom";
 
-const ItemCard = ({ title, price, date, img, role, category, showDelete, onDelete }: Item & { showDelete?: boolean; onDelete?: () => void }) => {
+const ItemCard = ({ title, price, date, img, role, category, itemId, showDelete, onDelete }) => {
   const navigate = useNavigate();
 
   const handleEdit = () => {
-    navigate("/edit");
+    if (role === "Vendor") {
+      navigate(`/edit/${itemId}`); // <-- uses the doc ID
+    } else {
+      navigate(`/item-page/${itemId}`);
+    }
   };
 
   return (
