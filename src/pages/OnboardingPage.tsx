@@ -81,7 +81,7 @@ const OnboardingPage = () => {
               disabled={loading}
               className="py-3 bg-[#E2725C] text-white rounded-md w-full hover:bg-[#e05135] hover:-translate-y-1 ease-in-out duration-100 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
               onClick={handleSubmit}
-            ></button>
+            >Confirm</button>
           </div>
         </div>
       </div>
