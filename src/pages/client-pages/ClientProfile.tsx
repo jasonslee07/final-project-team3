@@ -3,7 +3,7 @@ import ItemCard from "../../components/ItemCard";
 import ProfileHeader from "../../components/ProfileHeader";
 import ProfileTab from "../../components/ProfileTab";
 import { useEffect, useState } from "react";
-import { collection, getDocs, query, where, getDoc, doc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, query, where, getDoc, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { useAuth } from "../../context/AuthContext";
 import type { Item, User } from "../../types/types";
@@ -40,69 +40,40 @@ const ClientProfile = () => {
   useEffect(() => {
     if (!currentUser) return;
 
-    const fetchClientData = async () => {
-      try {
-        // get the logged in user's profile info
-        const userRef = doc(db, "users", currentUser.uid);
-        const userSnap = await getDoc(userRef);
-
-        if (userSnap.exists()) {
-          setUserData(userSnap.data() as User);
-        }
-
-        // get everything currently in the user's cart
-        const cartRef = collection(db, "users", currentUser.uid, "cart");
-        const cartSnap = await getDocs(cartRef);
-
-        const fetchedCart = cartSnap.docs.map((cartDoc) => ({
-          id: cartDoc.id,
-          ...cartDoc.data(),
-        }));
-
-        setCartItems(fetchedCart);
-
-        // get items the user has ordered but not completed yet... ill scratch this if we dont do shipped/delivered
-        const orderedQuery = query(collection(db, "orders"), where("clientID", "==", currentUser.uid), where("status", "==", "Shipped"));
-
-        const orderedSnap = await getDocs(orderedQuery);
-
-        const fetchedOrderedItems = orderedSnap.docs.map((orderDoc) => ({
-          id: orderDoc.id,
-          ...orderDoc.data(),
-        }));
-
-        setOrderedItems(fetchedOrderedItems);
-
-        // get old or completed purchases
-        const pastQuery = query(collection(db, "orders"), where("clientID", "==", currentUser.uid), where("status", "==", "Delivered"));
-
-        const pastSnap = await getDocs(pastQuery);
-
-        const fetchedPastItems = pastSnap.docs.map((orderDoc) => ({
-          id: orderDoc.id,
-          ...orderDoc.data(),
-        }));
-
-        setPastItems(fetchedPastItems);
-      } catch (error) {
-        console.error("Error fetching client data:", error);
-      }
+    // user profile (one-time fetch is fine here)
+    const fetchUserData = async () => {
+      const userSnap = await getDoc(doc(db, "users", currentUser.uid));
+      if (userSnap.exists()) setUserData(userSnap.data() as User);
     };
+    fetchUserData();
 
-    fetchClientData();
+    // cart — live listener so deletes/adds reflect instantly
+    const cartQuery = query(collection(db, "items"), where("status", "==", "Carted"), where("cartedBy", "==", currentUser.uid));
+
+    const unsubscribeCart = onSnapshot(cartQuery, (snapshot) => {
+      const fetchedCart = snapshot.docs.map((d) => ({ ...d.data(), id: d.id })) as Item[];
+      setCartItems(fetchedCart);
+    });
+
+    // ordered/past can stay as one-time fetches for now
+    const fetchOrders = async () => {
+      const orderedSnap = await getDocs(query(collection(db, "orders"), where("clientID", "==", currentUser.uid), where("status", "==", "Shipped")));
+      setOrderedItems(orderedSnap.docs.map((d) => ({ ...d.data(), id: d.id })) as Item[]);
+
+      const pastSnap = await getDocs(query(collection(db, "orders"), where("clientID", "==", currentUser.uid), where("status", "==", "Delivered")));
+      setPastItems(pastSnap.docs.map((d) => ({ ...d.data(), id: d.id })) as Item[]);
+    };
+    fetchOrders();
+
+    return () => unsubscribeCart(); // cleanup listener on unmount
   }, [currentUser]);
 
-  const removeFromCart = async (cartDocId: string) => {
+  const removeFromCart = async (itemId: string) => {
     if (!currentUser) return;
-
     try {
-      // delete item from users/{uid}/cart/{cartDocId} (the thing i made in firestore lmk if i shud fade that)
-      await deleteDoc(doc(db, "users", currentUser.uid, "cart", cartDocId));
-
-      // update UI immediately after deleting from Firestore (bro deleting items r genuinely so complicated)
-      setCartItems((prev) => prev.filter((item) => item.id !== cartDocId));
+      await updateDoc(doc(db, "items", itemId), { status: "Active", cartedBy: null });
     } catch (error) {
-      console.error("Error removing cart item:", error);
+      console.error("Error removing from cart:", error);
     }
   };
 

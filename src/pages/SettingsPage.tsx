@@ -9,6 +9,7 @@ import { auth, db, storage } from "../firebase/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const SettingsPage = () => {
+  // Variables necessary to make the settings page function
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -17,14 +18,6 @@ const SettingsPage = () => {
 
   const hasPickedFile = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    hasPickedFile.current = true;
-    setPreviewUrl(URL.createObjectURL(file));
-  };
 
   // pre load the user's first name and last name so the user knows whats being stored
   useEffect(() => {
@@ -36,7 +29,7 @@ const SettingsPage = () => {
           const data = userSnap.data();
           setFirstName(data.firstName);
           setLastName(data.lastName);
-          setDescription(data.desc);
+          setDescription(data.desc ?? data.description ?? "");
           if (!hasPickedFile.current) {
             setPreviewUrl(data.profileImg);
           }
@@ -45,6 +38,14 @@ const SettingsPage = () => {
     };
     fetchUserData();
   }, []);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    hasPickedFile.current = true;
+    setPreviewUrl(URL.createObjectURL(file));
+  };
 
   const uploadImageAndGetURL = async () => {
     if (!hasPickedFile.current || !inputRef.current?.files?.[0]) return previewUrl;
@@ -83,6 +84,8 @@ const SettingsPage = () => {
       console.error("Error modifying data: ", error);
     }
   };
+
+  console.log("previewUrl:", previewUrl);
 
   return (
     <>

@@ -2,7 +2,6 @@ import Navbar from "../../components/Navbar";
 import ItemCard from "../../components/ItemCard";
 import ProfileHeader from "../../components/ProfileHeader";
 import ProfileTab from "../../components/ProfileTab";
-import { type ItemDate } from "../../types/types";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { collection, getDocs, query, where, getDoc, doc } from "firebase/firestore";

@@ -2,7 +2,7 @@
 
 export type UserRole = "Client" | "Vendor";
 
-export type ItemStatus = "Draft" | "Active" | "Sold";
+export type ItemStatus = "Draft" | "Active" | "Carted" | "Sold";
 
 export type OrderStatus = "Shipped" | "Delivered";
 
@@ -26,12 +26,13 @@ export interface Item {
   title: string;
   price: number;
   desc: string;
-  date: ItemDate;
+  date?: ItemDate;
   category: string;
   img: string;
   vendorID: string;
   status: ItemStatus;
   id: string;
+  cartedBy?: string | null;
 }
 
 export interface Order {

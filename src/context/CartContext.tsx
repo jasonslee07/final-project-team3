@@ -1,30 +1,45 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import React, { createContext, useContext, type ReactNode } from "react";
 import { type Item } from "../types/types";
+import { doc, updateDoc } from "firebase/firestore";
+import { useAuth } from "./AuthContext";
+import { db } from "../firebase/firebase";
 
 interface CartContextType {
-  cart: Item[];
-  addToCart: (item: Item) => void;
-  removeFromCart: (title: string) => void;
+  addToCart: (item: Item) => Promise<void>;
+  removeFromCart: (itemId: string) => Promise<void>;
 }
 
-// 1. Pass undefined but cast to the type so TS doesn't complain
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cart, setCart] = useState<Item[]>([]);
+  const { currentUser } = useAuth();
 
-  const addToCart = (item: Item) => {
-    setCart((prevCart) => [...prevCart, item]);
+  const addToCart = async (item: Item) => {
+    if (!currentUser) return;
+    try {
+      await updateDoc(doc(db, "items", item.id), {
+        status: "Carted",
+        cartedBy: currentUser.uid,
+      });
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
   };
 
-  const removeFromCart = (title: string) => {
-    setCart((prevCart) => prevCart.filter((item) => item.title !== title));
+  const removeFromCart = async (itemId: string) => {
+    if (!currentUser) return;
+    try {
+      await updateDoc(doc(db, "items", itemId), {
+        status: "Active",
+        cartedBy: null,
+      });
+    } catch (error) {
+      console.error("Error removing from cart:", error);
+    }
   };
 
-  return (
-    // 2. You forgot to include removeFromCart in the provider value
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>{children}</CartContext.Provider>
-  );
+  return <CartContext.Provider value={{ addToCart, removeFromCart }}>{children}</CartContext.Provider>;
 };
 
 export const useCart = () => {

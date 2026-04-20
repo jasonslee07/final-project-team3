@@ -2,10 +2,10 @@ import Navbar from "../../components/Navbar";
 import { FaSearch } from "react-icons/fa";
 import { type Item } from "../../types/types";
 import { useNavigate } from "react-router-dom";
-import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { useState, useEffect } from "react";
-import { useAuth } from "../../context/AuthContext";
+// import { useAuth } from "../../context/AuthContext";
 
 const ClientDashboard = () => {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ const ClientDashboard = () => {
   const [items, setItems] = useState<Item[]>();
   const [query, setQuery] = useState("");
 
-  const { currentUser } = useAuth();
+  // const { currentUser } = useAuth();
 
   useEffect(() => {
     const itemDB = collection(db, "items");
@@ -25,9 +25,10 @@ const ClientDashboard = () => {
       })) as Item[];
 
       setItems(itemData);
+      setIsLoading(false);
     });
 
-    return () => unsubscribe(); // cleanup
+    return () => unsubscribe();
   }, []);
 
   // update based on search filter
@@ -35,9 +36,11 @@ const ClientDashboard = () => {
     setQuery(e.target.value);
   };
 
-  const filteredItems = items?.filter((item) => item.title.toLowerCase().includes(query.toLowerCase()) || item.category.toLowerCase().includes(query.toLowerCase()));
+  const filteredItems = items?.filter((item) => item.status === "Active" && (item.title.toLowerCase().includes(query.toLowerCase()) || item.category.toLowerCase().includes(query.toLowerCase())));
 
-  return (
+  return isLoading ? (
+    <>Loading...</>
+  ) : (
     <div className="min-h-screen bg-[#c5cfa8]">
       <Navbar />
 

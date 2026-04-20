@@ -47,19 +47,16 @@ const ItemEditPage = () => {
     navigate("/");
   };
 
-
   const uploadImageAndGetURL = async () => {
-  
-    if (!imageFile) return previewUrl; 
-    
+    if (!imageFile) return previewUrl;
+
     const fname = Date.now() + "-" + imageFile.name;
     const storageRef = ref(storage, "item-images/" + fname);
     await uploadBytes(storageRef, imageFile);
     return await getDownloadURL(storageRef);
   };
 
-  const handleUpdateItem= async (status : ItemStatus) => {
-
+  const handleUpdateItem = async (status: ItemStatus) => {
     if (!id) return;
 
     try {
@@ -70,13 +67,8 @@ const ItemEditPage = () => {
         price: parseInt(price),
         category: category,
         desc: description,
-<<<<<<< HEAD
-        img: previewUrl,
-        status: status,
-=======
         img: imageUrl,
-        status: status
->>>>>>> 87f6cf76f95a70f6ab6c25c0b30b53dc6f763d10
+        status: status,
       });
     } catch (error) {
       console.error("Error updating document:", error);
@@ -138,7 +130,7 @@ const ItemEditPage = () => {
               placeholder="Description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="p-3 rounded-md bg-[#ffffff] text-[#6b8f5e] outline-none h-[180px] resize-none"
+              className="p-3 rounded-md bg-[#ffffff] text-[#6b8f5e] outline-none h-45 resize-none"
             />
           </div>
         </div>
