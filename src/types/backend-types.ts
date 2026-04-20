@@ -24,6 +24,7 @@ export interface Item {
   img: string;
   vendorID: string;
   status: ItemStatus;
+  id: string;
 }
 
 export interface Order {
