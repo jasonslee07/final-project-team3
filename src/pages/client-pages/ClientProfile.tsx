@@ -19,13 +19,13 @@ import type { User } from "../../types/backend-types";
 const ClientProfile = () => {
   const [activeTab, setActiveTab] = useState(0);
 
-  // cart items coming from Firestore
+  // cart items coming from firestore, shud this be any[]???
   const [cartItems, setCartItems] = useState<any[]>([]);
 
-  // ordered items coming from Firestore orders collection
+  // ordered items coming from firestore orders collection i made??
   const [orderedItems, setOrderedItems] = useState<any[]>([]);
 
-  // past/completed items coming from Firestore orders collection
+  // past or completed items coming from orders collection i made..
   const [pastItems, setPastItems] = useState<any[]>([]);
 
   let total = 0;
@@ -58,7 +58,7 @@ const ClientProfile = () => {
           setUserData(userSnap.data() as User);
         }
 
-        // get everything currently in this user's cart
+        // get everything currently in the user's cart
         const cartRef = collection(db, "users", currentUser.uid, "cart");
         const cartSnap = await getDocs(cartRef);
 
@@ -69,7 +69,7 @@ const ClientProfile = () => {
 
         setCartItems(fetchedCart);
 
-        // get items the user has ordered but not completed yet
+        // get items the user has ordered but not completed yet... ill scratch this if we dont do shipped/delivered
         const orderedQuery = query(
           collection(db, "orders"),
           where("clientID", "==", currentUser.uid),
@@ -85,7 +85,7 @@ const ClientProfile = () => {
 
         setOrderedItems(fetchedOrderedItems);
 
-        // get old/completed purchases
+        // get old or completed purchases
         const pastQuery = query(
           collection(db, "orders"),
           where("clientID", "==", currentUser.uid),
@@ -112,10 +112,10 @@ const ClientProfile = () => {
     if (!currentUser) return;
 
     try {
-      // deletes the item from users/{uid}/cart/{cartDocId}
+      // delete item from users/{uid}/cart/{cartDocId} (the thing i made in firestore lmk if i shud fade that)
       await deleteDoc(doc(db, "users", currentUser.uid, "cart", cartDocId));
 
-      // update UI immediately after deleting from Firestore
+      // update UI immediately after deleting from Firestore (bro deleting items r genuinely so complicated)
       setCartItems((prev) => prev.filter((item) => item.id !== cartDocId));
     } catch (error) {
       console.error("Error removing cart item:", error);
@@ -129,7 +129,7 @@ const ClientProfile = () => {
       <ProfileHeader
         name={userData.firstName + " " + userData.lastName}
         role={"Client"}
-        desc={"i fucked up backend types omg"}
+        desc={"almost thereee we can do ts"}
         img={userData.profileImg}
       />
 
