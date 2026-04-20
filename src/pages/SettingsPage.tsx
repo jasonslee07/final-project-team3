@@ -11,6 +11,10 @@ const SettingsPage = () => {
   const [lastName, setLastName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState("");
+  const [description, setDescription] = useState<string>("");
+
   // pre load the user's first name and last name so the user knows whats being stored
   useEffect(() => {
     const fetchUserData = async () => {
@@ -21,11 +25,21 @@ const SettingsPage = () => {
           const data = userSnap.data();
           setFirstName(data.firstName);
           setLastName(data.lastName);
+          setDescription(data.description);
+          setPreviewUrl(data.previewUrl);
         }
       }
     };
     fetchUserData();
   }, []);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setImageFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
+  };
 
   // if the user updates the data, update the firebase to have new data
   const handleUpdate = async () => {
@@ -42,6 +56,8 @@ const SettingsPage = () => {
       await updateDoc(userRef, {
         firstName: firstName,
         lastName: lastName,
+        desc: description,
+        profileImg: previewUrl,
       });
       await updatePassword(user, password);
 
@@ -58,25 +74,46 @@ const SettingsPage = () => {
         <div className="flex flex-col flex-1">
           <h1 className="text-3xl text-[#E2725B] mt-8 mb-4 flex justify-center">Update Details</h1>
           <div className="bg-linear-to-b from-[#EAECDC] to-[#D3D6BA] w-full border-t-8 flex-1 border-[#E2725B] flex flex-col pt-10 items-center">
-            <form action="" className="flex flex-col justify-center items-center w-90 gap-8">
-              <input
-                type="text"
-                placeholder="First Name"
-                className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA] focus:text-[#AABA99]"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-              <input
-                type="text"
-                placeholder="Last Name"
-                className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA] focus:text-[#AABA99]"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              />
-              <input type="password" placeholder="Password" className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA]" value={password} onChange={(e) => setPassword(e.target.value)} />
-              <button type="button" className="py-3 bg-[#E2725C] text-white rounded-md w-full hover:bg-[#e05135] hover:-translate-y-1 ease-in-out duration-100" onClick={handleUpdate}>
-                Save Changes
-              </button>
+            <form action="" className="flex flex-row justify-center items-start w-full max-w-5xl px-8 gap-12">
+              <div className="flex flex-col w-full md:w-1/2 gap-4">
+              
+                <div className="flex flex-col items-center justify-center">
+
+                  <label className="w-full h-[200px] border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center cursor-pointer bg-white overflow-hidden">
+                    {previewUrl ? <img src={previewUrl} alt="preview" className="w-full h-full object-cover" /> : <div className="text-gray-400 text-5xl">?</div>}
+
+                    <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+                  </label>
+                </div>
+
+                <textarea
+                  placeholder="Description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="p-3 rounded-md bg-[#ffffff] text-[#6b8f5e] outline-none h-[120px] resize-none"
+                />
+              </div>
+              <div className="flex flex-col w-full md:w-1/2 gap-11.5">
+              
+                <input
+                  type="text"
+                  placeholder="First Name"
+                  className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA] focus:text-[#AABA99]"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA] focus:text-[#AABA99]"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+                <input type="password" placeholder="Password" className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA]" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <button type="button" className="py-3 bg-[#E2725C] text-white rounded-md w-full hover:bg-[#e05135] hover:-translate-y-1 ease-in-out duration-100" onClick={handleUpdate}>
+                  Save Changes
+                </button>
+              </div>
             </form>
           </div>
         </div>

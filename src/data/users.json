@@ -4,6 +4,7 @@
     "lastName": "Bob",
     "email": "spongebob@gmail.com",
     "profileImg": "path",
+    "desc": "what is the meaning of life",
     "role": "Client",
     "cart": [
       "item01",
@@ -15,6 +16,7 @@
     "firstName": "Patrick",
     "lastName": "Star",
     "email": "patrickstar@gmail.com",
+    "desc": "",
     "profileImg": "path",
     "role": "Vendor"
   }
