@@ -3,30 +3,22 @@ import ItemCard from "../../components/ItemCard";
 import ProfileHeader from "../../components/ProfileHeader";
 import ProfileTab from "../../components/ProfileTab";
 import { useEffect, useState } from "react";
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-  getDoc,
-  doc,
-  deleteDoc,
-} from "firebase/firestore";
+import { collection, getDocs, query, where, getDoc, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { useAuth } from "../../context/AuthContext";
-import type { User } from "../../types/backend-types";
+import type { Item, User } from "../../types/types";
 
 const ClientProfile = () => {
   const [activeTab, setActiveTab] = useState(0);
 
   // cart items coming from firestore, shud this be any[]???
-  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [cartItems, setCartItems] = useState<Item[]>([]);
 
   // ordered items coming from firestore orders collection i made??
-  const [orderedItems, setOrderedItems] = useState<any[]>([]);
+  const [orderedItems, setOrderedItems] = useState<Item[]>([]);
 
   // past or completed items coming from orders collection i made..
-  const [pastItems, setPastItems] = useState<any[]>([]);
+  const [pastItems, setPastItems] = useState<Item[]>([]);
 
   let total = 0;
   for (let i = 0; i < cartItems.length; i++) {
@@ -48,78 +40,40 @@ const ClientProfile = () => {
   useEffect(() => {
     if (!currentUser) return;
 
-    const fetchClientData = async () => {
-
-      try {
-        // get the logged in user's profile info
-        const userRef = doc(db, "users", currentUser.uid);
-        const userSnap = await getDoc(userRef);
-
-        if (userSnap.exists()) {
-          setUserData(userSnap.data() as User);
-        }
-
-        // get everything currently in the user's cart
-        const cartRef = collection(db, "users", currentUser.uid, "cart");
-        const cartSnap = await getDocs(cartRef);
-
-        const fetchedCart = cartSnap.docs.map((cartDoc) => ({
-          id: cartDoc.id,
-          ...cartDoc.data(),
-        }));
-
-        setCartItems(fetchedCart);
-
-        // get items the user has ordered but not completed yet... ill scratch this if we dont do shipped/delivered
-        const orderedQuery = query(
-          collection(db, "orders"),
-          where("clientID", "==", currentUser.uid),
-          where("status", "==", "Shipped"),
-        );
-
-        const orderedSnap = await getDocs(orderedQuery);
-
-        const fetchedOrderedItems = orderedSnap.docs.map((orderDoc) => ({
-          id: orderDoc.id,
-          ...orderDoc.data(),
-        }));
-
-        setOrderedItems(fetchedOrderedItems);
-
-        // get old or completed purchases
-        const pastQuery = query(
-          collection(db, "orders"),
-          where("clientID", "==", currentUser.uid),
-          where("status", "==", "Delivered"),
-        );
-
-        const pastSnap = await getDocs(pastQuery);
-
-        const fetchedPastItems = pastSnap.docs.map((orderDoc) => ({
-          id: orderDoc.id,
-          ...orderDoc.data(),
-        }));
-
-        setPastItems(fetchedPastItems);
-      } catch (error) {
-        console.error("Error fetching client data:", error);
-      } 
+    // user profile (one-time fetch is fine here)
+    const fetchUserData = async () => {
+      const userSnap = await getDoc(doc(db, "users", currentUser.uid));
+      if (userSnap.exists()) setUserData(userSnap.data() as User);
     };
+    fetchUserData();
 
-    fetchClientData();
+    // cart — live listener so deletes/adds reflect instantly
+    const cartQuery = query(collection(db, "items"), where("status", "==", "Carted"), where("cartedBy", "==", currentUser.uid));
+
+    const unsubscribeCart = onSnapshot(cartQuery, (snapshot) => {
+      const fetchedCart = snapshot.docs.map((d) => ({ ...d.data(), id: d.id })) as Item[];
+      setCartItems(fetchedCart);
+    });
+
+    // ordered/past can stay as one-time fetches for now
+    const fetchOrders = async () => {
+      const orderedSnap = await getDocs(query(collection(db, "orders"), where("clientID", "==", currentUser.uid), where("status", "==", "Shipped")));
+      setOrderedItems(orderedSnap.docs.map((d) => ({ ...d.data(), id: d.id })) as Item[]);
+
+      const pastSnap = await getDocs(query(collection(db, "orders"), where("clientID", "==", currentUser.uid), where("status", "==", "Delivered")));
+      setPastItems(pastSnap.docs.map((d) => ({ ...d.data(), id: d.id })) as Item[]);
+    };
+    fetchOrders();
+
+    return () => unsubscribeCart(); // cleanup listener on unmount
   }, [currentUser]);
 
-  const removeFromCart = async (cartDocId: string) => {
+  const removeFromCart = async (itemId: string) => {
     if (!currentUser) return;
-
     try {
-      // delete item from users/{uid}/cart/{cartDocId} (the thing i made in firestore lmk if i shud fade that)
-      await deleteDoc(doc(db, "users", currentUser.uid, "cart", cartDocId));
-
-      // update UI immediately after deleting from Firestore (bro deleting items r genuinely so complicated)
-      setCartItems((prev) => prev.filter((item) => item.id !== cartDocId));
+      await updateDoc(doc(db, "items", itemId), { status: "Active", cartedBy: null });
     } catch (error) {
-      console.error("Error removing cart item:", error);
+      console.error("Error removing from cart:", error);
     }
   };
 
@@ -127,40 +81,18 @@ const ClientProfile = () => {
     <>
       <Navbar />
 
-      <ProfileHeader
-        name={userData.firstName + " " + userData.lastName}
-        role={"Client"}
-        desc={userData.desc}
-        img={userData.profileImg}
-      />
+      <ProfileHeader name={userData.firstName + " " + userData.lastName} role={"Client"} desc={userData.desc} img={userData.profileImg} />
 
-      <ProfileTab
-        tab1={"Cart"}
-        tab2={"Ordered"}
-        tab3={"Past"}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-      />
+      <ProfileTab tab1={"Cart"} tab2={"Ordered"} tab3={"Past"} activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <div className="min-h-screen bg-[#c5cfa8] grid grid-cols-2 gap-3 px-4 py-4 items-start">
         {activeTab === 0 &&
           (cartItems.length === 0 ? (
-            <p className="text-[#6b8f5e] text-sm col-span-2 text-center py-4">
-              Your cart is empty!
-            </p>
+            <p className="text-[#6b8f5e] text-sm col-span-2 text-center py-4">Your cart is empty!</p>
           ) : (
             <>
               {cartItems.map((item) => (
-                <ItemCard
-                  key={item.id}
-                  title={item.title}
-                  price={item.price}
-                  img={item.img}
-                  role="Client"
-                  category={item.category}
-                  showDelete={true}
-                  onDelete={() => removeFromCart(item.id)}
-                />
+                <ItemCard key={item.id} title={item.title} price={item.price} img={item.img} role="Client" category={item.category} showDelete={true} onDelete={() => removeFromCart(item.id)} />
               ))}
 
               <div className="col-span-2 bg-[#FFFCF3] py-6 flex flex-col items-center">
@@ -169,46 +101,22 @@ const ClientProfile = () => {
               </div>
 
               <div className="col-span-2 flex justify-center py-2">
-                <button className="bg-[#E2725C] text-white text-md px-16 py-4 rounded-md">
-                  Checkout
-                </button>
+                <button className="bg-[#E2725C] text-white text-md px-16 py-4 rounded-md">Checkout</button>
               </div>
             </>
           ))}
         {activeTab === 1 &&
           (orderedItems.length === 0 ? (
-            <p className="text-[#6b8f5e] text-sm col-span-2 text-center py-4">
-              No ordered items yet.
-            </p>
+            <p className="text-[#6b8f5e] text-sm col-span-2 text-center py-4">No ordered items yet.</p>
           ) : (
-            orderedItems.map((item, index) => (
-              <ItemCard
-                key={index}
-                title={item.title}
-                price={item.price}
-                img={item.img}
-                role="Client"
-                category={item.category}
-              />
-            ))
+            orderedItems.map((item) => <ItemCard key={item.id} title={item.title} price={item.price} img={item.img} role="Client" category={item.category} />)
           ))}
 
         {activeTab === 2 &&
           (pastItems.length === 0 ? (
-            <p className="text-[#6b8f5e] text-sm col-span-2 text-center py-4">
-              No past items yet.
-            </p>
+            <p className="text-[#6b8f5e] text-sm col-span-2 text-center py-4">No past items yet.</p>
           ) : (
-            pastItems.map((item, index) => (
-              <ItemCard
-                key={index}
-                title={item.title}
-                price={item.price}
-                img={item.img}
-                role="Client"
-                category={item.category}
-              />
-            ))
+            pastItems.map((item) => <ItemCard key={item.id} title={item.title} price={item.price} img={item.img} role="Client" category={item.category} />)
           ))}
       </div>
     </>

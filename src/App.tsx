@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+// Page Routes
 import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
 import PageNotFound from "./components/PageNotFound";
@@ -15,7 +16,7 @@ import ClientDashboard from "./pages/client-pages/ClientDashboard";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "./firebase/firebase";
-import type { User } from "./types/backend-types";
+import type { User } from "./types/types";
 import { useAuth } from "./context/AuthContext";
 import CreateItemPage from "./pages/vendor-pages/CreateItemPage";
 

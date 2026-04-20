@@ -1,9 +1,19 @@
-import { FaTrash } from "react-icons/fa";
-import { FaChevronRight } from "react-icons/fa";
-import { type Item } from "../types/frontend-types";
+import { FaTrash, FaChevronRight } from "react-icons/fa";
+import { type UserRole } from "../types/types";
 import { useNavigate } from "react-router-dom";
 
-const ItemCard = ({ title, price, date, img, role, category, itemId, showDelete, onDelete }) => {
+interface ItemCardProps {
+  title: string;
+  price: number;
+  img: string;
+  category: string;
+  itemId?: string;
+  role: UserRole;
+  showDelete?: boolean;
+  onDelete?: () => void;
+}
+
+const ItemCard = ({ title, price, img, role, category, itemId, showDelete, onDelete }: ItemCardProps) => {
   const navigate = useNavigate();
 
   const handleEdit = () => {

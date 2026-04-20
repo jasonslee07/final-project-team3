@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase";
 import { useNavigate } from "react-router";
-import type { User, UserRole } from "../types/backend-types";
+import type { User, UserRole } from "../types/types";
 
 const OnboardingPage = () => {
   const [firstName, setFirstName] = useState<string>("");
@@ -28,13 +29,14 @@ const OnboardingPage = () => {
     setLoading(true);
     try {
       const userData: User = {
-        role,
-        firstName: firstName.trim(),
-        lastName: lastName.trim(),
         email: user.email ?? "",
-        desc: "",
+        firstName: firstName,
+        lastName: lastName,
         profileImg: user.photoURL ?? "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+        role,
+        desc: "",
       };
+
       await setDoc(doc(db, "users", user.uid), userData);
       navigate("/");
       window.location.reload();
@@ -43,7 +45,9 @@ const OnboardingPage = () => {
     }
   };
 
-  return (
+  return loading ? (
+    <>Loading...</>
+  ) : (
     <div className="flex flex-col h-screen">
       <Navbar />
       <div className="flex flex-col flex-1">
@@ -81,7 +85,9 @@ const OnboardingPage = () => {
               disabled={loading}
               className="py-3 bg-[#E2725C] text-white rounded-md w-full hover:bg-[#e05135] hover:-translate-y-1 ease-in-out duration-100 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
               onClick={handleSubmit}
-            >Confirm</button>
+            >
+              Confirm Changes
+            </button>
           </div>
         </div>
       </div>
