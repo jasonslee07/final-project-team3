@@ -46,20 +46,13 @@ const SettingsPage = () => {
     fetchUserData();
   }, []);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setImageFile(file);
-    setPreviewUrl(URL.createObjectURL(file));
-  };
-
   const uploadImageAndGetURL = async () => {
-    if (!imageFile) return previewUrl;
+    if (!hasPickedFile.current || !inputRef.current?.files?.[0]) return previewUrl;
 
-    const fname = Date.now() + "-" + imageFile.name;
+    const file = inputRef.current.files[0];
+    const fname = Date.now() + "-" + file.name;
     const storageRef = ref(storage, "profile-images/" + fname);
-    await uploadBytes(storageRef, imageFile);
+    await uploadBytes(storageRef, file);
     return await getDownloadURL(storageRef);
   };
 
@@ -83,7 +76,7 @@ const SettingsPage = () => {
         desc: description,
         profileImg: imageUrl,
       });
-      await updatePassword(user, password);
+      if (password) await updatePassword(user, password);
 
       // console.log("User details updated Successfully"); // used for debugging
     } catch (error: any) {
