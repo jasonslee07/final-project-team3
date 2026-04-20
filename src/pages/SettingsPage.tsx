@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Navbar from "../components/Navbar";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -11,10 +11,19 @@ const SettingsPage = () => {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-
-  const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState("");
   const [description, setDescription] = useState<string>("");
+
+  const hasPickedFile = useRef(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    hasPickedFile.current = true;
+    setPreviewUrl(URL.createObjectURL(file));
+  };
 
   // pre load the user's first name and last name so the user knows whats being stored
   useEffect(() => {
@@ -26,21 +35,15 @@ const SettingsPage = () => {
           const data = userSnap.data();
           setFirstName(data.firstName);
           setLastName(data.lastName);
-          setDescription(data.description);
-          setPreviewUrl(data.previewUrl);
+          setDescription(data.desc);
+          if (!hasPickedFile.current) {
+            setPreviewUrl(data.profileImg);
+          }
         }
       }
     };
     fetchUserData();
   }, []);
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setImageFile(file);
-    setPreviewUrl(URL.createObjectURL(file));
-  };
 
   // if the user updates the data, update the firebase to have new data
   const handleUpdate = async () => {
@@ -78,18 +81,21 @@ const SettingsPage = () => {
             <form action="" className="flex flex-row justify-center items-start w-full max-w-5xl px-8 gap-12">
               <div className="flex flex-col w-full md:w-1/2 gap-4">
                 <div className="flex flex-col items-center justify-center">
-                  <label className="w-full h-[200px] border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center cursor-pointer bg-white overflow-hidden">
-                    {previewUrl ? <img src={previewUrl} alt="preview" className="w-full h-full object-cover" /> : <div className="text-gray-400 text-5xl">?</div>}
-
-                    <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
-                  </label>
+                  {/* // The label becomes a div, click handler opens the picker */}
+                  <div
+                    className="w-full h-[200px] border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center cursor-pointer bg-white overflow-hidden"
+                    onClick={() => inputRef.current?.click()}
+                  >
+                    {previewUrl ? <img src={previewUrl} alt="preview" className="w-full h-full object-cover" /> : <div className="text-gray-400 text-5xl">+</div>}
+                  </div>
+                  <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
                 </div>
 
                 <textarea
                   placeholder="Description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="p-3 rounded-md bg-[#ffffff] text-[#6b8f5e] outline-none h-[120px] resize-none"
+                  className="p-3 rounded-md bg-[#ffffff] text-[#6b8f5e] outline-none h-30 resize-none"
                 />
               </div>
               <div className="flex flex-col w-full md:w-1/2 gap-11.5">
