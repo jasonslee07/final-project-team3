@@ -8,7 +8,7 @@ const ItemCard = ({ title, price, date, img, role, category, itemId, showDelete,
 
   const handleEdit = () => {
     if (role === "Vendor") {
-      navigate(`/edit/${itemId}`); // <-- uses the doc ID
+      navigate(`/edit/${itemId}`);
     } else {
       navigate(`/item-page/${itemId}`);
     }
