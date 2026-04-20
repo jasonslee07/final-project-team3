@@ -2,34 +2,43 @@ import Navbar from "../../components/Navbar";
 import ItemCard from "../../components/ItemCard";
 import ProfileHeader from "../../components/ProfileHeader";
 import ProfileTab from "../../components/ProfileTab";
-import { type ItemDate } from "../../types/frontend-types";
 import { useEffect, useState } from "react";
-import { useCart } from "../../context/CartContext";
-import { collection, getDocs, query, where, getDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  getDoc,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { useAuth } from "../../context/AuthContext";
 import type { User } from "../../types/backend-types";
 
-const dummyData: ItemDate = {
-  day: 7,
-  month: "April",
-  year: 2026,
-};
-
 const ClientProfile = () => {
   const [activeTab, setActiveTab] = useState(0);
-  const { cart, removeFromCart } = useCart();
+
+  // cart items coming from firestore, shud this be any[]???
+  const [cartItems, setCartItems] = useState<any[]>([]);
+
+  // ordered items coming from firestore orders collection i made??
+  const [orderedItems, setOrderedItems] = useState<any[]>([]);
+
+  // past or completed items coming from orders collection i made..
+  const [pastItems, setPastItems] = useState<any[]>([]);
 
   let total = 0;
-  for (let i = 0; i < cart.length; i++) {
-    total = total + cart[i].price;
+  for (let i = 0; i < cartItems.length; i++) {
+    total = total + cartItems[i].price;
   }
   const loadingUser: User = {
     firstName: "Loading...",
     lastName: "",
     email: "Loading...",
+    desc: "Loading...",
     profileImg: "",
-    role: "Vendor",
+    role: "Client",
   };
 
   const [userData, setUserData] = useState<User>(loadingUser);
@@ -39,42 +48,118 @@ const ClientProfile = () => {
   useEffect(() => {
     if (!currentUser) return;
 
-    const fetchUserData = async () => {
+    const fetchClientData = async () => {
+
       try {
-        const reference = doc(db, "users", currentUser.uid);
-        const snapshot = await getDoc(reference);
-        setUserData(snapshot.data() as User);
+        // get the logged in user's profile info
+        const userRef = doc(db, "users", currentUser.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (userSnap.exists()) {
+          setUserData(userSnap.data() as User);
+        }
+
+        // get everything currently in the user's cart
+        const cartRef = collection(db, "users", currentUser.uid, "cart");
+        const cartSnap = await getDocs(cartRef);
+
+        const fetchedCart = cartSnap.docs.map((cartDoc) => ({
+          id: cartDoc.id,
+          ...cartDoc.data(),
+        }));
+
+        setCartItems(fetchedCart);
+
+        // get items the user has ordered but not completed yet... ill scratch this if we dont do shipped/delivered
+        const orderedQuery = query(
+          collection(db, "orders"),
+          where("clientID", "==", currentUser.uid),
+          where("status", "==", "Shipped"),
+        );
+
+        const orderedSnap = await getDocs(orderedQuery);
+
+        const fetchedOrderedItems = orderedSnap.docs.map((orderDoc) => ({
+          id: orderDoc.id,
+          ...orderDoc.data(),
+        }));
+
+        setOrderedItems(fetchedOrderedItems);
+
+        // get old or completed purchases
+        const pastQuery = query(
+          collection(db, "orders"),
+          where("clientID", "==", currentUser.uid),
+          where("status", "==", "Delivered"),
+        );
+
+        const pastSnap = await getDocs(pastQuery);
+
+        const fetchedPastItems = pastSnap.docs.map((orderDoc) => ({
+          id: orderDoc.id,
+          ...orderDoc.data(),
+        }));
+
+        setPastItems(fetchedPastItems);
       } catch (error) {
-        console.error("Error fetching user data: ", error);
-      }
+        console.error("Error fetching client data:", error);
+      } 
     };
-    fetchUserData();
+
+    fetchClientData();
   }, [currentUser]);
+
+  const removeFromCart = async (cartDocId: string) => {
+    if (!currentUser) return;
+
+    try {
+      // delete item from users/{uid}/cart/{cartDocId} (the thing i made in firestore lmk if i shud fade that)
+      await deleteDoc(doc(db, "users", currentUser.uid, "cart", cartDocId));
+
+      // update UI immediately after deleting from Firestore (bro deleting items r genuinely so complicated)
+      setCartItems((prev) => prev.filter((item) => item.id !== cartDocId));
+    } catch (error) {
+      console.error("Error removing cart item:", error);
+    }
+  };
+
   return (
     <>
       <Navbar />
 
-      <ProfileHeader name={userData.firstName + " " + userData.lastName} role={"Client"} desc={userData.desc} img={userData.profileImg} />
+      <ProfileHeader
+        name={userData.firstName + " " + userData.lastName}
+        role={"Client"}
+        desc={userData.desc}
+        img={userData.profileImg}
+      />
 
-      <ProfileTab tab1={"Cart"} tab2={"Ordered"} tab3={"Past"} activeTab={activeTab} setActiveTab={setActiveTab} />
+      <ProfileTab
+        tab1={"Cart"}
+        tab2={"Ordered"}
+        tab3={"Past"}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
 
       <div className="min-h-screen bg-[#c5cfa8] grid grid-cols-2 gap-3 px-4 py-4 items-start">
         {activeTab === 0 &&
-          (cart.length === 0 ? (
-            <p className="text-[#6b8f5e] text-sm col-span-2 text-center py-4">Your cart is empty!</p>
+          (cartItems.length === 0 ? (
+            <p className="text-[#6b8f5e] text-sm col-span-2 text-center py-4">
+              Your cart is empty!
+            </p>
           ) : (
             <>
-              {cart.map((item, i) => (
+              {cartItems.map((item) => (
                 <ItemCard
-                  key={i}
+                  key={item.id}
                   title={item.title}
                   price={item.price}
-                  date={item.date}
                   img={item.img}
                   role="Client"
                   category={item.category}
                   showDelete={true}
-                  onDelete={() => removeFromCart(item.title)}
+                  onDelete={() => removeFromCart(item.id)}
                 />
               ))}
 
@@ -84,12 +169,47 @@ const ClientProfile = () => {
               </div>
 
               <div className="col-span-2 flex justify-center py-2">
-                <button className="bg-[#E2725C] text-white text-md px-16 py-4 rounded-md">Checkout</button>
+                <button className="bg-[#E2725C] text-white text-md px-16 py-4 rounded-md">
+                  Checkout
+                </button>
               </div>
             </>
           ))}
-        {activeTab === 1 && <ItemCard title={"Ordered Item"} price={12.99} date={dummyData} img={"/src/assets/salt-lamp.png"} role={"Client"} category={"Wall"} />}
-        {activeTab === 2 && <ItemCard title={"Past Item"} price={9.99} date={dummyData} img={"/src/assets/throw-blanket.png"} role={"Client"} category={"Floor"} />}
+        {activeTab === 1 &&
+          (orderedItems.length === 0 ? (
+            <p className="text-[#6b8f5e] text-sm col-span-2 text-center py-4">
+              No ordered items yet.
+            </p>
+          ) : (
+            orderedItems.map((item, index) => (
+              <ItemCard
+                key={index}
+                title={item.title}
+                price={item.price}
+                img={item.img}
+                role="Client"
+                category={item.category}
+              />
+            ))
+          ))}
+
+        {activeTab === 2 &&
+          (pastItems.length === 0 ? (
+            <p className="text-[#6b8f5e] text-sm col-span-2 text-center py-4">
+              No past items yet.
+            </p>
+          ) : (
+            pastItems.map((item, index) => (
+              <ItemCard
+                key={index}
+                title={item.title}
+                price={item.price}
+                img={item.img}
+                role="Client"
+                category={item.category}
+              />
+            ))
+          ))}
       </div>
     </>
   );
