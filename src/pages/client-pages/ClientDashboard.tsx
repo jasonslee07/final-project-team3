@@ -16,7 +16,6 @@ const ClientDashboard = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState<Item[]>();
-  const itemId = 1;
 
   const { currentUser } = useAuth();
 
@@ -26,6 +25,7 @@ const ClientDashboard = () => {
     const unsubscribe = onSnapshot(itemDB, (snapshot) => {
       const itemData = snapshot.docs.map((doc) => ({
         ...doc.data(),
+        id: doc.id,
       })) as Item[];
 
       setItems(itemData);
@@ -56,7 +56,7 @@ const ClientDashboard = () => {
       <div className="grid grid-cols-2 gap-3 px-4 py-4 sm:grid-cols-4">
         {items ? (
           items.map((item, i) => (
-            <div key={i} onClick={() => navigate(`/item/${i + 1}`)} className="bg-[#f5f0e8] rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer">
+            <div key={i} onClick={() => navigate(`/item/${item.id}`)} className="bg-[#f5f0e8] rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer">
               <div className="w-full aspect-square overflow-hidden bg-stone-100 relative">
                 <img src={item.img} alt={item.title} className="w-full h-full object-cover" />
                 <div className="absolute top-2 left-2 bg-white text-[#e2725b] text-[10px] font-bold px-2 py-0.5 rounded-md">${item.price.toFixed(2)}</div>
