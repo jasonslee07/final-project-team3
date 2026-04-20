@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
-import { db } from "../../firebase/firebase";
+import { db, storage } from "../../firebase/firebase";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 import { collection, onSnapshot, getDoc, addDoc, doc} from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 import type { Item, ItemStatus, User } from "../../types/backend-types";
 import { useAuth } from "../../context/AuthContext";
@@ -16,10 +17,11 @@ const ItemEditPage = () => {
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState("");
+  // const [isUploading, setIsUploading] = useState(false);
 
   const navigate = useNavigate();
-
   const { id } = useParams();
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     if (!id) return;
@@ -38,7 +40,13 @@ const ItemEditPage = () => {
     fetchItem();
   }, [id]);
 
-  const { currentUser } = useAuth();
+  const uploadImageAndGetURL = async () => {
+    if (!imageFile) return previewUrl; 
+    const fname = Date.now() + "-" + imageFile.name;
+    const storageRef = ref(storage, "item-images/" + fname);
+    await uploadBytes(storageRef, imageFile);
+    return await getDownloadURL(storageRef);
+  };
 
   const handleAddItem = async (item: Omit<Item, "id">) => {
     try {
@@ -49,15 +57,15 @@ const ItemEditPage = () => {
     }
   };
 
-  const onPublish = () => {
+  const onPublish = async () => {
     const status: ItemStatus = "Active";
-
+    const imageUrl = await uploadImageAndGetURL();
     const item = {
       title: itemName,
       price: parseInt(price),
       desc: description,
       category: category,
-      img: previewUrl,
+      img: imageUrl,
       vendorID: currentUser.uid,
       status: status,
     };
@@ -66,15 +74,15 @@ const ItemEditPage = () => {
     navigate("/");
   };
 
-  const onSave = () => {
+  const onSave = async () => {
     const status: ItemStatus = "Draft";
-
+    const imageUrl = await uploadImageAndGetURL();
     const item = {
       title: itemName,
       price: parseInt(price),
       desc: description,
       category: category,
-      img: previewUrl,
+      img: imageUrl,
       vendorID: currentUser.uid,
       status: status,
     };
