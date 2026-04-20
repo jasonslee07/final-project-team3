@@ -8,6 +8,7 @@ import { signOut } from "firebase/auth";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router";
 import globe from "../assets/Sell4Impact_logo.png";
+import text_logo from "../assets/Sell4Impact_text.png";
 
 const Home = () => {
   /**
@@ -66,8 +67,10 @@ const Home = () => {
     <>
       <Navbar />
       <div className="mt-30 mb-10 flex flex-col items-center gap-4">
-        <h1 className="text-5xl flex text-[#40532D]">Welcome to Sell4Impact</h1>
-        <h2 className="text-2xl flextext-[#40532D]">Where you can furnish your dorm for less</h2>
+        <h1 className="text-5xl flex text-[#40532D] items-center">
+          Welcome to <img width={200} src={text_logo} className="pl-3" alt="Sell4Impact" />
+        </h1>
+        <h2 className="text-2xl flextext-[#40532D]">Where you can furnish your dorm for less!</h2>
         <img src={globe} width={200} alt="" />
       </div>
       <div className="py-16 bg-linear-to-b from-[#EAECDC] to-[#D3D6BA] flex justify-center items-center">
