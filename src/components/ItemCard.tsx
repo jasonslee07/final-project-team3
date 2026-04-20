@@ -1,8 +1,18 @@
 import { FaTrash } from "react-icons/fa";
 import { FaChevronRight } from "react-icons/fa";
 import { type Item } from "../types/frontend-types";
+import { useNavigate } from "react-router-dom";
 
-const ItemCard = ({ title, price, date, img, role, category, showDelete, onDelete }: Item & { showDelete?: boolean, onDelete?: () => void }) => {
+const ItemCard = ({ title, price, date, img, role, category, itemId, showDelete, onDelete }) => {
+  const navigate = useNavigate();
+
+  const handleEdit = () => {
+    if (role === "Vendor") {
+      navigate(`/edit/${itemId}`); // <-- uses the doc ID
+    } else {
+      navigate(`/item-page/${itemId}`);
+    }
+  };
 
   return (
     <div className="flex items-stretch w-full bg-[#fffcf3] rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
@@ -23,9 +33,11 @@ const ItemCard = ({ title, price, date, img, role, category, showDelete, onDelet
           <span className="bg-[#eaecdc] text-[#7e9169] text-[10px] font-semibold px-2 py-0.5 rounded-md capitalize">{category}</span>
         </div>
 
-        <p className="text-[#6b8f5e] text-[10px]">Added {date.day} {date.month} {date.year}</p>
+        {/* <p className="text-[#6b8f5e] text-[10px]">
+          Added {date.day} {date.month} {date.year}
+        </p> */}
 
-        <button className="mt-0.5 self-start flex items-center gap-1 bg-[#8fac7f] hover:bg-[#7a9669] text-white text-[10px] font-semibold px-3 py-1 rounded-md">
+        <button className="mt-0.5 self-start flex items-center gap-1 bg-[#8fac7f] hover:bg-[#7a9669] text-white text-[10px] font-semibold px-3 py-1 rounded-md" onClick={handleEdit}>
           {role === "Vendor" ? "Edit Item Details" : "View Item Details"}
           <FaChevronRight size={8} />
         </button>

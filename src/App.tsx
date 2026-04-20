@@ -2,21 +2,22 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
 import PageNotFound from "./components/PageNotFound";
-import ClientProfile from "./pages/ClientProfile";
-import VendorProfile from "./pages/VendorProfile";
-import ItemPage from "./pages/ItemPage";
-import ItemEditPage from "./pages/ItemEditPage";
+import ClientProfile from "./pages/client-pages/ClientProfile";
+import VendorProfile from "./pages/vendor-pages/VendorProfile";
+import ItemPage from "./components/ItemPage";
+import ItemEditPage from "./pages/vendor-pages/ItemEditPage";
 import SignUpPage from "./pages/SignUpPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import SettingsPage from "./pages/SettingsPage";
 import OnboardingPage from "./pages/OnboardingPage";
-import ClientDashboard from "./pages/ClientDashboard";
+import ClientDashboard from "./pages/client-pages/ClientDashboard";
 
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "./firebase/firebase";
 import type { User } from "./types/backend-types";
 import { useAuth } from "./context/AuthContext";
+import CreateItemPage from "./pages/vendor-pages/CreateItemPage";
 
 function App() {
   /**
@@ -62,14 +63,22 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
+          {/* Main Routes */}
           {userData ? <Route path="/" element={userData.role === "Client" ? <ClientProfile /> : <VendorProfile />}></Route> : <Route path="/" element={<Home />}></Route>}
-          {currentUser ? <Route path="/onboarding" element={<OnboardingPage />}></Route> : <Route path="/onboarding" element={<PageNotFound />}></Route>}
-          {userData ? <Route path="/dashboard" element={<ClientDashboard />}></Route> : <Route path="/client-dashboard" element={<PageNotFound />}></Route>}
-          {userData ? <Route path="/settings" element={<SettingsPage />}></Route> : <Route path="/settings" element={<PageNotFound />}></Route>}
           {userData ? <Route path="/login" element={<PageNotFound />}></Route> : <Route path="/login" element={<LoginPage />}></Route>}
           {userData ? <Route path="/sign-up" element={<PageNotFound />}></Route> : <Route path="/sign-up" element={<SignUpPage />}></Route>}
           {userData ? <Route path="/forgot-password" element={<PageNotFound />}></Route> : <Route path="/forgot-password" element={<ForgotPasswordPage />}></Route>}
-          {userData ? <Route path="/item-page" element={<ItemPage />}></Route> : <Route path="/item-page" element={<PageNotFound />}></Route>}
+          {currentUser && !userData ? <Route path="/onboarding" element={<OnboardingPage />}></Route> : <Route path="/onboarding" element={<PageNotFound />}></Route>}
+
+          {/* Item Routes */}
+          {userData ? <Route path="/create" element={userData.role === "Vendor" ? <CreateItemPage /> : <PageNotFound />}></Route> : <Route path="/create" element={<PageNotFound />}></Route>}
+          {userData ? <Route path="/edit/:id" element={userData.role === "Vendor" ? <ItemEditPage /> : <PageNotFound />}></Route> : <Route path="/edit" element={<PageNotFound />}></Route>}
+          {userData ? <Route path="/item/:id" element={<ItemPage />}></Route> : <Route path="/item" element={<PageNotFound />}></Route>}
+          {userData ? <Route path="/vendor/:id" element={userData.role === "Vendor" ? <VendorProfile /> : <PageNotFound />}></Route> : <Route path="/vendor" element={<PageNotFound />}></Route>}
+
+          {/* Navbar Routes */}
+          {userData ? <Route path="/dashboard" element={<ClientDashboard />}></Route> : <Route path="/client-dashboard" element={<PageNotFound />}></Route>}
+          {userData ? <Route path="/settings" element={<SettingsPage />}></Route> : <Route path="/settings" element={<PageNotFound />}></Route>}
           <Route path="*" element={<PageNotFound />}></Route>
         </Routes>
       </BrowserRouter>

@@ -1,6 +1,6 @@
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/Navbar";
 import { FaSearch } from "react-icons/fa";
-import { type Item } from "../types/frontend-types";
+import { type Item } from "../../types/frontend-types";
 import { useNavigate } from "react-router-dom";
 
 const dummyItems: Item[] = [
@@ -10,6 +10,7 @@ const dummyItems: Item[] = [
 
 const ClientDashboard = () => {
   const navigate = useNavigate();
+  const itemId = 1;
 
   return (
     <div className="min-h-screen bg-[#c5cfa8]">
@@ -22,8 +23,7 @@ const ClientDashboard = () => {
         {/* Search bar */}
         <div className="flex items-center gap-2 border-2 border-[#e2725b] rounded-full px-4 py-2 w-full max-w-md bg-white">
           <FaSearch color="#e2725b" size={14} />
-          <span className="text-stone-400 text-sm">Search</span>
-          <span className="text-stone-300 text-sm">Wall | Floor | Bed | Desk | Other</span>
+          <input type="text" placeholder="Search — Wall | Floor | Bed | Desk | Other" className="flex-1 outline-none bg-transparent text-sm text-stone-400 placeholder:text-stone-300" />
         </div>
       </div>
 
@@ -33,7 +33,7 @@ const ClientDashboard = () => {
       {/* Grid */}
       <div className="grid grid-cols-2 gap-3 px-4 py-4 sm:grid-cols-4">
         {[...dummyItems, ...dummyItems].map((item, i) => (
-          <div key={i} onClick={() => navigate("/item-page")} className="bg-[#f5f0e8] rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer">
+          <div key={i} onClick={() => navigate(`/item/${i + 1}`)} className="bg-[#f5f0e8] rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer">
             <div className="w-full aspect-square overflow-hidden bg-stone-100 relative">
               <img src={item.img} alt={item.title} className="w-full h-full object-cover" />
               <div className="absolute top-2 left-2 bg-white text-[#e2725b] text-[10px] font-bold px-2 py-0.5 rounded-md">${item.price.toFixed(2)}</div>

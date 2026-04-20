@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight, FaShoppingCart } from "react-icons/fa";
-import Navbar from "../components/Navbar";
+import Navbar from "./Navbar";
 import { useCart } from "../context/CartContext";
 
 const ItemPage = () => {
@@ -28,13 +28,13 @@ const ItemPage = () => {
               <span className="bg-[#8fac7f] text-white font-bold text-base px-4 py-2 rounded-md">$40</span>
               <div
                 onClick={() => {
-                  addToCart({ 
-                    title: "Pink faux fur throw blanket", 
-                    price: 40, 
-                    date: { day: 7, month: "April", year: 2026 }, 
-                    img: "/src/assets/throw-blanket.png", 
-                    role: "Client", 
-                    category: "Bedding" 
+                  addToCart({
+                    title: "Pink faux fur throw blanket",
+                    price: 40,
+                    date: { day: 7, month: "April", year: 2026 },
+                    img: "/src/assets/throw-blanket.png",
+                    role: "Client",
+                    category: "Bedding",
                   });
                   setAdded(true);
                 }}
@@ -46,10 +46,8 @@ const ItemPage = () => {
             </div>
 
             <span className="bg-[#eaecdc] text-[#7e9169] text-xs font-semibold px-3 py-1 rounded-md self-start">Bedding</span>
-            
-            <p className="text-[#40532d] text-sm leading-relaxed">
-              Originally bought from Target. It's really fuzzy and easy to wash. I used it for one semester. Great for keeping warm.
-            </p>
+
+            <p className="text-[#40532d] text-sm leading-relaxed">Originally bought from Target. It's really fuzzy and easy to wash. I used it for one semester. Great for keeping warm.</p>
 
             <button onClick={() => navigate("/vendor-profile")} className="flex items-center justify-between bg-[#8fac7f] text-white rounded-md px-4 py-3 mt-auto">
               <div className="flex items-center gap-3">
