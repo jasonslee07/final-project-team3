@@ -5,6 +5,7 @@ import { signOut } from "firebase/auth";
 import type { User } from "../types/types";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router";
+import logo from "../assets/Sell4Impact.png";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser, faHouse } from "@fortawesome/free-solid-svg-icons";
@@ -68,7 +69,7 @@ const Navbar = () => {
         <div className="text-xl text-[#E2725B] bg-white m-2 px-8 py-2 rounded-lg">Sell4Impact</div>
       ) : (
         <a href="/dashboard" className="text-xl text-[#E2725B] bg-white m-2 px-8 py-2 rounded-lg">
-          Sell4Impact
+          <img src={logo} alt="Sell4Impact" className="scale-200 h-10" />
         </a>
       )}
       {userData ? (
