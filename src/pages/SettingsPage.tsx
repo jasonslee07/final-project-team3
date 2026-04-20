@@ -5,7 +5,8 @@ import Navbar from "../components/Navbar";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { updatePassword } from "firebase/auth";
 import { updateDoc, doc, getDoc } from "firebase/firestore";
-import { auth, db } from "../firebase/firebase";
+import { auth, db, storage } from "../firebase/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const SettingsPage = () => {
   const [firstName, setFirstName] = useState<string>("");
@@ -45,6 +46,23 @@ const SettingsPage = () => {
     fetchUserData();
   }, []);
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setImageFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
+  };
+
+  const uploadImageAndGetURL = async () => {
+    if (!imageFile) return previewUrl;
+
+    const fname = Date.now() + "-" + imageFile.name;
+    const storageRef = ref(storage, "profile-images/" + fname);
+    await uploadBytes(storageRef, imageFile);
+    return await getDownloadURL(storageRef);
+  };
+
   // if the user updates the data, update the firebase to have new data
   const handleUpdate = async () => {
     const user = auth.currentUser;
@@ -55,13 +73,15 @@ const SettingsPage = () => {
     }
 
     try {
+      const imageUrl = await uploadImageAndGetURL();
+
       // 1. Update Firestore Document (Names)
       const userRef = doc(db, "users", user.uid);
       await updateDoc(userRef, {
         firstName: firstName,
         lastName: lastName,
         desc: description,
-        profileImg: previewUrl,
+        profileImg: imageUrl,
       });
       await updatePassword(user, password);
 

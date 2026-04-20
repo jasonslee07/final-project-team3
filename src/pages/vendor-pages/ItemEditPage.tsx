@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { doc, getDoc, deleteDoc, updateDoc } from "firebase/firestore";
-import { db } from "../../firebase/firebase";
+import { db, storage } from "../../firebase/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -46,18 +47,36 @@ const ItemEditPage = () => {
     navigate("/");
   };
 
-  const handleUpdateItem = async (status: ItemStatus) => {
+
+  const uploadImageAndGetURL = async () => {
+  
+    if (!imageFile) return previewUrl; 
+    
+    const fname = Date.now() + "-" + imageFile.name;
+    const storageRef = ref(storage, "item-images/" + fname);
+    await uploadBytes(storageRef, imageFile);
+    return await getDownloadURL(storageRef);
+  };
+
+  const handleUpdateItem= async (status : ItemStatus) => {
+
     if (!id) return;
 
     try {
       const reference = doc(db, "items", id);
+      const imageUrl = await uploadImageAndGetURL();
       await updateDoc(reference, {
         title: itemName,
         price: parseInt(price),
         category: category,
         desc: description,
+<<<<<<< HEAD
         img: previewUrl,
         status: status,
+=======
+        img: imageUrl,
+        status: status
+>>>>>>> 87f6cf76f95a70f6ab6c25c0b30b53dc6f763d10
       });
     } catch (error) {
       console.error("Error updating document:", error);
