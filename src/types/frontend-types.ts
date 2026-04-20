@@ -15,6 +15,7 @@ export interface Item {
   img: string;
   role: UserRole;
   category: string;
+  id: string;
 }
 
 export interface ProfileInfo {

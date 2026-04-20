@@ -7,15 +7,11 @@ import { db } from "../../firebase/firebase";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 
-const dummyItems: Item[] = [
-  { title: "Pink throw-over blanket", price: 40, date: { day: 7, month: "April", year: 2026 }, img: "/src/assets/throw-blanket.png", role: "Client", category: "Bed" },
-  { title: "Salt Lamp", price: 18, date: { day: 7, month: "April", year: 2026 }, img: "/src/assets/salt-lamp.png", role: "Client", category: "Desk" },
-];
-
 const ClientDashboard = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState<Item[]>();
+  const [query, setQuery] = useState("");
 
   const { currentUser } = useAuth();
 
@@ -34,6 +30,13 @@ const ClientDashboard = () => {
     return () => unsubscribe(); // cleanup
   }, []);
 
+  // update based on search filter
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+  };
+
+  const filteredItems = items?.filter((item) => item.title.toLowerCase().includes(query.toLowerCase()) || item.category.toLowerCase().includes(query.toLowerCase()));
+
   return (
     <div className="min-h-screen bg-[#c5cfa8]">
       <Navbar />
@@ -45,7 +48,13 @@ const ClientDashboard = () => {
         {/* Search bar */}
         <div className="flex items-center gap-2 border-2 border-[#e2725b] rounded-full px-4 py-2 w-full max-w-md bg-white">
           <FaSearch color="#e2725b" size={14} />
-          <input type="text" placeholder="Search — Wall | Floor | Bed | Desk | Other" className="flex-1 outline-none bg-transparent text-sm text-stone-400 placeholder:text-stone-300" />
+          <input
+            type="text"
+            placeholder="Search — Wall | Floor | Bed | Desk | Other"
+            className="flex-1 outline-none bg-transparent text-sm text-stone-400 placeholder:text-stone-300"
+            onChange={handleChange}
+            value={query}
+          />
         </div>
       </div>
 
@@ -54,8 +63,8 @@ const ClientDashboard = () => {
 
       {/* Grid */}
       <div className="grid grid-cols-2 gap-3 px-4 py-4 sm:grid-cols-4">
-        {items ? (
-          items.map((item, i) => (
+        {filteredItems && filteredItems.length > 0 ? (
+          filteredItems.map((item, i) => (
             <div key={i} onClick={() => navigate(`/item/${item.id}`)} className="bg-[#f5f0e8] rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer">
               <div className="w-full aspect-square overflow-hidden bg-stone-100 relative">
                 <img src={item.img} alt={item.title} className="w-full h-full object-cover" />
