@@ -5,15 +5,11 @@ import ProfileTab from "../../components/ProfileTab";
 import { type ItemDate } from "../../types/frontend-types";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where, getDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { useAuth } from "../../context/AuthContext";
 
-const dummyData: ItemDate = {
-  day: 7,
-  month: "April",
-  year: 2026,
-};
+import type { User } from "../../types/backend-types";
 
 type FetchedItem = {
   id: string;
@@ -27,8 +23,21 @@ type FetchedItem = {
 };
 
 const VendorProfile = () => {
+
   const [activeTab, setActiveTab] = useState(0);
   const [items, setItems] = useState<FetchedItem[]>([]);
+
+  const loadingUser : User = {
+
+    firstName: "Loading...",
+    lastName: "",
+    email: "Loading...",
+    profileImg: "",
+    role: "Vendor"
+  }
+
+  const [userData, setUserData] = useState<User>(loadingUser);
+
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
@@ -45,7 +54,20 @@ const VendorProfile = () => {
       setItems(fetched);
     };
 
+    const fetchUserData = async () => {
+
+      try {
+        const reference = doc(db, "users", currentUser.uid)
+        const snapshot = await getDoc(reference);
+        setUserData(snapshot.data() as User);
+      }
+      catch (error) {
+        console.error("Error fetching user data: ", error);
+      }
+    }
+
     fetchItems();
+    fetchUserData();
   }, [currentUser]);
 
   const editItem = async () => {
@@ -61,7 +83,7 @@ const VendorProfile = () => {
     <>
       <Navbar />
      
-      <ProfileHeader name={"sponge bob"} role={"Vendor"} desc={"5 items sold"} img={"/src/assests/profile-pic.png"} />
+      <ProfileHeader name={userData.firstName + " " + userData.lastName} role={userData.role} desc={"i fucked up backend types omg"} img={userData?.profileImg} />
       <ProfileTab tab1={"Items"} tab2={"Drafts"} tab3={"Sold"} activeTab={activeTab} setActiveTab={setActiveTab}/>
       <div className="min-h-screen bg-[#d3d6ba] flex flex-col gap-3 px-4 py-4">
         {items.filter((item) => {
