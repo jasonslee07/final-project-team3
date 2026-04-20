@@ -30,6 +30,7 @@ const ClientProfile = () => {
       firstName: "Loading...",
       lastName: "",
       email: "Loading...",
+      desc: "Loading...",
       profileImg: "",
       role: "Vendor"
   }
@@ -58,7 +59,7 @@ const ClientProfile = () => {
     <>
       <Navbar />
 
-      <ProfileHeader name={userData.firstName + " " + userData.lastName} role={"Client"} desc={"i fucked up backend types omg"} img={userData.profileImg} />
+      <ProfileHeader name={userData.firstName + " " + userData.lastName} role={"Client"} desc={userData.desc} img={userData.profileImg} />
 
       <ProfileTab tab1={"Cart"} tab2={"Ordered"} tab3={"Past"} activeTab={activeTab} setActiveTab={setActiveTab} />
 
