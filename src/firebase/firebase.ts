@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -19,6 +20,9 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
+// initialize storage for images
+const storage = getStorage(app);
+
 /**
  * DOCS: https://firebase.google.com/docs/auth/web/google-signin
  * Create a new google auth provider and a function to create the user
@@ -35,4 +39,4 @@ async function signInWithGoogle() {
   }
 }
 
-export { db, auth, provider, signInWithGoogle };
+export { db, auth, provider, storage, signInWithGoogle };
