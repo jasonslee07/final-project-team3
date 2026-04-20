@@ -32,6 +32,7 @@ const VendorProfile = () => {
     firstName: "Loading...",
     lastName: "",
     email: "Loading...",
+    desc: "Loading...",
     profileImg: "",
     role: "Vendor"
   }
@@ -83,7 +84,7 @@ const VendorProfile = () => {
     <>
       <Navbar />
      
-      <ProfileHeader name={userData.firstName + " " + userData.lastName} role={userData.role} desc={"i fucked up backend types omg"} img={userData?.profileImg} />
+      <ProfileHeader name={userData.firstName + " " + userData.lastName} role={userData.role} desc={userData.desc} img={userData?.profileImg} />
       <ProfileTab tab1={"Items"} tab2={"Drafts"} tab3={"Sold"} activeTab={activeTab} setActiveTab={setActiveTab}/>
       <div className="min-h-screen bg-[#d3d6ba] flex flex-col gap-3 px-4 py-4">
         {items.filter((item) => {
