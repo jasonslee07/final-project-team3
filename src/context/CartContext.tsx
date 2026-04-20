@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { type Item } from "../types/frontend-types";
+import { type Item } from "../types/types";
 
 interface CartContextType {
   cart: Item[];
@@ -23,9 +23,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     // 2. You forgot to include removeFromCart in the provider value
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
-      {children}
-    </CartContext.Provider>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>{children}</CartContext.Provider>
   );
 };
 

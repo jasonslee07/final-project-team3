@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 
@@ -76,9 +77,7 @@ const SettingsPage = () => {
           <div className="bg-linear-to-b from-[#EAECDC] to-[#D3D6BA] w-full border-t-8 flex-1 border-[#E2725B] flex flex-col pt-10 items-center">
             <form action="" className="flex flex-row justify-center items-start w-full max-w-5xl px-8 gap-12">
               <div className="flex flex-col w-full md:w-1/2 gap-4">
-              
                 <div className="flex flex-col items-center justify-center">
-
                   <label className="w-full h-[200px] border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center cursor-pointer bg-white overflow-hidden">
                     {previewUrl ? <img src={previewUrl} alt="preview" className="w-full h-full object-cover" /> : <div className="text-gray-400 text-5xl">?</div>}
 
@@ -94,7 +93,6 @@ const SettingsPage = () => {
                 />
               </div>
               <div className="flex flex-col w-full md:w-1/2 gap-11.5">
-              
                 <input
                   type="text"
                   placeholder="First Name"

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase";
 import { signOut } from "firebase/auth";
-import type { User } from "../types/backend-types";
+import type { User } from "../types/types";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router";
 

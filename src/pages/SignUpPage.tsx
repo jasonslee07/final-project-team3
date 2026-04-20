@@ -4,9 +4,9 @@ import Navbar from "../components/Navbar";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { signInWithGoogle } from "../firebase/firebase";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase";
-import type { User, UserRole } from "../types/backend-types";
+import type { User, UserRole } from "../types/types";
 import { useNavigate } from "react-router";
 
 const SignUpPage = () => {
@@ -23,12 +23,12 @@ const SignUpPage = () => {
     try {
       const userCred = await createUserWithEmailAndPassword(auth, email, password);
       const defaultData: User = {
-        role: role,
+        email: email,
         firstName: firstName,
         lastName: lastName,
-        email: email,
-        desc: "",
         profileImg: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+        role: role,
+        desc: "",
       };
       await setDoc(doc(db, "users", userCred.user.uid), defaultData);
       navigate("/");
@@ -39,8 +39,13 @@ const SignUpPage = () => {
 
   const handleGoogleAuth = async () => {
     try {
-      await signInWithGoogle();
-      navigate("/onboarding");
+      const userCred = await signInWithGoogle();
+      const userDoc = await getDoc(doc(db, "users", userCred.uid));
+      if (userDoc.exists()) {
+        navigate("/");
+      } else {
+        navigate("/onboarding");
+      }
     } catch (error: any) {
       alert(error.message);
     }
@@ -55,10 +60,10 @@ const SignUpPage = () => {
           <div className="bg-linear-to-b from-[#EAECDC] to-[#D3D6BA] w-full border-t-8 flex-1 border-[#E2725B] flex flex-col pt-10 items-center">
             <form action="" className="flex flex-col justify-center items-center w-90 gap-8">
               <div className="flex gap-10">
-                <button type="button" className={`text-2xl px-8 py-2 rounded-2xl ${isClient ? "bg-[#A8B897]" : "bg-white"}`} onClick={() => setRole("Client")}>
+                <button type="button" className={`text-2xl px-8 py-2 rounded-2xl ${role === "Client" ? "bg-[#A8B897]" : "bg-white"}`} onClick={() => setRole("Client")}>
                   Client
                 </button>
-                <button type="button" className={`text-2xl px-8 py-2 rounded-2xl ${isVendor ? "bg-[#A8B897]" : "bg-white"}`} onClick={() => setRole("Vendor")}>
+                <button type="button" className={`text-2xl px-8 py-2 rounded-2xl ${role === "Vendor" ? "bg-[#A8B897]" : "bg-white"}`} onClick={() => setRole("Vendor")}>
                   Vendor
                 </button>
               </div>

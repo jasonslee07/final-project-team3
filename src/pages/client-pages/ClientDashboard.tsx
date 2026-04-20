@@ -1,6 +1,6 @@
 import Navbar from "../../components/Navbar";
 import { FaSearch } from "react-icons/fa";
-import { type Item } from "../../types/frontend-types";
+import { type Item } from "../../types/types";
 import { useNavigate } from "react-router-dom";
 import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase/firebase";

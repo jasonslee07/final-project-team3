@@ -5,7 +5,7 @@ import Navbar from "./Navbar";
 import { useCart } from "../context/CartContext";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
-import { type Item } from "../types/backend-types";
+import { type Item } from "../types/types";
 import PageNotFound from "./PageNotFound";
 
 const ItemPage = () => {

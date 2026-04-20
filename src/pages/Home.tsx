@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase";
-import type { User } from "../types/backend-types";
+import type { User } from "../types/types";
 import { signOut } from "firebase/auth";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router";
