@@ -66,7 +66,9 @@ const Navbar = () => {
   ) : (
     <nav className="flex justify-between bg-linear-to-b from-[#AABA99] to-[#9EAF8C]">
       {userData?.role === "Vendor" ? (
-        <div className="text-xl text-[#E2725B] bg-white m-2 px-8 py-2 rounded-lg">Sell4Impact</div>
+        <div className="text-xl text-[#E2725B] bg-white m-2 px-8 py-2 rounded-lg">
+          <img src={logo} alt="Sell4Impact" className="scale-200 h-10" />
+        </div>
       ) : (
         <a href="/dashboard" className="text-xl text-[#E2725B] bg-white m-2 px-8 py-2 rounded-lg">
           <img src={logo} alt="Sell4Impact" className="scale-200 h-10" />
