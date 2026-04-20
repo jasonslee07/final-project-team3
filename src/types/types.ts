@@ -2,9 +2,15 @@
 
 export type UserRole = "Client" | "Vendor";
 
-export type ItemStatus = "Draft" | "Active" | "Sold";
+export type ItemStatus = "Draft" | "Active" | "Carted" | "Sold";
 
 export type OrderStatus = "Shipped" | "Delivered";
+
+export interface ItemDate {
+  day: number;
+  month: string;
+  year: number;
+}
 
 export interface User {
   firstName: string;
@@ -20,11 +26,13 @@ export interface Item {
   title: string;
   price: number;
   desc: string;
+  date?: ItemDate;
   category: string;
   img: string;
   vendorID: string;
   status: ItemStatus;
   id: string;
+  cartedBy?: string | null;
 }
 
 export interface Order {
@@ -37,4 +45,17 @@ export interface Order {
 export interface AuthContextType {
   currentUser: User | null;
   loading: boolean;
+}
+
+export interface ProfileInfo {
+  name: string;
+  role: UserRole;
+  desc: string;
+  img: string;
+}
+
+export interface Tabs {
+  tab1: string;
+  tab2: string;
+  tab3: string;
 }

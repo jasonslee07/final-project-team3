@@ -1,4 +1,4 @@
-import { type ProfileInfo } from "../types/frontend-types";
+import { type ProfileInfo } from "../types/types";
 
 const ProfileHeader = ({ name, role, desc, img }: ProfileInfo) => {
   return (

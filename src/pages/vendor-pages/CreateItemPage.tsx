@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { db, storage } from "../../firebase/firebase";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-import { collection, onSnapshot, getDoc, addDoc, doc} from "firebase/firestore";
+import { collection, getDoc, addDoc, doc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-import type { Item, ItemStatus, User } from "../../types/backend-types";
+import type { Item, ItemStatus } from "../../types/types";
 import { useAuth } from "../../context/AuthContext";
 
 const ItemEditPage = () => {
@@ -41,7 +42,7 @@ const ItemEditPage = () => {
   }, [id]);
 
   const uploadImageAndGetURL = async () => {
-    if (!imageFile) return previewUrl; 
+    if (!imageFile) return previewUrl;
     const fname = Date.now() + "-" + imageFile.name;
     const storageRef = ref(storage, "item-images/" + fname);
     await uploadBytes(storageRef, imageFile);
@@ -159,6 +160,3 @@ const ItemEditPage = () => {
 };
 
 export default ItemEditPage;
-function setIsLoading(arg0: boolean) {
-  throw new Error("Function not implemented.");
-}
