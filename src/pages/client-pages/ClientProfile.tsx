@@ -134,7 +134,7 @@ const ClientProfile = () => {
               </div>
 
               <div className="col-span-2 flex justify-center py-2">
-                <button className="bg-[#E2725C] text-white text-md px-16 py-4 rounded-md" onClick={handleCheckout}>Checkout</button>
+                <button className="bg-[#E2725C] text-white text-md px-16 py-4 rounded-md hover:-translate-y-1" onClick={handleCheckout}>Checkout</button>
               </div>
             </>
           ))}
