@@ -5,7 +5,7 @@ import Navbar from "./Navbar";
 import { useCart } from "../context/CartContext";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
-import { type Item } from "../types/types";
+import { type Item, type User } from "../types/types";
 import PageNotFound from "./PageNotFound";
 
 const ItemPage = () => {
@@ -15,16 +15,29 @@ const ItemPage = () => {
   const [added, setAdded] = useState(false);
   const [item, setItem] = useState<Item | null>(null);
 
+  const [vendor, setVendor] = useState<User | null>(null);
+
   useEffect(() => {
     if (!id) return;
-    const fetchItem = async () => {
+
+    const fetchItemAndVendor = async () => {
       const ref = doc(db, "items", id);
       const snap = await getDoc(ref);
       if (snap.exists()) {
-        setItem({ id: snap.id, ...snap.data() } as unknown as Item);
+        const itemData = { id: snap.id, ...snap.data() } as unknown as Item;
+        setItem(itemData);
+
+        if (itemData.vendorID) {
+          const vendorRef = doc(db, "users", itemData.vendorID);
+          const vendorSnap = await getDoc(vendorRef);
+          
+          if (vendorSnap.exists()) {
+            setVendor(vendorSnap.data() as User);
+          }
+        }
       }
     };
-    fetchItem();
+    fetchItemAndVendor();
   }, [id]);
 
   return item ? (
@@ -60,16 +73,22 @@ const ItemPage = () => {
 
             <p className="text-[#40532d] text-sm leading-relaxed">{item.desc}</p>
 
-            <button onClick={() => navigate(`/vendor/${item.vendorID}`)} className="flex items-center justify-between bg-[#8fac7f] text-white rounded-md px-4 py-3 mt-auto">
+            <div className="flex items-center justify-between bg-[#8fac7f] text-white rounded-md px-4 py-3 mt-auto">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-[#e2725b] flex items-center justify-center text-xs font-bold">V</div>
+                <div className="w-8 h-8 rounded-full bg-[#e2725b] flex items-center justify-center text-xs font-bold overflow-hidden">
+                  {vendor?.profileImg ? (
+                    <img src={vendor.profileImg} className="w-full h-full object-cover" />
+                  ) : (
+                    "V"
+                  )}
+                </div>
                 <div className="flex flex-col text-left">
-                  <span className="text-sm font-semibold">Vendor Name</span>
-                  <span className="text-xs text-white/70">⭐ 4.6 | 5 items sold</span>
+                  <span className="text-sm font-semibold">{vendor ? vendor.firstName + " " + vendor.lastName : "Loading..."}</span>
+                  <span className="text-xs text-white/70">{vendor?.desc || "No description provided"}</span>
                 </div>
               </div>
               <FaChevronRight size={12} color="white" />
-            </button>
+            </div>
           </div>
         </div>
       </div>
