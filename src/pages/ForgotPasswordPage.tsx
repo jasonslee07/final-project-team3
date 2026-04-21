@@ -32,7 +32,7 @@ export default function ForgotPassword() {
             ) : (
               <>
                 <form action="" className="flex flex-col justify-center items-center w-90 gap-8">
-                  <input type="email" placeholder="Email" required className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA]" value={email} onChange={(e) => setEmail(e.target.value)} />
+                  <input type="email" placeholder="Email" required className="py-3 px-4 border w-full bg-white rounded-md text-[#40532D]" value={email} onChange={(e) => setEmail(e.target.value)} />
                   <button type="button" className="py-3 bg-[#E2725C] text-white rounded-md w-full" onClick={handleReset}>
                     Send reset email
                   </button>
