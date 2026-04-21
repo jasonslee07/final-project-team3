@@ -3,10 +3,10 @@ import ItemCard from "../../components/ItemCard";
 import ProfileHeader from "../../components/ProfileHeader";
 import ProfileTab from "../../components/ProfileTab";
 import { useEffect, useState } from "react";
-import { collection, getDocs, query, where, getDoc, doc, onSnapshot, updateDoc, addDoc } from "firebase/firestore";
+import { collection, query, where, getDoc, doc, onSnapshot, updateDoc, addDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { useAuth } from "../../context/AuthContext";
-import type { Item, User, Order } from "../../types/types";
+import type { Item, User } from "../../types/types";
 
 const ClientProfile = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -18,6 +18,7 @@ const ClientProfile = () => {
   const [orderedItems, setOrderedItems] = useState<Item[]>([]);
 
   // past or completed items coming from orders collection i made..
+  // this is a future implementation
   const [pastItems, setPastItems] = useState<Item[]>([]);
 
   let total = 0;

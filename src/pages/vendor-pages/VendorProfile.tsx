@@ -4,7 +4,7 @@ import ProfileHeader from "../../components/ProfileHeader";
 import ProfileTab from "../../components/ProfileTab";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { collection, getDocs, query, where, getDoc, doc, onSnapshot } from "firebase/firestore";
+import { collection, query, where, getDoc, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { useAuth } from "../../context/AuthContext";
 

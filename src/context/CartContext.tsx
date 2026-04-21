@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { createContext, useContext, type ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
 import { type Item } from "../types/types";
 import { doc, updateDoc } from "firebase/firestore";
 import { useAuth } from "./AuthContext";
