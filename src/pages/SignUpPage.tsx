@@ -72,7 +72,7 @@ const SignUpPage = () => {
                 type="text"
                 placeholder="First Name"
                 required
-                className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA] focus:text-[#AABA99]"
+                className="py-3 px-4 border w-full bg-white rounded-md text-[#40532D] focus:text-[#40532D]"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
               />
@@ -80,16 +80,16 @@ const SignUpPage = () => {
                 type="text"
                 placeholder="Last Name"
                 required
-                className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA] focus:text-[#AABA99]"
+                className="py-3 px-4 border w-full bg-white rounded-md text-[#40532D] focus:text-[#40532D]"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
               />
-              <input type="email" placeholder="Email" required className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA]" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input type="email" placeholder="Email" required className="py-3 px-4 border w-full bg-white rounded-md text-[#40532D]" value={email} onChange={(e) => setEmail(e.target.value)} />
               <input
                 type="password"
                 placeholder="Password"
                 required
-                className="py-3 px-4 border w-full bg-white rounded-md text-[#D3D6BA]"
+                className="py-3 px-4 border w-full bg-white rounded-md text-[#40532D]"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
