@@ -37,13 +37,6 @@ const ClientProfile = () => {
 
   const { currentUser } = useAuth();
 
-  const fetchOrders = async () => {
-    const orderedSnap = await getDocs(query(collection(db, "orders"), where("clientID", "==", currentUser.uid), where("status", "==", "Shipped")));
-    setOrderedItems(orderedSnap.docs.map((d) => ({ ...d.data(), id: d.id })) as Item[]);
-
-    const pastSnap = await getDocs(query(collection(db, "orders"), where("clientID", "==", currentUser.uid), where("status", "==", "Delivered")));
-    setPastItems(pastSnap.docs.map((d) => ({ ...d.data(), id: d.id })) as Item[]);
-  };
 
   useEffect(() => {
     if (!currentUser) return;
@@ -63,11 +56,26 @@ const ClientProfile = () => {
       setCartItems(fetchedCart);
     });
 
-    // const orderQuery = query(collection(db, "orders"), where("clientID", "==", currentUser.uid));
+    const orderQuery = query(collection(db, "orders"), where("clientID", "==", currentUser.uid));
     
-   
+    const unsubscribeOrders = onSnapshot(orderQuery, async (snapshot) => {
+      const shipped: Item[] = [];
 
-    return () => { unsubscribeCart() }; // cleanup listener on unmount
+      for (const document of snapshot.docs) {
+        const orderData = document.data();
+        const itemSnap = await getDoc(doc(db, "items", orderData.itemID));
+        
+        if (itemSnap.exists()) {
+          const itemData = { ...itemSnap.data(), id: itemSnap.id } as Item;
+          if (orderData.status === "Shipped") shipped.push(itemData);
+        }
+      }
+      
+      // in the future we would add functionality for delivered items too
+      setOrderedItems(shipped);
+    });
+
+    return () => { unsubscribeCart(); unsubscribeOrders() }; // cleanup listener on unmount
   }, [currentUser]);
 
   const removeFromCart = async (itemId: string) => {
@@ -95,7 +103,6 @@ const ClientProfile = () => {
           status: "Shipped"
         });
 
-        await fetchOrders();
         alert("Checkout successful!");
       }
     } catch (error) {

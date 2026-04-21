@@ -4,7 +4,7 @@ import ProfileHeader from "../../components/ProfileHeader";
 import ProfileTab from "../../components/ProfileTab";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { collection, getDocs, query, where, getDoc, doc } from "firebase/firestore";
+import { collection, getDocs, query, where, getDoc, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { useAuth } from "../../context/AuthContext";
 
@@ -42,15 +42,14 @@ const VendorProfile = () => {
   useEffect(() => {
     if (!currentUser) return;
 
-    const fetchItems = async () => {
-      const q = query(collection(db, "items"), where("vendorID", "==", currentUser.uid));
-      const snapshot = await getDocs(q);
+    const q = query(collection(db, "items"), where("vendorID", "==", currentUser.uid));
+    const unsubscribeItems = onSnapshot(q, (snapshot) => {
       const fetched = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...(doc.data() as Omit<FetchedItem, "id">),
       }));
       setItems(fetched);
-    };
+    });
 
     const fetchUserData = async () => {
       try {
@@ -62,8 +61,9 @@ const VendorProfile = () => {
       }
     };
 
-    fetchItems();
     fetchUserData();
+
+    return () => { unsubscribeItems() };
   }, [currentUser]);
 
   const editItem = async () => {
