@@ -13,6 +13,11 @@ The goal of Sell4Impact is to:
 
 ---
 
+## Design
+
+Link to Figma:
+https://www.figma.com/design/napS9WedQE1MhT6ezi1Ylx/Team-3-Website-Design?node-id=0-1&t=zCYvtihXGYUyA4AA-1
+
 ## Features
 
 ### Core Features
