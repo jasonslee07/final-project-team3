@@ -3,10 +3,10 @@ import ItemCard from "../../components/ItemCard";
 import ProfileHeader from "../../components/ProfileHeader";
 import ProfileTab from "../../components/ProfileTab";
 import { useEffect, useState } from "react";
-import { collection, getDocs, query, where, getDoc, doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { collection, getDocs, query, where, getDoc, doc, onSnapshot, updateDoc, addDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { useAuth } from "../../context/AuthContext";
-import type { Item, User } from "../../types/types";
+import type { Item, User, Order } from "../../types/types";
 
 const ClientProfile = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -37,6 +37,14 @@ const ClientProfile = () => {
 
   const { currentUser } = useAuth();
 
+  const fetchOrders = async () => {
+    const orderedSnap = await getDocs(query(collection(db, "orders"), where("clientID", "==", currentUser.uid), where("status", "==", "Shipped")));
+    setOrderedItems(orderedSnap.docs.map((d) => ({ ...d.data(), id: d.id })) as Item[]);
+
+    const pastSnap = await getDocs(query(collection(db, "orders"), where("clientID", "==", currentUser.uid), where("status", "==", "Delivered")));
+    setPastItems(pastSnap.docs.map((d) => ({ ...d.data(), id: d.id })) as Item[]);
+  };
+
   useEffect(() => {
     if (!currentUser) return;
 
@@ -55,17 +63,11 @@ const ClientProfile = () => {
       setCartItems(fetchedCart);
     });
 
-    // ordered/past can stay as one-time fetches for now
-    const fetchOrders = async () => {
-      const orderedSnap = await getDocs(query(collection(db, "orders"), where("clientID", "==", currentUser.uid), where("status", "==", "Shipped")));
-      setOrderedItems(orderedSnap.docs.map((d) => ({ ...d.data(), id: d.id })) as Item[]);
+    // const orderQuery = query(collection(db, "orders"), where("clientID", "==", currentUser.uid));
+    
+   
 
-      const pastSnap = await getDocs(query(collection(db, "orders"), where("clientID", "==", currentUser.uid), where("status", "==", "Delivered")));
-      setPastItems(pastSnap.docs.map((d) => ({ ...d.data(), id: d.id })) as Item[]);
-    };
-    fetchOrders();
-
-    return () => unsubscribeCart(); // cleanup listener on unmount
+    return () => { unsubscribeCart() }; // cleanup listener on unmount
   }, [currentUser]);
 
   const removeFromCart = async (itemId: string) => {
@@ -76,6 +78,30 @@ const ClientProfile = () => {
       console.error("Error removing from cart:", error);
     }
   };
+
+  const handleCheckout = async () => {
+
+    if (!currentUser || cartItems.length === 0) return;
+
+    try {
+      for (const item of cartItems) {
+        const itemRef = doc(db, "items", item.id);
+        await updateDoc(itemRef, { status: "Sold" });
+
+        await addDoc(collection(db, "orders"), {
+          itemID: item.id,
+          clientID: currentUser.uid,
+          vendorID: item.vendorID,
+          status: "Shipped"
+        });
+
+        await fetchOrders();
+        alert("Checkout successful!");
+      }
+    } catch (error) {
+      console.error("Error handling checkout", error);
+    }
+  }
 
   return (
     <>
@@ -101,7 +127,7 @@ const ClientProfile = () => {
               </div>
 
               <div className="col-span-2 flex justify-center py-2">
-                <button className="bg-[#E2725C] text-white text-md px-16 py-4 rounded-md">Checkout</button>
+                <button className="bg-[#E2725C] text-white text-md px-16 py-4 rounded-md" onClick={handleCheckout}>Checkout</button>
               </div>
             </>
           ))}
