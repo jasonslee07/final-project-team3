@@ -92,7 +92,7 @@ src/
 
 1. clone the repository
 2. cd into project folder
-3. run "npm install"
+3. run ```npm install```
 4. create a .env in root directory with these fields
 
 
@@ -105,7 +105,7 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=
 VITE_FIREBASE_APP_ID=
 ```
 
-5. run "npm run dev"
+5. run ```npm run dev```
 
 ---
 
@@ -122,12 +122,10 @@ feature/<feature-name>
 
 ## Contributors
 
-```text
-Product Manager: Melat Abera (melatabera)
-Tech Lead: Soumya Jaiswal (jaiswalsoumya450-dev)
-Tech Lead: Jason Lee (jasonslee07)
-Designer: Lucy Davies (lucymdavies)
-Engineer: Yuvan Adarsh Jagannathan (yuvanadarsh)
-Engineer: Sydney Groskopf (sydneygroskopf27)
-Engineer: Faiza Syed (faizasyed07)
-```
+- Product Manager: Melat Abera (melatabera)
+- Tech Lead: Soumya Jaiswal (jaiswalsoumya450-dev)
+- Tech Lead: Jason Lee (jasonslee07)
+- Designer: Lucy Davies (lucymdavies)
+- Engineer: Yuvan Adarsh Jagannathan (yuvanadarsh)
+- Engineer: Sydney Groskopf (sydneygroskopf27)
+- Engineer: Faiza Syed (faizasyed07)
