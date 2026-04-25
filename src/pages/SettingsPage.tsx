@@ -94,27 +94,26 @@ const SettingsPage = () => {
         <div className="flex flex-col flex-1">
           <h1 className="text-3xl text-[#E2725B] mt-8 mb-4 flex justify-center">Update Details</h1>
           <div className="bg-linear-to-b from-[#EAECDC] to-[#D3D6BA] w-full border-t-8 flex-1 border-[#E2725B] flex flex-col pt-10 items-center">
-            <form action="" className="flex flex-row justify-center items-start w-full max-w-5xl px-8 gap-12">
+            <form action="" className="flex flex-col md:flex-row justify-center items-start w-90 md:w-full md:px-10 max-w-5xl gap-12">
               <div className="flex flex-col w-full md:w-1/2 gap-4">
                 <div className="flex flex-col items-center justify-center">
                   {/* // The label becomes a div, click handler opens the picker */}
                   <div
-                    className="w-full h-[200px] border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center cursor-pointer bg-white overflow-hidden"
+                    className="w-90 h-90 border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center cursor-pointer bg-white overflow-hidden"
                     onClick={() => inputRef.current?.click()}
                   >
                     {previewUrl ? <img src={previewUrl} alt="preview" className="w-full h-full object-cover" /> : <div className="text-gray-400 text-5xl">+</div>}
                   </div>
                   <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
                 </div>
-
+              </div>
+              <div className="flex flex-col w-full h-90 justify-between">
                 <textarea
                   placeholder="Description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   className="p-3 rounded-md bg-[#ffffff] text-[#6b8f5e] outline-none h-30 resize-none"
                 />
-              </div>
-              <div className="flex flex-col w-full md:w-1/2 gap-11.5">
                 <input
                   type="text"
                   placeholder="First Name"
