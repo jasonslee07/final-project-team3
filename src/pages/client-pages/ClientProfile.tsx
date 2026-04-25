@@ -3,7 +3,7 @@ import ItemCard from "../../components/ItemCard";
 import ProfileHeader from "../../components/ProfileHeader";
 import ProfileTab from "../../components/ProfileTab";
 import { useEffect, useState } from "react";
-import { collection, getDocs, query, where, getDoc, doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { collection, query, where, getDoc, doc, onSnapshot, updateDoc, addDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { useAuth } from "../../context/AuthContext";
 import type { Item, User } from "../../types/types";
@@ -18,6 +18,7 @@ const ClientProfile = () => {
   const [orderedItems, setOrderedItems] = useState<Item[]>([]);
 
   // past or completed items coming from orders collection i made..
+  // this is a future implementation
   const [pastItems, setPastItems] = useState<Item[]>([]);
 
   let total = 0;
@@ -37,6 +38,7 @@ const ClientProfile = () => {
 
   const { currentUser } = useAuth();
 
+
   useEffect(() => {
     if (!currentUser) return;
 
@@ -55,17 +57,26 @@ const ClientProfile = () => {
       setCartItems(fetchedCart);
     });
 
-    // ordered/past can stay as one-time fetches for now
-    const fetchOrders = async () => {
-      const orderedSnap = await getDocs(query(collection(db, "orders"), where("clientID", "==", currentUser.uid), where("status", "==", "Shipped")));
-      setOrderedItems(orderedSnap.docs.map((d) => ({ ...d.data(), id: d.id })) as Item[]);
+    const orderQuery = query(collection(db, "orders"), where("clientID", "==", currentUser.uid));
+    
+    const unsubscribeOrders = onSnapshot(orderQuery, async (snapshot) => {
+      const shipped: Item[] = [];
 
-      const pastSnap = await getDocs(query(collection(db, "orders"), where("clientID", "==", currentUser.uid), where("status", "==", "Delivered")));
-      setPastItems(pastSnap.docs.map((d) => ({ ...d.data(), id: d.id })) as Item[]);
-    };
-    fetchOrders();
+      for (const document of snapshot.docs) {
+        const orderData = document.data();
+        const itemSnap = await getDoc(doc(db, "items", orderData.itemID));
+        
+        if (itemSnap.exists()) {
+          const itemData = { ...itemSnap.data(), id: itemSnap.id } as Item;
+          if (orderData.status === "Shipped") shipped.push(itemData);
+        }
+      }
+      
+      // in the future we would add functionality for delivered items too
+      setOrderedItems(shipped);
+    });
 
-    return () => unsubscribeCart(); // cleanup listener on unmount
+    return () => { unsubscribeCart(); unsubscribeOrders() }; // cleanup listener on unmount
   }, [currentUser]);
 
   const removeFromCart = async (itemId: string) => {
@@ -76,6 +87,29 @@ const ClientProfile = () => {
       console.error("Error removing from cart:", error);
     }
   };
+
+  const handleCheckout = async () => {
+
+    if (!currentUser || cartItems.length === 0) return;
+
+    try {
+      for (const item of cartItems) {
+        const itemRef = doc(db, "items", item.id);
+        await updateDoc(itemRef, { status: "Sold" });
+
+        await addDoc(collection(db, "orders"), {
+          itemID: item.id,
+          clientID: currentUser.uid,
+          vendorID: item.vendorID,
+          status: "Shipped"
+        });
+
+        alert("Checkout successful!");
+      }
+    } catch (error) {
+      console.error("Error handling checkout", error);
+    }
+  }
 
   return (
     <>
@@ -101,7 +135,7 @@ const ClientProfile = () => {
               </div>
 
               <div className="col-span-2 flex justify-center py-2">
-                <button className="bg-[#E2725C] text-white text-md px-16 py-4 rounded-md">Checkout</button>
+                <button className="bg-[#E2725C] text-white text-md px-16 py-4 rounded-md hover:-translate-y-1" onClick={handleCheckout}>Checkout</button>
               </div>
             </>
           ))}

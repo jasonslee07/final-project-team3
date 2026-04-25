@@ -106,6 +106,10 @@ const ItemEditPage = () => {
         <div className="bg-[#f7f3eb] py-8 border-b-4 border-[#e6765b]">
           <h1 className="text-4xl text-center text-[#e6765b]">Edit item</h1>
         </div>
+<<<<<<< HEAD
+=======
+        
+>>>>>>> e64d72d00e2c0a757d23f5d325ff144aa1bbb8da
         <div className="grid grid-cols-2 gap-10 px-12 py-10">
           {/* image upload on the left, showing a ? for now */}
           <div className="flex flex-col items-center justify-center">

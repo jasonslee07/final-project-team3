@@ -13,6 +13,11 @@ The goal of Sell4Impact is to:
 
 ---
 
+## Design
+
+Link to Figma:
+https://www.figma.com/design/napS9WedQE1MhT6ezi1Ylx/Team-3-Website-Design?node-id=0-1&t=zCYvtihXGYUyA4AA-1
+
 ## Features
 
 ### Core Features
@@ -35,36 +40,77 @@ The goal of Sell4Impact is to:
 - Frontend: React + TypeScript + Vite
 - Styling: Tailwind CSS
 - Routing: React Router
-- Backend: Firebase (Authentication + Firestore)
+- Backend: Firebase (Authentication + Firestore + Cloud Storage)
 
 ---
 
 ## Project Structure
 
+```text
 src/
-components/ // reusable UI components (Navbar, ItemCard, etc.)
-pages/ // application pages (Home, Login, Profiles, etc.)
-App.tsx // routing configuration
+├── assets/
+│   ├── Sell4Impact.png
+│   ├── Sell4Impact_logo.png
+│   ├── Sell4Impact_text.png
+├── components/
+│   ├── ItemCard.tsx
+│   ├── ItemPage.tsx
+│   ├── Navbar.tsx
+│   ├── PageNotFound.tsx
+│   ├── ProfileHeader.tsx
+│   └── ProfileTab.tsx
+├── context/
+│   ├── AuthContext.tsx
+│   └── CartContext.tsx
+├── data/
+│   ├── items.json
+│   ├── orders.json
+│   └── users.json
+├── firebase/
+│   └── firebase.ts
+├── pages/
+│   ├── client-pages/
+│   │   ├── ClientDashboard.tsx
+│   │   └── ClientProfile.tsx
+│   ├── vendor-pages/
+│   │   ├── CreateItemPage.tsx
+│   │   ├── ItemEditPage.tsx
+│   │   └── VendorProfile.tsx
+│   ├── ForgotPasswordPage.tsx
+│   ├── Home.tsx
+│   ├── LoginPage.tsx
+│   ├── OnboardingPage.tsx
+│   ├── SettingsPage.tsx
+│   └── SignUpPage.tsx
+├── types/
+│   └── types.ts
+├── App.tsx
+├── index.css
+└── main.tsx
+```
 
 ---
 
-## Current Pages
+## Setting up & Installation
 
-- Home
-- Login Page
-- Signup Page
-- Client Profile
-- Vendor Profile
-- Item Page
+- Prereqs: Node.js and npm
 
----
+1. clone the repository
+2. cd into project folder
+3. run ```npm install```
+4. create a .env in root directory with these fields
 
-## Development Guidelines
 
-- Use blueprint comments in each page file as guidance!
-- Focus on frontend UI using mock data for the current sprint
-- Do not connect Firebase unless specified
-- Follow the provided figma design closely!
+```text
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
+```
+
+5. run ```npm run dev```
 
 ---
 
@@ -75,7 +121,16 @@ App.tsx // routing configuration
 feature/<feature-name>
 
 - Make commits with descriptive messages
-- Open a Pull Request before merging into `main`!
+- Open a Pull Request
 
+---
 
+## Contributors
 
+- Product Manager: Melat Abera (melatabera)
+- Tech Lead: Soumya Jaiswal (jaiswalsoumya450-dev)
+- Tech Lead: Jason Lee (jasonslee07)
+- Designer: Lucy Davies (lucymdavies)
+- Engineer: Yuvan Adarsh Jagannathan (yuvanadarsh)
+- Engineer: Sydney Groskopf (sydneygroskopf27)
+- Engineer: Faiza Syed (faizasyed07)

@@ -11,7 +11,7 @@ const ProfileHeader = ({ name, role, desc, img }: ProfileInfo) => {
           {name}
           <span className="text-[#6b8f5e] font-normal"> | {role}</span>
         </p>
-        <p className="text-stone-500 text-xs">⭐ {desc}</p>
+        <p className="text-stone-500 text-xs">{desc}</p>
       </div>
     </div>
   );
