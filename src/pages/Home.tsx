@@ -9,6 +9,7 @@ import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router";
 import globe from "../assets/Sell4Impact_logo.png";
 import text_logo from "../assets/Sell4Impact_text.png";
+import Loading from "../components/Loading";
 
 const Home = () => {
   /**
@@ -62,7 +63,7 @@ const Home = () => {
   };
 
   return isLoading ? (
-    <h2>Loading...</h2>
+    <Loading />
   ) : (
     <>
       <Navbar />
