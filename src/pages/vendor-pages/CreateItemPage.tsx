@@ -66,7 +66,7 @@ const ItemEditPage = () => {
       price: parseInt(price),
       desc: description,
       category: category,
-      img: imageUrl,
+      img: imageUrl || "https://www.theseasonedhome.com/content/images/thumbs/default-image_450.png",
       vendorID: currentUser.uid,
       status: status,
     };
@@ -83,7 +83,7 @@ const ItemEditPage = () => {
       price: parseInt(price),
       desc: description,
       category: category,
-      img: imageUrl,
+      img: imageUrl || "https://www.theseasonedhome.com/content/images/thumbs/default-image_450.png" ,
       vendorID: currentUser.uid,
       status: status,
     };

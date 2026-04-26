@@ -99,7 +99,7 @@ const SettingsPage = () => {
                 <div className="flex flex-col items-center justify-center">
                   {/* // The label becomes a div, click handler opens the picker */}
                   <div
-                    className="w-full h-[200px] border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center cursor-pointer bg-white overflow-hidden"
+                    className="w-[200px] h-[200px] border-2 border-dashed border-gray-400 rounded-full flex items-center justify-center cursor-pointer bg-white overflow-hidden"
                     onClick={() => inputRef.current?.click()}
                   >
                     {previewUrl ? <img src={previewUrl} alt="preview" className="w-full h-full object-cover" /> : <div className="text-gray-400 text-5xl">+</div>}
