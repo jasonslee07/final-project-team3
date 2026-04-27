@@ -3,7 +3,7 @@ import Navbar from "../../components/Navbar";
 import { doc, getDoc, deleteDoc, updateDoc } from "firebase/firestore";
 import { db, storage } from "../../firebase/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 import type { ItemStatus } from "../../types/types";
@@ -76,8 +76,12 @@ const ItemEditPage = () => {
   };
 
   const onPublish = () => {
-    handleUpdateItem("Active");
-    navigate("/");
+    if (itemName === "" || price === "" || category === "" || description === "" || previewUrl === "") {
+      alert("Fields empty");
+    } else {
+      handleUpdateItem("Active");
+      navigate("/");
+    }
   };
 
   const onSave = () => {
@@ -102,7 +106,7 @@ const ItemEditPage = () => {
         <div className="bg-[#f7f3eb] py-8 border-b-4 border-[#e6765b]">
           <h1 className="text-4xl text-center text-[#e6765b]">Edit item</h1>
         </div>
-        
+
         <div className="grid grid-cols-2 gap-10 px-12 py-10">
           {/* image upload on the left, showing a ? for now */}
           <div className="flex flex-col items-center justify-center">
@@ -136,12 +140,12 @@ const ItemEditPage = () => {
         </div>
         {/* buttons, no functionality for now */}
         <div className="flex justify-center gap-6 pb-10">
-          <button className="px-10 py-3 bg-[#9EAF8C] text-white rounded-md hover:bg-[#8e9f7c] transition " onClick={onSave}>
+          <Link to="/" className="px-10 py-3 bg-[#9EAF8C] text-white rounded-md hover:bg-[#8e9f7c] transition " onClick={onSave}>
             Save draft
-          </button>
-          <button className="px-10 py-3 bg-[#E2725B] text-white rounded-md hover:bg-[#d85f47] transition" onClick={onPublish}>
+          </Link>
+          <Link to="/" className="px-10 py-3 bg-[#E2725B] text-white rounded-md hover:bg-[#d85f47] transition" onClick={onPublish}>
             Publish item
-          </button>
+          </Link>
           <button className="px-10 py-3 bg-white text-zinc-500 rounded-md hover:bg-gray-200 transition" onClick={handleDelete}>
             Delete item
           </button>

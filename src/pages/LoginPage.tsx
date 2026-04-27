@@ -49,7 +49,7 @@ const LoginPage = () => {
       <div className="flex flex-col h-screen">
         <Navbar />
         <div className="flex flex-col flex-1">
-          <h1 className="text-3xl text-[#E2725B] mt-8 mb-4 flex justify-center">Login Page!</h1>
+          <h1 className="text-3xl text-[#E2725B] mt-8 mb-4 flex justify-center -translate-y-[8px]">Login Page!</h1>
           <div className="bg-linear-to-b from-[#EAECDC] to-[#D3D6BA] w-full border-t-8 flex-1 border-[#E2725B] flex flex-col pt-10 items-center">
             <form action="" className="flex flex-col justify-center items-center w-90 gap-8">
               <input type="email" placeholder="Email" required className="py-3 px-4 border w-full bg-white rounded-md text-[#40532D]" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -63,7 +63,7 @@ const LoginPage = () => {
               />
               <button
                 type="button"
-                className="font-bold py-3 bg-white border border-gray-300 text-gray-700 rounded-md px-10 hover:bg-gray-100 hover:text-black hover:-translate-y-0.5 ease-in-out duration-100 flex items-center justify-center gap-2"
+                className="font-bold py-3 px-10 w-full bg-white border border-gray-300 text-gray-700 rounded-md  hover:bg-gray-100 hover:text-black hover:-translate-y-0.5 ease-in-out duration-100 flex items-center justify-center gap-2"
                 onClick={handleGoogleAuth}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" className="w-6">

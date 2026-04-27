@@ -12,6 +12,7 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import SettingsPage from "./pages/SettingsPage";
 import OnboardingPage from "./pages/OnboardingPage";
 import ClientDashboard from "./pages/client-pages/ClientDashboard";
+import Loading from "./components/Loading";
 
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
@@ -59,7 +60,7 @@ function App() {
   }, [currentUser]);
 
   return isLoading ? (
-    <>Loading...</>
+    <Loading />
   ) : (
     <>
       <BrowserRouter>

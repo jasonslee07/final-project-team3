@@ -5,6 +5,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase";
 import { useNavigate } from "react-router";
 import type { User, UserRole } from "../types/types";
+import Loading from "../components/Loading";
 
 const OnboardingPage = () => {
   const [firstName, setFirstName] = useState<string>("");
@@ -46,7 +47,7 @@ const OnboardingPage = () => {
   };
 
   return loading ? (
-    <>Loading...</>
+    <Loading />
   ) : (
     <div className="flex flex-col h-screen">
       <Navbar />

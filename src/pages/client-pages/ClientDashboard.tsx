@@ -1,4 +1,5 @@
 import Navbar from "../../components/Navbar";
+import Loading from "../../components/Loading";
 import { FaSearch } from "react-icons/fa";
 import { type Item } from "../../types/types";
 import { useNavigate } from "react-router-dom";
@@ -39,7 +40,7 @@ const ClientDashboard = () => {
   const filteredItems = items?.filter((item) => item.status === "Active" && (item.title.toLowerCase().includes(query.toLowerCase()) || item.category.toLowerCase().includes(query.toLowerCase())));
 
   return isLoading ? (
-    <>Loading...</>
+    <Loading></Loading>
   ) : (
     <div className="min-h-screen bg-[#c5cfa8]">
       <Navbar />

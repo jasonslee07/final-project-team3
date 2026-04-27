@@ -9,6 +9,7 @@ import logo from "../assets/Sell4Impact.png";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser, faHouse } from "@fortawesome/free-solid-svg-icons";
+import Loading from "./Loading";
 
 const Navbar = () => {
   /**
@@ -62,15 +63,19 @@ const Navbar = () => {
   }, [currentUser]);
 
   return isLoading ? (
-    <>Loading...</>
+    <Loading />
   ) : (
     <nav className="flex justify-between bg-linear-to-b from-[#AABA99] to-[#9EAF8C]">
       {userData?.role === "Vendor" ? (
         <div className="text-xl text-[#E2725B] bg-white m-2 px-8 py-2 rounded-lg">
           <img src={logo} alt="Sell4Impact" className="scale-200 h-10" />
         </div>
-      ) : (
+      ) : userData?.role === "Client" ? (
         <a href="/dashboard" className="text-xl text-[#E2725B] bg-white m-2 px-8 py-2 rounded-lg">
+          <img src={logo} alt="Sell4Impact" className="scale-200 h-10" />
+        </a>
+      ) : (
+        <a href="/" className="text-xl text-[#E2725B] bg-white m-2 px-8 py-2 rounded-lg">
           <img src={logo} alt="Sell4Impact" className="scale-200 h-10" />
         </a>
       )}

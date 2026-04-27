@@ -38,7 +38,6 @@ const ClientProfile = () => {
 
   const { currentUser } = useAuth();
 
-
   useEffect(() => {
     if (!currentUser) return;
 
@@ -58,25 +57,28 @@ const ClientProfile = () => {
     });
 
     const orderQuery = query(collection(db, "orders"), where("clientID", "==", currentUser.uid));
-    
+
     const unsubscribeOrders = onSnapshot(orderQuery, async (snapshot) => {
       const shipped: Item[] = [];
 
       for (const document of snapshot.docs) {
         const orderData = document.data();
         const itemSnap = await getDoc(doc(db, "items", orderData.itemID));
-        
+
         if (itemSnap.exists()) {
           const itemData = { ...itemSnap.data(), id: itemSnap.id } as Item;
           if (orderData.status === "Shipped") shipped.push(itemData);
         }
       }
-      
+
       // in the future we would add functionality for delivered items too
       setOrderedItems(shipped);
     });
 
-    return () => { unsubscribeCart(); unsubscribeOrders() }; // cleanup listener on unmount
+    return () => {
+      unsubscribeCart();
+      unsubscribeOrders();
+    }; // cleanup listener on unmount
   }, [currentUser]);
 
   const removeFromCart = async (itemId: string) => {
@@ -89,7 +91,6 @@ const ClientProfile = () => {
   };
 
   const handleCheckout = async () => {
-
     if (!currentUser || cartItems.length === 0) return;
 
     try {
@@ -101,7 +102,7 @@ const ClientProfile = () => {
           itemID: item.id,
           clientID: currentUser.uid,
           vendorID: item.vendorID,
-          status: "Shipped"
+          status: "Shipped",
         });
 
         alert("Checkout successful!");
@@ -109,7 +110,7 @@ const ClientProfile = () => {
     } catch (error) {
       console.error("Error handling checkout", error);
     }
-  }
+  };
 
   return (
     <>
@@ -135,7 +136,9 @@ const ClientProfile = () => {
               </div>
 
               <div className="col-span-2 flex justify-center py-2">
-                <button className="bg-[#E2725C] text-white text-md px-16 py-4 rounded-md hover:-translate-y-1" onClick={handleCheckout}>Checkout</button>
+                <button className="bg-[#E2725C] text-white text-md px-16 py-4 rounded-md hover:-translate-y-1" onClick={handleCheckout}>
+                  Checkout
+                </button>
               </div>
             </>
           ))}

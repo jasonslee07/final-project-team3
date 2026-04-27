@@ -59,20 +59,24 @@ const ItemEditPage = () => {
   };
 
   const onPublish = async () => {
-    const status: ItemStatus = "Active";
-    const imageUrl = await uploadImageAndGetURL();
-    const item = {
-      title: itemName,
-      price: parseInt(price),
-      desc: description,
-      category: category,
-      img: imageUrl || "https://www.theseasonedhome.com/content/images/thumbs/default-image_450.png",
-      vendorID: currentUser.uid,
-      status: status,
-    };
+    if (itemName === "" || price === "" || category === "" || description === "" || previewUrl === "") {
+      alert("Fields empty");
+    } else {
+      const status: ItemStatus = "Active";
+      const imageUrl = await uploadImageAndGetURL();
+      const item = {
+        title: itemName,
+        price: parseInt(price),
+        desc: description,
+        category: category,
+        img: imageUrl,
+        vendorID: currentUser.uid,
+        status: status,
+      };
 
-    handleAddItem(item);
-    navigate("/");
+      handleAddItem(item);
+      navigate("/");
+    }
   };
 
   const onSave = async () => {

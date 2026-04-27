@@ -9,6 +9,7 @@ import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router";
 import globe from "../assets/Sell4Impact_logo.png";
 import text_logo from "../assets/Sell4Impact_text.png";
+import Loading from "../components/Loading";
 
 const Home = () => {
   /**
@@ -62,15 +63,18 @@ const Home = () => {
   };
 
   return isLoading ? (
-    <h2>Loading...</h2>
+    <Loading />
   ) : (
     <>
       <Navbar />
       <div className="mt-30 mb-10 flex flex-col items-center gap-4">
-        <h1 className="text-5xl flex text-[#40532D] items-center">
-          Welcome to <img width={200} src={text_logo} className="pl-3" alt="Sell4Impact" />
+        <h1 className="text-5xl flex text-[#40532D] items-center flex-col gap-x-4 gap-y-2 md:flex-row">
+          <span>Welcome</span> <span>to</span>{" "}
+          <span>
+            <img width={200} height={100} src={text_logo} className="h-25 object-cover" alt="Sell4Impact" />
+          </span>
         </h1>
-        <h2 className="text-2xl flextext-[#40532D]">Where you can furnish your dorm for less!</h2>
+        <h2 className="text-2xl flextext-[#40532D] mx-4">Where you can furnish your dorm for less!</h2>
         <img src={globe} width={200} alt="" />
       </div>
       <div className="py-16 bg-linear-to-b from-[#EAECDC] to-[#D3D6BA] flex justify-center items-center">
