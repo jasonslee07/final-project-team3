@@ -117,10 +117,10 @@ const ItemEditPage = () => {
         </div>
 
         {/* main content stuff */}
-        <div className="grid grid-cols-2 gap-10 px-12 py-10">
+        <div className="flex flex-col md:flex-row justify-center items-center gap-10 px-12 py-10">
           {/* image upload on the left, showing a ? for now */}
           <div className="flex flex-col items-center justify-center">
-            <label className="w-full h-[320px] border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center cursor-pointer bg-white overflow-hidden">
+            <label className="w-[350px] h-[350px] border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center cursor-pointer bg-white overflow-hidden">
               {previewUrl ? <img src={previewUrl} alt="preview" className="w-full h-full object-cover" /> : <div className="text-gray-400 text-5xl">?</div>}
 
               <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
