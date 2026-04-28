@@ -80,12 +80,12 @@ const SettingsPage = () => {
         profileImg: imageUrl,
       });
       if (password) await updatePassword(user, password);
-      navigate("/");
 
       // console.log("User details updated Successfully"); // used for debugging
     } catch (error: any) {
       console.error("Error modifying data: ", error);
     }
+    navigate("/");
   };
 
   console.log("previewUrl:", previewUrl);
@@ -97,12 +97,12 @@ const SettingsPage = () => {
         <div className="flex flex-col flex-1">
           <h1 className="text-3xl text-[#E2725B] mt-8 mb-4 flex justify-center">Update Details</h1>
           <div className="bg-linear-to-b from-[#EAECDC] to-[#D3D6BA] w-full border-t-8 flex-1 border-[#E2725B] flex flex-col pt-10 items-center">
-            <form action="" className="flex flex-col md:flex-row justify-center items-start w-90 md:w-full md:px-10 max-w-5xl gap-12 mb-4">
+            <form action="" className="flex flex-col md:flex-row justify-center items-center w-90 md:w-full md:px-10 max-w-5xl gap-12 mb-4">
               <div className="flex flex-col w-full md:w-1/2 gap-4">
                 <div className="flex flex-col items-center justify-center">
                   {/* // The label becomes a div, click handler opens the picker */}
                   <div
-                    className="w-[200px] h-[200px] border-2 border-dashed border-gray-400 rounded-full flex items-center justify-center cursor-pointer bg-white overflow-hidden"
+                    className="w-[300px] h-[300px] border-2 border-dashed border-gray-400 rounded-full flex items-center justify-center cursor-pointer bg-white overflow-hidden"
                     onClick={() => inputRef.current?.click()}
                   >
                     {previewUrl ? <img src={previewUrl} alt="preview" className="w-full h-full object-cover" /> : <div className="text-gray-400 text-5xl">+</div>}
