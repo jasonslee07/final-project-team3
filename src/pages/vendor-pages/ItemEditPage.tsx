@@ -27,7 +27,7 @@ const ItemEditPage = () => {
       if (snap.exists()) {
         const data = snap.data();
         setItemName(data.title);
-        setPrice(String(data.price));
+        setPrice(Number(data.price).toFixed(2));
         setCategory(data.category);
         setDescription(data.desc);
         setPreviewUrl(data.img);
@@ -64,7 +64,7 @@ const ItemEditPage = () => {
       const imageUrl = await uploadImageAndGetURL();
       await updateDoc(reference, {
         title: itemName,
-        price: parseInt(price),
+        price: parseFloat(price),
         category: category,
         desc: description,
         img: imageUrl,

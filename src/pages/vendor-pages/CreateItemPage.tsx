@@ -32,7 +32,8 @@ const ItemEditPage = () => {
       if (snap.exists()) {
         const data = snap.data();
         setItemName(data.title);
-        setPrice(String(data.price));
+        //changed
+        setPrice(Number(data.price).toFixed(2));
         setCategory(data.category);
         setDescription(data.desc);
         setPreviewUrl(data.img);
@@ -66,7 +67,7 @@ const ItemEditPage = () => {
       const imageUrl = await uploadImageAndGetURL();
       const item = {
         title: itemName,
-        price: parseInt(price),
+        price: parseFloat(price),
         desc: description,
         category: category,
         img: imageUrl,
@@ -84,7 +85,7 @@ const ItemEditPage = () => {
     const imageUrl = await uploadImageAndGetURL();
     const item = {
       title: itemName,
-      price: parseInt(price),
+      price: parseFloat(price),
       desc: description,
       category: category,
       img: imageUrl || "https://www.theseasonedhome.com/content/images/thumbs/default-image_450.png" ,
@@ -133,7 +134,7 @@ const ItemEditPage = () => {
 
             {/* price and category */}
             <div className="flex gap-4">
-              <input type="number" placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} className="p-3 rounded-md text-[#6b8f5e] bg-[#ffffff] outline-none w-1/2" />
+              <input type="number" step="0.01" placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} className="p-3 rounded-md text-[#6b8f5e] bg-[#ffffff] outline-none w-1/2" />
 
               <input type="text" placeholder="Category" value={category} onChange={(e) => setCategory(e.target.value)} className="p-3 rounded-md bg-[#ffffff] text-[#6b8f5e] outline-none w-1/2" />
             </div>

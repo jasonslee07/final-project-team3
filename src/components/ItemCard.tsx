@@ -39,7 +39,7 @@ const ItemCard = ({ title, price, img, role, category, itemId, showDelete, onDel
         <p className="text-[#40532d] font-semibold text-sm leading-tight line-clamp-1">{title}</p>
 
         <div className="flex flex-wrap gap-1">
-          <span className="bg-[#e2725b] text-white text-[10px] font-bold px-2 py-0.5 rounded-md">${price.toFixed(0)}</span>
+          <span className="bg-[#e2725b] text-white text-[10px] font-bold px-2 py-0.5 rounded-md">${price.toFixed(2)}</span>
           <span className="bg-[#eaecdc] text-[#7e9169] text-[10px] font-semibold px-2 py-0.5 rounded-md capitalize">{category}</span>
         </div>
 
