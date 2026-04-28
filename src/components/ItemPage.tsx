@@ -87,7 +87,6 @@ const ItemPage = () => {
                   <span className="text-xs text-white/70">{vendor?.desc || "No description provided"}</span>
                 </div>
               </div>
-              <FaChevronRight size={12} color="white" />
             </div>
           </div>
         </div>

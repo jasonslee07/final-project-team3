@@ -20,7 +20,7 @@ const ItemCard = ({ title, price, img, role, category, itemId, showDelete, onDel
     if (role === "Vendor") {
       navigate(`/edit/${itemId}`);
     } else {
-      navigate(`/item-page/${itemId}`);
+      navigate(`/item/${itemId}`);
     }
   };
 

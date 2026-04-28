@@ -127,7 +127,7 @@ const ClientProfile = () => {
           ) : (
             <>
               {cartItems.map((item) => (
-                <ItemCard key={item.id} title={item.title} price={item.price} img={item.img} role="Client" category={item.category} showDelete={true} onDelete={() => removeFromCart(item.id)} />
+                <ItemCard key={item.id} itemId={item.id} title={item.title} price={item.price} img={item.img} role="Client" category={item.category} showDelete={true} onDelete={() => removeFromCart(item.id)} />
               ))}
 
               <div className="col-span-2 bg-[#FFFCF3] py-6 flex flex-col items-center">
@@ -146,14 +146,14 @@ const ClientProfile = () => {
           (orderedItems.length === 0 ? (
             <p className="text-[#6b8f5e] text-sm col-span-2 text-center py-4">No ordered items yet.</p>
           ) : (
-            orderedItems.map((item) => <ItemCard key={item.id} title={item.title} price={item.price} img={item.img} role="Client" category={item.category} />)
+            orderedItems.map((item) => <ItemCard key={item.id} itemId={item.id} title={item.title} price={item.price} img={item.img} role="Client" category={item.category} />)
           ))}
 
         {activeTab === 2 &&
           (pastItems.length === 0 ? (
             <p className="text-[#6b8f5e] text-sm col-span-2 text-center py-4">No past items yet.</p>
           ) : (
-            pastItems.map((item) => <ItemCard key={item.id} title={item.title} price={item.price} img={item.img} role="Client" category={item.category} />)
+            pastItems.map((item) => <ItemCard key={item.id} itemId={item.id} title={item.title} price={item.price} img={item.img} role="Client" category={item.category} />)
           ))}
       </div>
     </>

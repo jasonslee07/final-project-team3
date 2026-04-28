@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useRef, useState } from "react";
 import Navbar from "../components/Navbar";
+import { useNavigate } from "react-router-dom";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { updatePassword } from "firebase/auth";
@@ -15,6 +16,7 @@ const SettingsPage = () => {
   const [password, setPassword] = useState<string>("");
   const [previewUrl, setPreviewUrl] = useState("");
   const [description, setDescription] = useState<string>("");
+  const navigate = useNavigate();
 
   const hasPickedFile = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -78,6 +80,7 @@ const SettingsPage = () => {
         profileImg: imageUrl,
       });
       if (password) await updatePassword(user, password);
+      navigate("/");
 
       // console.log("User details updated Successfully"); // used for debugging
     } catch (error: any) {
