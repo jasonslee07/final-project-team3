@@ -20,6 +20,10 @@ const SignUpPage = () => {
 
   // Create a new user with all the data that is given through the form
   const handleAuth = async () => {
+    if (!firstName.trim() || !lastName.trim()) {
+    alert("Please fill in both your first and last name.");
+    return;
+    } 
     try {
       const userCred = await createUserWithEmailAndPassword(auth, email, password);
       const defaultData: User = {

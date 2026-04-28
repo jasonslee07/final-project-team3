@@ -20,7 +20,7 @@ const LoginPage = () => {
       // console.log("Trying to log in user"); // used for debugging
       await signInWithEmailAndPassword(auth, email, password);
       // console.log("Logged in!"); // used for debugging
-      navigate("/");
+      navigate("/dashboard");
       window.location.reload();
     } catch (error: any) {
       alert(error.message);

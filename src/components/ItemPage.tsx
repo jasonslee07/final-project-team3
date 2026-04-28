@@ -69,7 +69,7 @@ const ItemPage = () => {
               {added && <p className="text-[#6b8f5e] text-xs">Added to cart!</p>}
             </div>
 
-            <span className="bg-[#eaecdc] text-[#7e9169] text-xs font-semibold px-3 py-1 rounded-md self-start">Bedding</span>
+            <span className="bg-[#eaecdc] text-[#7e9169] text-xs font-semibold px-3 py-1 rounded-md self-start">{item.category}</span>
 
             <p className="text-[#40532d] text-sm leading-relaxed">{item.desc}</p>
 
@@ -87,7 +87,6 @@ const ItemPage = () => {
                   <span className="text-xs text-white/70">{vendor?.desc || "No description provided"}</span>
                 </div>
               </div>
-              <FaChevronRight size={12} color="white" />
             </div>
           </div>
         </div>

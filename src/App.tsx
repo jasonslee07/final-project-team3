@@ -21,11 +21,12 @@ import type { User } from "./types/types";
 import { useAuth } from "./context/AuthContext";
 import CreateItemPage from "./pages/vendor-pages/CreateItemPage";
 
+
 function App() {
   /**
    * Define the useState variables to get current users and store data
    */
-  const { currentUser } = useAuth();
+ const { currentUser } = useAuth()
   const [userData, setUserData] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -59,9 +60,9 @@ function App() {
     fetchUserData();
   }, [currentUser]);
 
-  return isLoading ? (
+  return isLoading ? 
     <Loading />
-  ) : (
+   : (
     <>
       <BrowserRouter>
         <Routes>
@@ -79,7 +80,7 @@ function App() {
           {userData ? <Route path="/vendor/:id" element={userData.role === "Vendor" ? <VendorProfile /> : <PageNotFound />}></Route> : <Route path="/vendor" element={<PageNotFound />}></Route>}
 
           {/* Navbar Routes */}
-          {userData ? <Route path="/dashboard" element={<ClientDashboard />}></Route> : <Route path="/client-dashboard" element={<PageNotFound />}></Route>}
+          {userData ? <Route path="/dashboard" element={userData.role === "Client" ? <ClientDashboard /> : <VendorProfile />} /> : <Route path="/dashboard" element={<PageNotFound />} />}
           {userData ? <Route path="/settings" element={<SettingsPage />}></Route> : <Route path="/settings" element={<PageNotFound />}></Route>}
           <Route path="*" element={<PageNotFound />}></Route>
         </Routes>

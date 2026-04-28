@@ -16,6 +16,7 @@ const OnboardingPage = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
+    console.log(firstName, lastName);
     const user = auth.currentUser;
     if (!user) {
       console.log("No authenticated user found. Please sign in again.");
