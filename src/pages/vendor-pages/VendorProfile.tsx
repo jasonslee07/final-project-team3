@@ -63,7 +63,9 @@ const VendorProfile = () => {
 
     fetchUserData();
 
-    return () => { unsubscribeItems() };
+    return () => {
+      unsubscribeItems();
+    };
   }, [currentUser]);
 
   const editItem = async () => {
@@ -87,7 +89,7 @@ const VendorProfile = () => {
             if (activeTab === 2) return item.status === "Sold";
           })
           .map((item) => (
-            <ItemCard key={item.id} itemId={item.id} title={item.title} price={item.price} img={item.img} category={item.category} role={"Vendor"} />
+            <ItemCard key={item.id} itemId={item.id} title={item.title} price={item.price} img={item.img} category={item.category} status={item.status} role={"Vendor"} />
           ))}
       </div>
       {/* this makes the create item button always hover at the bottom of screen */}
