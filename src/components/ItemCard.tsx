@@ -1,5 +1,5 @@
 import { FaTrash, FaChevronRight } from "react-icons/fa";
-import { type UserRole } from "../types/types";
+import { type ItemStatus, type UserRole } from "../types/types";
 import { useNavigate } from "react-router-dom";
 
 interface ItemCardProps {
@@ -10,10 +10,11 @@ interface ItemCardProps {
   itemId?: string;
   role: UserRole;
   showDelete?: boolean;
+  status: ItemStatus;
   onDelete?: () => void;
 }
 
-const ItemCard = ({ title, price, img, role, category, itemId, showDelete, onDelete }: ItemCardProps) => {
+const ItemCard = ({ title, price, img, role, category, itemId, status, showDelete, onDelete }: ItemCardProps) => {
   const navigate = useNavigate();
 
   const handleEdit = () => {
@@ -47,10 +48,14 @@ const ItemCard = ({ title, price, img, role, category, itemId, showDelete, onDel
           Added {date.day} {date.month} {date.year}
         </p> */}
 
-        <button className="mt-0.5 self-start flex items-center gap-1 bg-[#8fac7f] hover:bg-[#7a9669] text-white text-[10px] font-semibold px-3 py-1 rounded-md" onClick={handleEdit}>
-          {role === "Vendor" ? "Edit Item Details" : "View Item Details"}
-          <FaChevronRight size={8} />
-        </button>
+        {status != "Sold" ? (
+          <button className="mt-0.5 self-start flex items-center gap-1 bg-[#8fac7f] hover:bg-[#7a9669] text-white text-[10px] font-semibold px-3 py-1 rounded-md" onClick={handleEdit}>
+            {role === "Vendor" ? "Edit Item Details" : "View Item Details"}
+            <FaChevronRight size={8} />
+          </button>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

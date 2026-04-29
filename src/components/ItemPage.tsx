@@ -30,7 +30,7 @@ const ItemPage = () => {
         if (itemData.vendorID) {
           const vendorRef = doc(db, "users", itemData.vendorID);
           const vendorSnap = await getDoc(vendorRef);
-          
+
           if (vendorSnap.exists()) {
             setVendor(vendorSnap.data() as User);
           }
@@ -57,16 +57,21 @@ const ItemPage = () => {
           <div className="flex-1 bg-white rounded-md p-6 flex flex-col gap-4 shadow-sm">
             <div className="flex items-center gap-3">
               <span className="bg-[#8fac7f] text-white font-bold text-base px-4 py-2 rounded-md">${item.price}</span>
-              <div
-                onClick={() => {
-                  addToCart(item);
-                  setAdded(true);
-                }}
-                className="w-10 h-10 bg-[#e2725b] rounded-md flex items-center justify-center cursor-pointer"
-              >
-                <FaShoppingCart color="white" size={16} />
-              </div>
-              {added && <p className="text-[#6b8f5e] text-xs">Added to cart!</p>}
+              {item.status != "Sold" ? (
+                <div
+                  onClick={() => {
+                    addToCart(item);
+                    setAdded(true);
+                    navigate("/dashboard");
+                  }}
+                  className="w-10 h-10 bg-[#e2725b] rounded-md flex items-center justify-center cursor-pointer"
+                >
+                  <FaShoppingCart color="white" size={16} />
+                  {added && <p className="text-[#6b8f5e] text-xs">Added to cart!</p>}
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
 
             <span className="bg-[#eaecdc] text-[#7e9169] text-xs font-semibold px-3 py-1 rounded-md self-start">{item.category}</span>
@@ -76,11 +81,7 @@ const ItemPage = () => {
             <div className="flex items-center justify-between bg-[#8fac7f] text-white rounded-md px-4 py-3 mt-auto">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-[#e2725b] flex items-center justify-center text-xs font-bold overflow-hidden">
-                  {vendor?.profileImg ? (
-                    <img src={vendor.profileImg} className="w-full h-full object-cover" />
-                  ) : (
-                    "V"
-                  )}
+                  {vendor?.profileImg ? <img src={vendor.profileImg} className="w-full h-full object-cover" /> : "V"}
                 </div>
                 <div className="flex flex-col text-left">
                   <span className="text-sm font-semibold">{vendor ? vendor.firstName + " " + vendor.lastName : "Loading..."}</span>
