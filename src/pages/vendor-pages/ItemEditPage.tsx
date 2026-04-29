@@ -76,8 +76,14 @@ const ItemEditPage = () => {
   };
 
   const onPublish = () => {
-    if (itemName === "" || price === "" || category === "" || description === "" || previewUrl === "") {
-      alert("Fields empty");
+    if (itemName === "" || price === "") {
+      alert("Item name and price are required");
+      return;
+    }
+
+    if (Number(price) < 0) {
+      alert("Price cannot be negative");
+      return;
     } else {
       handleUpdateItem("Active");
       navigate("/");
@@ -85,6 +91,11 @@ const ItemEditPage = () => {
   };
 
   const onSave = () => {
+  if (price !== "" && Number(price) < 0) {
+    alert("Price cannot be negative");
+    return;
+  }
+
     handleUpdateItem("Draft");
     navigate("/");
   };

@@ -91,26 +91,38 @@ const ClientProfile = () => {
   };
 
   const handleCheckout = async () => {
-    if (!currentUser || cartItems.length === 0) return;
+  if (!currentUser) return;
 
-    try {
-      for (const item of cartItems) {
-        const itemRef = doc(db, "items", item.id);
-        await updateDoc(itemRef, { status: "Sold" });
+  if (cartItems.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
 
-        await addDoc(collection(db, "orders"), {
-          itemID: item.id,
-          clientID: currentUser.uid,
-          vendorID: item.vendorID,
-          status: "Shipped",
-        });
+  try {
+    for (const item of cartItems) {
+      const itemRef = doc(db, "items", item.id);
 
-        alert("Checkout successful!");
-      }
-    } catch (error) {
-      console.error("Error handling checkout", error);
+      // mark item as sold so it moves to vendor's Sold tab
+      await updateDoc(itemRef, {
+        status: "Sold",
+        cartedBy: null,
+      });
+
+      // create an order for this item
+      await addDoc(collection(db, "orders"), {
+        itemID: item.id,
+        clientID: currentUser.uid,
+        vendorID: item.vendorID,
+        status: "Shipped",
+      });
     }
-  };
+
+    // only show one alert after all items are checked out
+    alert("Checkout successful!");
+  } catch (error) {
+    console.error("Error handling checkout", error);
+  }
+};
 
   return (
     <>

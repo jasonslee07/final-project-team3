@@ -60,9 +60,16 @@ const ItemEditPage = () => {
   };
 
   const onPublish = async () => {
-    if (itemName === "" || price === "" || category === "" || description === "" || previewUrl === "") {
-      alert("Fields empty");
-    } else {
+    if (itemName === "" || price === "") {
+  alert("Item name and price are required");
+  return;
+}
+
+  // prevent negative prices
+  if (Number(price) < 0) {
+    alert("Price cannot be negative");
+    return;
+  } else {
       const status: ItemStatus = "Active";
       const imageUrl = await uploadImageAndGetURL();
       const item = {
@@ -81,6 +88,10 @@ const ItemEditPage = () => {
   };
 
   const onSave = async () => {
+    if (price !== "" && Number(price) < 0) {
+      alert("Price cannot be negative");
+      return;
+    }
     const status: ItemStatus = "Draft";
     const imageUrl = await uploadImageAndGetURL();
     const item = {
