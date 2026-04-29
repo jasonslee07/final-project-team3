@@ -76,21 +76,29 @@ const VendorProfile = () => {
     }
   };
 
+  const filteredItems = items.filter((item) => {
+    if (activeTab === 0) return item.status === "Active";
+    if (activeTab === 1) return item.status === "Draft";
+    if (activeTab === 2) return item.status === "Sold";
+  });
+
   return (
     <>
       <Navbar />
       <ProfileHeader name={userData.firstName + " " + userData.lastName} role={userData.role} desc={userData.desc} img={userData?.profileImg} />
       <ProfileTab tab1={"Items"} tab2={"Drafts"} tab3={"Sold"} activeTab={activeTab} setActiveTab={setActiveTab} />
-      <div className="min-h-screen bg-[#d3d6ba] flex flex-col gap-3 px-4 py-4">
-        {items
-          .filter((item) => {
-            if (activeTab === 0) return item.status === "Active";
-            if (activeTab === 1) return item.status === "Draft";
-            if (activeTab === 2) return item.status === "Sold";
-          })
-          .map((item) => (
-            <ItemCard key={item.id} itemId={item.id} title={item.title} price={item.price} img={item.img} category={item.category} status={item.status} role={"Vendor"} />
-          ))}
+      <div className="min-h-screen bg-[#d3d6ba] flex flex-col gap-3 px-4 py-4 items-center text-[#6b8f5e]">
+        {filteredItems.length == 0 ? (
+          activeTab == 0 ? (
+            <p>You have no selling items</p>
+          ) : activeTab == 1 ? (
+            <p>You have no drafts</p>
+          ) : (
+            <p>You have not sold any items</p>
+          )
+        ) : (
+          filteredItems.map((item) => <ItemCard key={item.id} itemId={item.id} title={item.title} price={item.price} img={item.img} category={item.category} status={item.status} role={"Vendor"} />)
+        )}
       </div>
       {/* this makes the create item button always hover at the bottom of screen */}
       <button className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 px-10 py-3 bg-[#E2725B] text-white rounded-md hover:bg-[#d85f47] transition" onClick={editItem}>
